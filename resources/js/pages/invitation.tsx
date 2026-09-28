@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { InvitationCard } from '@/components/invitation/invitation-card';
 import type { InvitationEvent } from '@/components/invitation/resolve';
 import { resolveInvitation } from '@/components/invitation/resolve';
+import type { RsvpConfig } from '@/components/invitation/rsvp';
 import { findTemplate } from '@/components/invitation/templates';
 import { cn } from '@/lib/utils';
 import { home } from '@/routes';
@@ -22,6 +23,7 @@ type Props = {
     guestName: string | null;
     lang: InvitationLang | null;
     branding: boolean;
+    rsvp: RsvpConfig;
 };
 
 export default function PublicInvitation({
@@ -30,6 +32,7 @@ export default function PublicInvitation({
     guestName,
     lang: requestedLang,
     branding,
+    rsvp,
 }: Props) {
     const settings = invitation.settings ?? {};
     const [lang, setLang] = useState<InvitationLang>(
@@ -78,6 +81,7 @@ export default function PublicInvitation({
                         lang={lang}
                         guestName={guestName}
                         gate
+                        rsvp={rsvp}
                     />
                     {branding && (
                         <a

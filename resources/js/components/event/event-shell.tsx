@@ -5,6 +5,7 @@ import {
     Gift,
     LayoutGrid,
     MapPin,
+    MessageCircleHeart,
     Paintbrush,
     Pencil,
     Plus,
@@ -18,6 +19,7 @@ import ExpenseController from '@/actions/App/Http/Controllers/ExpenseController'
 import GiftController from '@/actions/App/Http/Controllers/GiftController';
 import GuestController from '@/actions/App/Http/Controllers/GuestController';
 import InvitationController from '@/actions/App/Http/Controllers/InvitationController';
+import RsvpController from '@/actions/App/Http/Controllers/RsvpController';
 import TaskController from '@/actions/App/Http/Controllers/TaskController';
 import { EventFormDialog } from '@/components/event/event-form-dialog';
 import { Button } from '@/components/ui/button';
@@ -56,6 +58,11 @@ export function EventShell({ event, title, actions, children }: Props) {
             key: 'tab.expenses',
             href: ExpenseController.index.url(event.id),
             icon: ReceiptText,
+        },
+        {
+            key: 'tab.rsvps',
+            href: RsvpController.index.url(event.id),
+            icon: MessageCircleHeart,
         },
         {
             key: 'tab.gifts',

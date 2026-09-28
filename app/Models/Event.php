@@ -58,6 +58,14 @@ class Event extends Model
     }
 
     /**
+     * @return HasMany<Rsvp, $this>
+     */
+    public function rsvps(): HasMany
+    {
+        return $this->hasMany(Rsvp::class);
+    }
+
+    /**
      * @return HasMany<Order, $this>
      */
     public function orders(): HasMany

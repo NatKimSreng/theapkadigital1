@@ -7,13 +7,14 @@ use App\Http\Controllers\GiftController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RsvpController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
 Route::get('pricing', [OrderController::class, 'pricing'])->name('pricing');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [EventController::class, 'dashboard'])->name('dashboard');
 
     Route::resource('events', EventController::class)->except(['create', 'edit']);
@@ -33,10 +34,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('templates', [InvitationController::class, 'catalog'])->name('templates');
         Route::resource('invitations', InvitationController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::post('invitations/{invitation}/activate', [InvitationController::class, 'activate'])->name('invitations.activate');
+        Route::resource('rsvps', RsvpController::class)->only(['index', 'destroy']);
     });
 });
 
-Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', Admin\DashboardController::class)->name('dashboard');
     Route::get('orders', [Admin\OrderController::class, 'index'])->name('orders.index');
     Route::get('orders/{order}/receipt', [Admin\OrderController::class, 'receipt'])->name('orders.receipt');
@@ -48,5 +50,8 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
 
 Route::get('i/{invitation:public_id}', [InvitationController::class, 'share'])->name('invitations.share');
 Route::get('invite/{guest:invite_code}', [InvitationController::class, 'guest'])->name('invitations.guest');
+Route::post('i/{invitation:public_id}/rsvp', [RsvpController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('invitations.rsvp');
 
 require __DIR__.'/settings.php';

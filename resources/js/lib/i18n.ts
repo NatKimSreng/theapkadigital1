@@ -18,6 +18,14 @@ const en = {
     'tab.expenses': 'Expenses',
     'tab.gifts': 'Gifts',
     'tab.tasks': 'Checklist',
+    'tab.rsvps': 'RSVP',
+    'rsvp.attending': 'Attending',
+    'rsvp.declined': "Can't attend",
+    'rsvp.wishes': 'Wishes',
+    'rsvp.hint':
+        'Replies from personal invite links also update the guest list.',
+    'rsvp.empty': 'No replies yet. Share your invitation so guests can RSVP.',
+    'rsvp.public_link': 'Public link',
 
     'dashboard.title': 'Dashboard',
     'dashboard.quick': 'Quick actions',
@@ -519,6 +527,13 @@ const km: Record<TranslationKey, string> = {
     'tab.expenses': 'ចំណាយ',
     'tab.gifts': 'ចំណងដៃ',
     'tab.tasks': 'ការរៀបចំ',
+    'tab.rsvps': 'ការឆ្លើយតប',
+    'rsvp.attending': 'ចូលរួម',
+    'rsvp.declined': 'មិនអាចចូលរួម',
+    'rsvp.wishes': 'សារជូនពរ',
+    'rsvp.hint': 'ការឆ្លើយតបពីតំណអញ្ជើញផ្ទាល់ខ្លួន នឹងធ្វើបច្ចុប្បន្នភាពបញ្ជីភ្ញៀវដោយស្វ័យប្រវត្តិ។',
+    'rsvp.empty': 'មិនទាន់មានការឆ្លើយតបទេ។ ចែករំលែកធៀបការ ដើម្បីឱ្យភ្ញៀវឆ្លើយតប។',
+    'rsvp.public_link': 'តំណសាធារណៈ',
 
     'dashboard.title': 'ផ្ទាំងគ្រប់គ្រង',
     'dashboard.quick': 'សកម្មភាពរហ័ស',

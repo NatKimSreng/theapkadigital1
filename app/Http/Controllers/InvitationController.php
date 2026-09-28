@@ -281,12 +281,13 @@ class InvitationController extends Controller
 
         abort_if($invitation === null, 404);
 
-        return $this->renderPublic($request, $invitation, $guest->name);
+        return $this->renderPublic($request, $invitation, $guest->name, $guest);
     }
 
-    private function renderPublic(Request $request, Invitation $invitation, ?string $guestName): Response
+    private function renderPublic(Request $request, Invitation $invitation, ?string $guestName, ?Guest $guest = null): Response
     {
         $event = $invitation->event;
+        $reply = $guest ? $event->rsvps()->where('guest_id', $guest->id)->first() : null;
 
         return Inertia::render('invitation', [
             'event' => [
@@ -296,6 +297,11 @@ class InvitationController extends Controller
             'invitation' => $invitation->only(['template', 'settings', 'media']),
             'guestName' => $guestName,
             'branding' => ! $event->plan()->remove_branding,
+            'rsvp' => [
+                'url' => route('invitations.rsvp', $invitation->public_id),
+                'guest' => $guest?->invite_code,
+                'reply' => $reply?->only(['attending', 'message']),
+            ],
             'lang' => in_array($request->query('lang'), self::LANGUAGES, true) ? $request->query('lang') : null,
         ]);
     }

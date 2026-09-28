@@ -14,6 +14,7 @@ import {
     ParentsBlock,
 } from './parts';
 import type { ResolvedInvitation } from './resolve';
+import { RsvpForm } from './rsvp';
 import {
     BODY_FONT,
     SCRIPT_FONT,
@@ -34,6 +35,7 @@ export function PaperLayout({
     compact,
     autoStartMusic,
     motion,
+    rsvp,
 }: LayoutProps) {
     const details = useRef<HTMLDivElement>(null);
     const { copy, primary, secondary } = data;
@@ -320,6 +322,11 @@ export function PaperLayout({
                             </Card>
                         </Section>
                     )}
+
+                    <Section motion={motion} data={data}>
+                        <Heading data={data}>{copy.rsvpTitle}</Heading>
+                        <RsvpForm data={data} rsvp={rsvp} />
+                    </Section>
 
                     <Section motion={motion} data={data} bottom>
                         <Heading data={data}>{data.thanksTitle}</Heading>
