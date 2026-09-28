@@ -1,5 +1,5 @@
 import { Link, router } from '@inertiajs/react';
-import { LogOut, Settings } from 'lucide-react';
+import { LogOut, Receipt, Settings, ShieldCheck, Sparkles } from 'lucide-react';
 import {
     DropdownMenuGroup,
     DropdownMenuItem,
@@ -9,7 +9,9 @@ import {
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { useTranslation } from '@/lib/i18n';
-import { logout } from '@/routes';
+import { logout, pricing } from '@/routes';
+import admin from '@/routes/admin';
+import { index as ordersIndex } from '@/routes/orders';
 import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 
@@ -46,6 +48,39 @@ export function UserMenuContent({ user }: Props) {
                         {t('nav.settings')}
                     </Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link
+                        className="block w-full cursor-pointer"
+                        href={ordersIndex()}
+                        prefetch
+                        onClick={cleanup}
+                    >
+                        <Receipt className="mr-2" />
+                        {t('nav.orders')}
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link
+                        className="block w-full cursor-pointer"
+                        href={pricing()}
+                        onClick={cleanup}
+                    >
+                        <Sparkles className="mr-2" />
+                        {t('nav.pricing')}
+                    </Link>
+                </DropdownMenuItem>
+                {user.is_admin && (
+                    <DropdownMenuItem asChild>
+                        <Link
+                            className="block w-full cursor-pointer"
+                            href={admin.dashboard()}
+                            onClick={cleanup}
+                        >
+                            <ShieldCheck className="mr-2" />
+                            {t('nav.admin')}
+                        </Link>
+                    </DropdownMenuItem>
+                )}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>

@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { InvitationCard } from '@/components/invitation/invitation-card';
 import type { InvitationEvent } from '@/components/invitation/resolve';
 import { resolveInvitation } from '@/components/invitation/resolve';
+import type { RsvpConfig } from '@/components/invitation/rsvp';
 import { findTemplate } from '@/components/invitation/templates';
 import { cn } from '@/lib/utils';
+import { home } from '@/routes';
 import type {
     InvitationLang,
     InvitationMedia,
@@ -20,6 +22,8 @@ type Props = {
     };
     guestName: string | null;
     lang: InvitationLang | null;
+    branding: boolean;
+    rsvp: RsvpConfig;
 };
 
 export default function PublicInvitation({
@@ -27,6 +31,8 @@ export default function PublicInvitation({
     invitation,
     guestName,
     lang: requestedLang,
+    branding,
+    rsvp,
 }: Props) {
     const settings = invitation.settings ?? {};
     const [lang, setLang] = useState<InvitationLang>(
@@ -75,7 +81,20 @@ export default function PublicInvitation({
                         lang={lang}
                         guestName={guestName}
                         gate
+                        rsvp={rsvp}
                     />
+                    {branding && (
+                        <a
+                            href={home.url()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block bg-black/85 py-2.5 text-center text-xs tracking-wide text-white/80 hover:text-white"
+                        >
+                            {lang === 'km'
+                                ? 'បង្កើតដោយ Theapka'
+                                : 'Made with Theapka'}
+                        </a>
+                    )}
                 </main>
             </div>
         </>

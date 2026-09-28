@@ -1,13 +1,8 @@
 import { AppHeader } from '@/components/app-header';
 import { HelpButton } from '@/components/help-button';
-import type { BreadcrumbItem } from '@/types';
+import type { ReactNode } from 'react';
 
-export default function AppLayout({
-    children,
-}: {
-    breadcrumbs?: BreadcrumbItem[];
-    children: React.ReactNode;
-}) {
+export default function AppLayout({ children }: { children: ReactNode }) {
     return (
         <div className="flex min-h-svh flex-col bg-background">
             <AppHeader />

@@ -21,6 +21,8 @@ import { Spinner } from '@/components/ui/spinner';
 import { useAppearance } from '@/hooks/use-appearance';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
+import type { TranslationKey } from '@/lib/i18n';
+import { useTranslation } from '@/lib/i18n';
 import { confirm } from '@/routes/two-factor';
 
 function GridScanIcon() {
@@ -64,6 +66,7 @@ function TwoFactorSetupStep({
 }) {
     const { resolvedAppearance } = useAppearance();
     const [copiedText, copy] = useClipboard();
+    const { t } = useTranslation();
     const IconComponent = copiedText === manualSetupKey ? Check : Copy;
 
     return (
@@ -104,7 +107,7 @@ function TwoFactorSetupStep({
                     <div className="relative flex w-full items-center justify-center">
                         <div className="absolute inset-0 top-1/2 h-px w-full bg-border" />
                         <span className="relative bg-card px-2 py-1">
-                            or, enter the code manually
+                            {t('settings.2fa_manual')}
                         </span>
                     </div>
 
@@ -146,6 +149,7 @@ function TwoFactorVerificationStep({
     onBack: () => void;
 }) {
     const [code, setCode] = useState<string>('');
+    const { t } = useTranslation();
     const pinInputContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -210,7 +214,7 @@ function TwoFactorVerificationStep({
                                 onClick={onBack}
                                 disabled={processing}
                             >
-                                Back
+                                {t('settings.back')}
                             </Button>
                             <Button
                                 type="submit"
@@ -219,7 +223,7 @@ function TwoFactorVerificationStep({
                                     processing || code.length < OTP_MAX_LENGTH
                                 }
                             >
-                                Confirm
+                                {t('settings.confirm')}
                             </Button>
                         </div>
                     </div>
@@ -255,34 +259,33 @@ export default function TwoFactorSetupModal({
     const [showVerificationStep, setShowVerificationStep] =
         useState<boolean>(false);
 
+    const { t } = useTranslation();
+
     const modalConfig = useMemo<{
-        title: string;
-        description: string;
-        buttonText: string;
+        title: TranslationKey;
+        description: TranslationKey;
+        buttonText: TranslationKey;
     }>(() => {
         if (twoFactorEnabled) {
             return {
-                title: 'Two-factor authentication enabled',
-                description:
-                    'Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.',
-                buttonText: 'Close',
+                title: 'settings.2fa_enabled_title',
+                description: 'settings.2fa_enabled_desc',
+                buttonText: 'settings.close',
             };
         }
 
         if (showVerificationStep) {
             return {
-                title: 'Verify authentication code',
-                description:
-                    'Enter the 6-digit code from your authenticator app',
-                buttonText: 'Continue',
+                title: 'settings.2fa_verify_title',
+                description: 'settings.2fa_verify_desc',
+                buttonText: 'auth.continue',
             };
         }
 
         return {
-            title: 'Enable two-factor authentication',
-            description:
-                'To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app',
-            buttonText: 'Continue',
+            title: 'settings.2fa_setup_title',
+            description: 'settings.2fa_setup_desc',
+            buttonText: 'auth.continue',
         };
     }, [twoFactorEnabled, showVerificationStep]);
 
@@ -327,9 +330,9 @@ export default function TwoFactorSetupModal({
             <DialogContent className="sm:max-w-md">
                 <DialogHeader className="flex items-center justify-center">
                     <GridScanIcon />
-                    <DialogTitle>{modalConfig.title}</DialogTitle>
+                    <DialogTitle>{t(modalConfig.title)}</DialogTitle>
                     <DialogDescription className="text-center">
-                        {modalConfig.description}
+                        {t(modalConfig.description)}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -343,7 +346,7 @@ export default function TwoFactorSetupModal({
                         <TwoFactorSetupStep
                             qrCodeSvg={qrCodeSvg}
                             manualSetupKey={manualSetupKey}
-                            buttonText={modalConfig.buttonText}
+                            buttonText={t(modalConfig.buttonText)}
                             onNextStep={handleModalNextStep}
                             errors={errors}
                         />

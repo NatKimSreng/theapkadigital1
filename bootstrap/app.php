@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Middleware\EnsureUserIsActive;
+use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,9 +18,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
+        // Hosts like Render terminate HTTPS at their load balancer.
+        $middleware->trustProxies(at: '*');
+
+        $middleware->encryptCookies(except: ['appearance', 'locale']);
+
+        $middleware->alias(['admin' => EnsureUserIsAdmin::class]);
 
         $middleware->web(append: [
+            SetLocale::class,
+            EnsureUserIsActive::class,
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,

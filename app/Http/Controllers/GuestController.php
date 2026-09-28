@@ -24,8 +24,9 @@ class GuestController extends Controller
 
         return Inertia::render('events/guests', [
             'event' => $event,
-            'guests' => $event->guests()->withSum('gifts', 'amount_usd')->latest()->get(),
+            'guests' => $event->guests()->with('gifts')->latest()->get(),
             'inviteReady' => $event->invitations()->exists(),
+            'guestLimit' => $event->plan()->guest_limit,
         ]);
     }
 
@@ -63,6 +64,12 @@ class GuestController extends Controller
     public function store(Request $request, Event $event): RedirectResponse
     {
         Gate::authorize('manage', $event);
+
+        if (! $event->canAddGuest()) {
+            Inertia::flash('toast', ['type' => 'error', 'message' => 'toast.guest_limit']);
+
+            return back();
+        }
 
         $event->guests()->create($this->validated($request));
 

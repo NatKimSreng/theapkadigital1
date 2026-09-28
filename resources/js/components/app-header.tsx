@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { ChevronsUpDown, ListChecks } from 'lucide-react';
+import { ChevronsUpDown, ListChecks, ShieldCheck } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -15,10 +15,11 @@ import { useInitials } from '@/hooks/use-initials';
 import { useTranslation } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
+import admin from '@/routes/admin';
 import { index as eventsIndex } from '@/routes/events';
 
 export function AppHeader() {
-    const { auth } = usePage().props;
+    const { auth, adminPending } = usePage().props;
     const getInitials = useInitials();
     const { isCurrentUrl } = useCurrentUrl();
     const { t } = useTranslation();
@@ -35,13 +36,30 @@ export function AppHeader() {
                     prefetch
                     className={cn(
                         'flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-accent',
-                        isCurrentUrl(eventsIndex()) &&
-                            'bg-accent',
+                        isCurrentUrl(eventsIndex()) && 'bg-accent',
                     )}
                 >
                     <ListChecks className="size-4" />
                     {t('nav.events')}
                 </Link>
+
+                {auth.user?.is_admin && (
+                    <Link
+                        href={admin.dashboard()}
+                        prefetch
+                        className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                    >
+                        <ShieldCheck className="size-4" />
+                        <span className="hidden sm:inline">
+                            {t('nav.admin')}
+                        </span>
+                        {adminPending ? (
+                            <span className="rounded-full bg-amber-500 px-1.5 text-xs font-semibold text-white">
+                                {adminPending}
+                            </span>
+                        ) : null}
+                    </Link>
+                )}
 
                 <div className="ml-auto flex items-center gap-2">
                     <LanguageSwitcher />

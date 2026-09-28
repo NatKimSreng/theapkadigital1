@@ -3,95 +3,14 @@ import { useMemo, useState } from 'react';
 import GiftController from '@/actions/App/Http/Controllers/GiftController';
 import { ConfirmDelete } from '@/components/event/confirm-delete';
 import { EventShell } from '@/components/event/event-shell';
-import { SelectField, TextField } from '@/components/event/fields';
 import { FormDialog } from '@/components/event/form-dialog';
+import type { GuestOption } from '@/components/event/gift-fields';
+import { GiftFields } from '@/components/event/gift-fields';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { formatKhr, formatUsd } from '@/lib/format';
 import { useTranslation } from '@/lib/i18n';
 import type { Gift, PlannerEvent } from '@/types';
-import { GIFT_METHODS } from '@/types/event';
-
-type GuestOption = { id: number; name: string };
-
-function GiftFields({
-    gift,
-    guests,
-    errors,
-}: {
-    gift?: Gift;
-    guests: GuestOption[];
-    errors: Record<string, string>;
-}) {
-    const { t } = useTranslation();
-
-    return (
-        <div className="grid gap-4 sm:grid-cols-2">
-            <TextField
-                label={t('gift.giver')}
-                name="giver_name"
-                required
-                list="gift-guest-names"
-                defaultValue={gift?.giver_name}
-                error={errors.giver_name}
-            />
-            <datalist id="gift-guest-names">
-                {guests.map((guest) => (
-                    <option key={guest.id} value={guest.name} />
-                ))}
-            </datalist>
-            <SelectField
-                label={t('gift.guest')}
-                name="guest_id"
-                defaultValue={gift?.guest_id ?? ''}
-                error={errors.guest_id}
-                options={[
-                    { value: '', label: t('gift.none') },
-                    ...guests.map((guest) => ({
-                        value: guest.id,
-                        label: guest.name,
-                    })),
-                ]}
-            />
-            <TextField
-                label={t('gift.usd')}
-                name="amount_usd"
-                type="number"
-                min={0}
-                step="0.01"
-                placeholder="0"
-                defaultValue={gift?.amount_usd || ''}
-                error={errors.amount_usd}
-            />
-            <TextField
-                label={t('gift.khr')}
-                name="amount_khr"
-                type="number"
-                min={0}
-                step="100"
-                placeholder="0"
-                defaultValue={gift?.amount_khr || ''}
-                error={errors.amount_khr}
-            />
-            <SelectField
-                label={t('gift.method')}
-                name="method"
-                defaultValue={gift?.method ?? 'cash'}
-                error={errors.method}
-                options={GIFT_METHODS.map((method) => ({
-                    value: method,
-                    label: t(`method.${method}`),
-                }))}
-            />
-            <TextField
-                label={t('common.note')}
-                name="note"
-                defaultValue={gift?.note ?? ''}
-                error={errors.note}
-            />
-        </div>
-    );
-}
 
 export default function Gifts({
     event,

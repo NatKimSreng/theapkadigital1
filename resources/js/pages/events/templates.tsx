@@ -1,5 +1,5 @@
 import { Link, router } from '@inertiajs/react';
-import { Check, Eye, Phone, Plus, Sparkles } from 'lucide-react';
+import { Check, Eye, Lock, Phone, Plus, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import InvitationController from '@/actions/App/Http/Controllers/InvitationController';
 import { EventShell } from '@/components/event/event-shell';
@@ -14,6 +14,7 @@ import { TEMPLATES } from '@/components/invitation/templates';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useTranslation } from '@/lib/i18n';
+import { pricing } from '@/routes';
 import type { PlannerEvent } from '@/types';
 
 const categoryStyles: Record<TemplateCategory, string> = {
@@ -30,10 +31,12 @@ export default function Templates({
     event,
     added,
     max,
+    premiumUnlocked,
 }: {
     event: PlannerEvent;
     added: Record<string, number>;
     max: number;
+    premiumUnlocked: boolean;
 }) {
     const { t } = useTranslation();
     const [previewing, setPreviewing] = useState<TemplateDefinition | null>(
@@ -44,7 +47,12 @@ export default function Templates({
     const addedCount = Object.keys(added).length;
     const full = addedCount >= max;
     const free = TEMPLATES.filter((template) => template.free);
-    const premium = TEMPLATES.filter((template) => !template.free);
+    const premium = TEMPLATES.filter(
+        (template) => !template.free && template.theme,
+    );
+    const comingSoon = TEMPLATES.filter(
+        (template) => !template.free && !template.theme,
+    );
 
     const choose = (template: TemplateDefinition) => {
         router.post(
@@ -64,6 +72,99 @@ export default function Templates({
             {t(`type.${template.category}`)}
         </span>
     );
+
+    const renderCard = (template: TemplateDefinition) => {
+        const invitationId = added[template.key];
+        const locked = !template.free && !premiumUnlocked;
+
+        return (
+            <article
+                key={template.key}
+                className="flex flex-col overflow-hidden rounded-2xl border bg-background shadow-sm"
+            >
+                <button
+                    type="button"
+                    onClick={() => setPreviewing(template)}
+                    className="relative block text-left"
+                    aria-label={t('templates.view')}
+                >
+                    {badge(template)}
+                    <TemplateThumbnail template={template} event={event} />
+                </button>
+
+                <div className="flex flex-1 flex-col gap-3 p-3">
+                    <div className="flex items-start justify-between gap-2">
+                        <p className="leading-snug font-semibold">
+                            {t(template.name)}
+                        </p>
+                        {template.free ? (
+                            <span className="shrink-0 rounded-full border border-emerald-500 px-2 text-xs text-emerald-700 dark:text-emerald-400">
+                                {t('templates.free')}
+                            </span>
+                        ) : (
+                            <span className="shrink-0 rounded-full border border-primary/60 px-2 text-xs text-primary">
+                                {t('templates.premium')}
+                            </span>
+                        )}
+                    </div>
+
+                    <div className="mt-auto flex flex-wrap items-center justify-between gap-2">
+                        {invitationId ? (
+                            <Button
+                                asChild
+                                size="sm"
+                                className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                            >
+                                <Link
+                                    href={InvitationController.index.url(
+                                        event.id,
+                                        {
+                                            query: {
+                                                invitation: invitationId,
+                                            },
+                                        },
+                                    )}
+                                >
+                                    <Check className="size-4" />
+                                    {t('templates.added')}
+                                </Link>
+                            </Button>
+                        ) : locked ? (
+                            <Button asChild size="sm" className="rounded-full">
+                                <Link
+                                    href={pricing({
+                                        query: { event: event.id },
+                                    })}
+                                >
+                                    <Lock className="size-4" />
+                                    {t('templates.locked')}
+                                </Link>
+                            </Button>
+                        ) : (
+                            <Button
+                                size="sm"
+                                className="rounded-full"
+                                disabled={full || adding !== null}
+                                onClick={() => choose(template)}
+                            >
+                                <Plus className="size-4" />
+                                {t('templates.choose')}
+                            </Button>
+                        )}
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            className="rounded-full"
+                            onClick={() => setPreviewing(template)}
+                        >
+                            <Eye className="size-4" />
+                            {t('templates.view')}
+                        </Button>
+                    </div>
+                </div>
+            </article>
+        );
+    };
 
     return (
         <EventShell event={event} title={t('tab.add_template')}>
@@ -90,88 +191,7 @@ export default function Templates({
                 </h3>
 
                 <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                    {free.map((template) => {
-                        const invitationId = added[template.key];
-
-                        return (
-                            <article
-                                key={template.key}
-                                className="flex flex-col overflow-hidden rounded-2xl border bg-background shadow-sm"
-                            >
-                                <button
-                                    type="button"
-                                    onClick={() => setPreviewing(template)}
-                                    className="relative block text-left"
-                                    aria-label={t('templates.view')}
-                                >
-                                    {badge(template)}
-                                    <TemplateThumbnail
-                                        template={template}
-                                        event={event}
-                                    />
-                                </button>
-
-                                <div className="flex flex-1 flex-col gap-3 p-3">
-                                    <div className="flex items-start justify-between gap-2">
-                                        <p className="leading-snug font-semibold">
-                                            {t(template.name)}
-                                        </p>
-                                        <span className="shrink-0 rounded-full border border-emerald-500 px-2 text-xs text-emerald-700 dark:text-emerald-400">
-                                            {t('templates.free')}
-                                        </span>
-                                    </div>
-
-                                    <div className="mt-auto flex flex-wrap items-center justify-between gap-2">
-                                        {invitationId ? (
-                                            <Button
-                                                asChild
-                                                size="sm"
-                                                className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-                                            >
-                                                <Link
-                                                    href={InvitationController.index.url(
-                                                        event.id,
-                                                        {
-                                                            query: {
-                                                                invitation:
-                                                                    invitationId,
-                                                            },
-                                                        },
-                                                    )}
-                                                >
-                                                    <Check className="size-4" />
-                                                    {t('templates.added')}
-                                                </Link>
-                                            </Button>
-                                        ) : (
-                                            <Button
-                                                size="sm"
-                                                className="rounded-full"
-                                                disabled={
-                                                    full || adding !== null
-                                                }
-                                                onClick={() => choose(template)}
-                                            >
-                                                <Plus className="size-4" />
-                                                {t('templates.choose')}
-                                            </Button>
-                                        )}
-                                        <Button
-                                            size="sm"
-                                            variant="outline"
-                                            className="rounded-full"
-                                            onClick={() =>
-                                                setPreviewing(template)
-                                            }
-                                        >
-                                            <Eye className="size-4" />
-                                            {t('templates.view')}
-                                        </Button>
-                                    </div>
-                                </div>
-                            </article>
-                        );
-                    })}
+                    {free.map(renderCard)}
                 </div>
             </section>
 
@@ -180,19 +200,20 @@ export default function Templates({
                     <Sparkles className="size-5 text-amber-500" />
                     {t('templates.premium')}
                     <span className="rounded-full bg-muted px-2 text-xs font-normal">
-                        {premium.length}
+                        {premium.length + comingSoon.length}
                     </span>
                 </h3>
 
                 <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                    {premium.map((template) => (
+                    {premium.map(renderCard)}
+                    {comingSoon.map((template) => (
                         <article
                             key={template.key}
                             className="flex flex-col overflow-hidden rounded-2xl border bg-background shadow-sm"
                         >
                             <div className="relative flex aspect-[9/8] items-center justify-center bg-muted text-sm text-muted-foreground">
                                 {badge(template)}
-                                {t('templates.no_preview')}
+                                {t('templates.coming_soon')}
                             </div>
                             <div className="flex flex-1 flex-col gap-3 p-3">
                                 <div className="flex items-start justify-between gap-2">

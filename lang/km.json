@@ -1,0 +1,11 @@
+{
+    "Profile updated.": "បានកែប្រែប្រវត្តិរូប។",
+    "Password updated.": "បានប្តូរពាក្យសម្ងាត់។",
+    "Your account has been disabled. Please contact support.": "គណនីរបស់អ្នកត្រូវបានបិទ។ សូមទាក់ទងមកយើង។",
+    "This file is larger than the server accepts (maximum :max MB).": "ឯកសារនេះធំជាងទំហំដែលអនុញ្ញាត (អតិបរមា :max MB)។",
+    "Reset Password Notification": "កំណត់ពាក្យសម្ងាត់ឡើងវិញ",
+    "You are receiving this email because we received a password reset request for your account.": "អ្នកទទួលបានអ៊ីមែលនេះ ព្រោះមានសំណើកំណត់ពាក្យសម្ងាត់ឡើងវិញសម្រាប់គណនីរបស់អ្នក។",
+    "Reset Password": "កំណត់ពាក្យសម្ងាត់ឡើងវិញ",
+    "This password reset link will expire in :count minutes.": "តំណនេះនឹងផុតកំណត់ក្នុងរយៈពេល :count នាទី។",
+    "If you did not request a password reset, no further action is required.": "ប្រសិនបើអ្នកមិនបានស្នើសុំទេ សូមមិនអើពើនឹងអ៊ីមែលនេះ។"
+}

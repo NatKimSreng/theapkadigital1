@@ -30,11 +30,11 @@ class InvitationTest extends TestCase
             ->assertRedirect();
 
         $this->actingAs($user)
-            ->post(route('events.invitations.store', $event), ['template' => 'royal-wedding'])
+            ->post(route('events.invitations.store', $event), ['template' => 'paper-frame'])
             ->assertRedirect();
 
         $this->assertTrue($event->invitations()->where('template', 'golden-engagement')->value('is_active'));
-        $this->assertFalse($event->invitations()->where('template', 'royal-wedding')->value('is_active'));
+        $this->assertFalse($event->invitations()->where('template', 'paper-frame')->value('is_active'));
     }
 
     public function test_templates_are_limited_per_event_and_cannot_be_added_twice()

@@ -29,6 +29,8 @@ import {
     TextPanel,
 } from './parts';
 import type { InvitationEvent, ResolvedInvitation } from './resolve';
+import type { RsvpConfig } from './rsvp';
+import { RsvpForm } from './rsvp';
 import {
     BODY_FONT,
     TITLE_FONT,
@@ -48,6 +50,7 @@ type Props = {
     guestName?: string | null;
     compact?: boolean;
     gate?: boolean;
+    rsvp?: RsvpConfig;
 };
 
 export type LayoutProps = {
@@ -57,6 +60,7 @@ export type LayoutProps = {
     compact: boolean;
     autoStartMusic: boolean;
     motion: Motion;
+    rsvp?: RsvpConfig;
 };
 
 type Phase = 'closed' | 'opening' | 'open';
@@ -70,6 +74,7 @@ export function InvitationCard({
     guestName,
     compact = false,
     gate = false,
+    rsvp,
 }: Props) {
     const [phase, setPhase] = useState<Phase>(gate ? 'closed' : 'open');
     const data = resolveInvitation(template, settings, event, lang);
@@ -112,6 +117,7 @@ export function InvitationCard({
                 compact={compact}
                 autoStartMusic={gate && phase !== 'closed'}
                 motion={motion}
+                rsvp={rsvp}
             />
             {phase !== 'open' && (
                 <OpeningOverlay
@@ -135,6 +141,7 @@ function ClassicLayout({
     compact,
     autoStartMusic,
     motion,
+    rsvp,
 }: LayoutProps) {
     const details = useRef<HTMLDivElement>(null);
     const { theme, copy, primary, secondary } = data;
@@ -364,6 +371,11 @@ function ClassicLayout({
                             <GiftSection data={data} media={media} />
                         </Section>
                     )}
+
+                    <Section motion={motion}>
+                        {heading(copy.rsvpTitle)}
+                        <RsvpForm data={data} rsvp={rsvp} />
+                    </Section>
 
                     <Section motion={motion}>
                         {heading(data.thanksTitle)}

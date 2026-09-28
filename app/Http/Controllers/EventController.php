@@ -39,6 +39,12 @@ class EventController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        if (! $request->user()->canCreateEvent()) {
+            Inertia::flash('toast', ['type' => 'error', 'message' => 'toast.event_limit']);
+
+            return to_route('pricing');
+        }
+
         $event = $request->user()->events()->create($this->validated($request));
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'toast.event_created']);

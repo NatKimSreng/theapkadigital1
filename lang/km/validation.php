@@ -1,0 +1,67 @@
+<?php
+
+// Khmer messages for the rules the app uses; anything missing falls back to
+// Laravel's English lines.
+return [
+
+    'boolean' => ':attribute ត្រូវតែជា បាទ/ចាស ឬ ទេ។',
+    'confirmed' => 'ការបញ្ជាក់ :attribute មិនដូចគ្នាទេ។',
+    'current_password' => 'ពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ។',
+    'date' => ':attribute ត្រូវតែជាកាលបរិច្ឆេទត្រឹមត្រូវ។',
+    'email' => ':attribute ត្រូវតែជាអាសយដ្ឋានអ៊ីមែលត្រឹមត្រូវ។',
+    'exists' => ':attribute ដែលបានជ្រើសរើសមិនត្រឹមត្រូវទេ។',
+    'extensions' => ':attribute ត្រូវតែជាឯកសារប្រភេទ៖ :values។',
+    'file' => ':attribute ត្រូវតែជាឯកសារ។',
+    'image' => ':attribute ត្រូវតែជារូបភាព។',
+    'in' => ':attribute ដែលបានជ្រើសរើសមិនត្រឹមត្រូវទេ។',
+    'integer' => ':attribute ត្រូវតែជាចំនួនគត់។',
+    'lowercase' => ':attribute ត្រូវតែជាអក្សរតូច។',
+    'max' => [
+        'array' => ':attribute មិនអាចមានលើសពី :max ធាតុទេ។',
+        'file' => ':attribute មិនអាចធំជាង :max គីឡូបៃទេ។',
+        'numeric' => ':attribute មិនអាចធំជាង :max ទេ។',
+        'string' => ':attribute មិនអាចវែងជាង :max តួអក្សរទេ។',
+    ],
+    'mimes' => ':attribute ត្រូវតែជាឯកសារប្រភេទ៖ :values។',
+    'min' => [
+        'array' => ':attribute ត្រូវតែមានយ៉ាងហោចណាស់ :min ធាតុ។',
+        'file' => ':attribute ត្រូវតែមានទំហំយ៉ាងហោចណាស់ :min គីឡូបៃ។',
+        'numeric' => ':attribute ត្រូវតែយ៉ាងហោចណាស់ :min។',
+        'string' => ':attribute ត្រូវតែមានយ៉ាងហោចណាស់ :min តួអក្សរ។',
+    ],
+    'numeric' => ':attribute ត្រូវតែជាលេខ។',
+    'password' => [
+        'letters' => ':attribute ត្រូវតែមានអក្សរយ៉ាងហោចណាស់មួយ។',
+        'mixed' => ':attribute ត្រូវតែមានអក្សរធំ និងអក្សរតូចយ៉ាងហោចណាស់មួយ។',
+        'numbers' => ':attribute ត្រូវតែមានលេខយ៉ាងហោចណាស់មួយ។',
+        'symbols' => ':attribute ត្រូវតែមាននិមិត្តសញ្ញាយ៉ាងហោចណាស់មួយ។',
+        'uncompromised' => ':attribute នេះធ្លាប់លេចធ្លាយ។ សូមជ្រើសរើស :attribute ផ្សេង។',
+    ],
+    'regex' => 'ទម្រង់ :attribute មិនត្រឹមត្រូវទេ។',
+    'required' => 'សូមបំពេញ :attribute។',
+    'string' => ':attribute ត្រូវតែជាអក្សរ។',
+    'unique' => ':attribute នេះត្រូវបានប្រើរួចហើយ។',
+    'uploaded' => 'មិនអាចផ្ទុក :attribute ឡើងបានទេ។',
+    'url' => 'ទម្រង់ :attribute មិនត្រឹមត្រូវទេ។',
+
+    'attributes' => [
+        'name' => 'ឈ្មោះ',
+        'email' => 'អ៊ីមែល',
+        'password' => 'ពាក្យសម្ងាត់',
+        'current_password' => 'ពាក្យសម្ងាត់បច្ចុប្បន្ន',
+        'password_confirmation' => 'ការបញ្ជាក់ពាក្យសម្ងាត់',
+        'code' => 'លេខកូដ',
+        'recovery_code' => 'លេខកូដសង្គ្រោះ',
+        'receipt' => 'វិក្កយបត្រ',
+        'event_id' => 'កម្មវិធី',
+        'payment_method' => 'វិធីទូទាត់',
+        'giver_name' => 'ឈ្មោះអ្នកចងដៃ',
+        'amount_usd' => 'ចំនួនទឹកប្រាក់ (USD)',
+        'amount_khr' => 'ចំនួនទឹកប្រាក់ (KHR)',
+        'party_size' => 'ចំនួនមនុស្ស',
+        'title' => 'ចំណងជើង',
+        'price' => 'តម្លៃ',
+        'message' => 'សារ',
+    ],
+
+];
