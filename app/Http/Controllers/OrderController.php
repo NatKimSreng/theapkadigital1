@@ -56,7 +56,7 @@ class OrderController extends Controller
             'event_id' => ['required', Rule::exists('events', 'id')->where('user_id', $user->id)],
             'payment_method' => ['required', Rule::in(Order::PAYMENT_METHODS)],
             'reference' => ['nullable', 'string', 'max:100'],
-            'receipt' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:5120'],
+            'receipt' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:20480'],
             'note' => ['nullable', 'string', 'max:500'],
         ]);
 
