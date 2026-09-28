@@ -1,3 +1,5 @@
+import type { Package } from './billing';
+
 export type EventType =
     | 'wedding'
     | 'engagement'
@@ -17,6 +19,8 @@ export type PlannerEvent = {
     exchange_rate: number;
     budget: number;
     description: string | null;
+    package_id: number | null;
+    package?: Package | null;
     guests_count?: number;
 };
 

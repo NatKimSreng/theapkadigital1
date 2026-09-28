@@ -1,5 +1,5 @@
-import { router } from '@inertiajs/react';
-import { Pencil, Plus, Search } from 'lucide-react';
+import { Link, router } from '@inertiajs/react';
+import { Pencil, Plus, Search, Sparkles } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import GuestController from '@/actions/App/Http/Controllers/GuestController';
 import { ConfirmDelete } from '@/components/event/confirm-delete';
@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { formatUsd } from '@/lib/format';
 import { useTranslation } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
+import { pricing } from '@/routes';
 import type { Guest, GuestStatus, PlannerEvent } from '@/types';
 import { GUEST_SIDES, GUEST_STATUSES } from '@/types/event';
 
@@ -102,10 +103,12 @@ export default function Guests({
     event,
     guests,
     inviteReady,
+    guestLimit,
 }: {
     event: PlannerEvent;
     guests: Guest[];
     inviteReady: boolean;
+    guestLimit: number | null;
 }) {
     const { t } = useTranslation();
     const [search, setSearch] = useState('');
@@ -157,6 +160,38 @@ export default function Guests({
                 </FormDialog>
             }
         >
+            {guestLimit !== null && (
+                <div
+                    className={cn(
+                        'mb-4 flex flex-wrap items-center gap-3 rounded-2xl border bg-accent/50 px-4 py-3 text-sm',
+                        guests.length >= guestLimit &&
+                            'border-amber-300 bg-amber-50 dark:border-amber-900 dark:bg-amber-950/40',
+                    )}
+                >
+                    <span className="font-medium">
+                        {t('plan.guests_used', {
+                            used: guests.length,
+                            limit: guestLimit,
+                        })}
+                    </span>
+                    <div className="h-2 min-w-24 flex-1 overflow-hidden rounded-full bg-background">
+                        <div
+                            className="h-full rounded-full bg-primary"
+                            style={{
+                                width: `${Math.min(100, (guests.length / guestLimit) * 100)}%`,
+                            }}
+                        />
+                    </div>
+                    <Link
+                        href={pricing({ query: { event: event.id } })}
+                        className="flex items-center gap-1 font-medium text-primary hover:underline"
+                    >
+                        <Sparkles className="size-4" />
+                        {t('plan.upgrade')}
+                    </Link>
+                </div>
+            )}
+
             <div className="flex flex-wrap items-center gap-2">
                 <button
                     type="button"

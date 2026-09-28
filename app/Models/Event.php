@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $user_id
+ * @property int|null $package_id
  * @property string $name
  * @property string $type
  * @property string|null $groom_name
@@ -24,6 +25,8 @@ use Illuminate\Support\Carbon;
 #[Fillable(['name', 'type', 'groom_name', 'bride_name', 'event_date', 'venue', 'exchange_rate', 'budget', 'description'])]
 class Event extends Model
 {
+    protected $with = ['package'];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -44,6 +47,37 @@ class Event extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsTo<Package, $this>
+     */
+    public function package(): BelongsTo
+    {
+        return $this->belongsTo(Package::class);
+    }
+
+    /**
+     * @return HasMany<Order, $this>
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * The package whose limits apply: the purchased one, or the free plan.
+     */
+    public function plan(): Package
+    {
+        return $this->package ?? Package::default();
+    }
+
+    public function canAddGuest(): bool
+    {
+        $limit = $this->plan()->guest_limit;
+
+        return $limit === null || $this->guests()->count() < $limit;
     }
 
     /**

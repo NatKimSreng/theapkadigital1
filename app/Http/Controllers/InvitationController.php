@@ -75,6 +75,7 @@ class InvitationController extends Controller
             'event' => $event,
             'added' => $event->invitations()->pluck('id', 'template'),
             'max' => Invitation::MAX_PER_EVENT,
+            'premiumUnlocked' => $event->plan()->premium_templates,
         ]);
     }
 
@@ -89,6 +90,12 @@ class InvitationController extends Controller
                 Rule::unique('invitations')->where('event_id', $event->id),
             ],
         ]);
+
+        if (in_array($validated['template'], Invitation::PREMIUM_TEMPLATES, true) && ! $event->plan()->premium_templates) {
+            Inertia::flash('toast', ['type' => 'error', 'message' => 'toast.premium_required']);
+
+            return back();
+        }
 
         $count = $event->invitations()->count();
 
@@ -288,6 +295,7 @@ class InvitationController extends Controller
             ],
             'invitation' => $invitation->only(['template', 'settings', 'media']),
             'guestName' => $guestName,
+            'branding' => ! $event->plan()->remove_branding,
             'lang' => in_array($request->query('lang'), self::LANGUAGES, true) ? $request->query('lang') : null,
         ]);
     }

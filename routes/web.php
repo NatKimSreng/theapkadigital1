@@ -1,19 +1,26 @@
 <?php
 
+use App\Http\Controllers\Admin;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
+Route::get('pricing', [OrderController::class, 'pricing'])->name('pricing');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [EventController::class, 'dashboard'])->name('dashboard');
 
     Route::resource('events', EventController::class)->except(['create', 'edit']);
+
+    Route::get('checkout/{package}', [OrderController::class, 'checkout'])->name('checkout');
+    Route::post('checkout/{package}', [OrderController::class, 'store'])->name('checkout.store');
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 
     Route::scopeBindings()->prefix('events/{event}')->name('events.')->group(function () {
         Route::resource('guests', GuestController::class)->only(['index', 'store', 'update', 'destroy']);
@@ -27,6 +34,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('invitations', InvitationController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::post('invitations/{invitation}/activate', [InvitationController::class, 'activate'])->name('invitations.activate');
     });
+});
+
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', Admin\DashboardController::class)->name('dashboard');
+    Route::get('orders', [Admin\OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}/receipt', [Admin\OrderController::class, 'receipt'])->name('orders.receipt');
+    Route::patch('orders/{order}', [Admin\OrderController::class, 'update'])->name('orders.update');
+    Route::resource('packages', Admin\PackageController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('users', Admin\UserController::class)->only(['index', 'show', 'update']);
+    Route::patch('events/{event}/package', [Admin\UserController::class, 'updateEventPackage'])->name('events.package');
 });
 
 Route::get('i/{invitation:public_id}', [InvitationController::class, 'share'])->name('invitations.share');

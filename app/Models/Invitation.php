@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 class Invitation extends Model
 {
     /**
-     * Free templates that can be added to an event, keyed by template id.
+     * Templates that can be added to an event, keyed by template id.
      * The designs themselves live in resources/js/components/invitation/templates.ts.
      */
     public const TEMPLATES = [
@@ -32,6 +32,11 @@ class Invitation extends Model
         'modern-housewarming',
         'classic-anniversary',
     ];
+
+    /**
+     * Templates that need a package with premium templates.
+     */
+    public const PREMIUM_TEMPLATES = ['royal-wedding', 'classic-anniversary'];
 
     public const MAX_PER_EVENT = 2;
 

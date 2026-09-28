@@ -33,7 +33,8 @@ const PAPER_BACKGROUND = `url("data:image/svg+xml,${encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="4" stitchTiles="stitch"/><feDiffuseLighting lighting-color="#ffffff" surfaceScale="1.6"><feDistantLight azimuth="45" elevation="60"/></feDiffuseLighting></filter><rect width="100%" height="100%" filter="url(#n)" opacity="0.55"/></svg>',
 )}"), linear-gradient(180deg, #fbfbfa 0%, #f3f2f0 100%)`;
 
-// Keys of free templates must match Invitation::TEMPLATES on the server.
+// Keys of designed templates must match Invitation::TEMPLATES on the server,
+// and those marked free: false must match Invitation::PREMIUM_TEMPLATES.
 export const TEMPLATES: TemplateDefinition[] = [
     {
         key: 'paper-frame',
@@ -56,7 +57,7 @@ export const TEMPLATES: TemplateDefinition[] = [
         key: 'royal-wedding',
         category: 'wedding',
         name: 'template.royal-wedding',
-        free: true,
+        free: false,
         theme: {
             primary: '#f5d78e',
             secondary: '#fff4d6',
@@ -123,7 +124,7 @@ export const TEMPLATES: TemplateDefinition[] = [
         key: 'classic-anniversary',
         category: 'anniversary',
         name: 'template.classic-anniversary',
-        free: true,
+        free: false,
         theme: {
             primary: '#c9a227',
             secondary: '#7b2d3b',

@@ -16,9 +16,9 @@ import { formatUsd } from '@/lib/format';
 import { useTranslation } from '@/lib/i18n';
 import type { EventSummary } from '@/types';
 
-const axisTick = { fill: 'var(--chart-axis)', fontSize: 12 };
+export const axisTick = { fill: 'var(--chart-axis)', fontSize: 12 };
 
-const tooltipProps = {
+export const tooltipProps = {
     contentStyle: {
         background: 'var(--popover)',
         border: '1px solid var(--border)',
@@ -31,7 +31,7 @@ const tooltipProps = {
     cursor: { fill: 'var(--muted)', opacity: 0.6 },
 };
 
-const compactUsd = (value: number) =>
+export const compactUsd = (value: number) =>
     Math.abs(value) >= 1000 ? `$${Math.round(value / 100) / 10}k` : `$${value}`;
 
 export function ChartCard({

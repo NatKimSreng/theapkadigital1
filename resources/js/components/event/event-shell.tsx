@@ -8,6 +8,7 @@ import {
     Paintbrush,
     Pencil,
     Plus,
+    Sparkles,
     ReceiptText,
     Users,
 } from 'lucide-react';
@@ -21,10 +22,12 @@ import TaskController from '@/actions/App/Http/Controllers/TaskController';
 import { EventFormDialog } from '@/components/event/event-form-dialog';
 import { Button } from '@/components/ui/button';
 import { useCurrentUrl } from '@/hooks/use-current-url';
+import { packageName } from '@/lib/billing';
 import { daysUntil, formatDate } from '@/lib/format';
 import type { TranslationKey } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
+import { pricing } from '@/routes';
 import type { PlannerEvent } from '@/types';
 
 type Props = {
@@ -121,6 +124,7 @@ export function EventShell({ event, title, actions, children }: Props) {
                                 />
                             ))}
                         </nav>
+                        <PlanCard event={event} />
                     </div>
 
                     <nav className="-mx-3 overflow-x-auto px-3 pb-1 lg:hidden">
@@ -155,8 +159,9 @@ export function EventShell({ event, title, actions, children }: Props) {
                             <h1 className="font-serif text-3xl font-semibold">
                                 {title}
                             </h1>
-                            <p className="text-sm text-muted-foreground lg:hidden">
+                            <p className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground lg:hidden">
                                 {event.name}
+                                <PlanChip event={event} />
                             </p>
                         </div>
 
@@ -208,6 +213,51 @@ function NavLink({
         >
             <Icon className="size-[18px]" />
             {label}
+        </Link>
+    );
+}
+
+function PlanCard({ event }: { event: PlannerEvent }) {
+    const { t, locale } = useTranslation();
+
+    return (
+        <div className="mt-4 rounded-2xl bg-accent/70 p-3">
+            <p className="text-xs text-muted-foreground">{t('plan.label')}</p>
+            <p className="font-semibold">
+                {event.package
+                    ? packageName(event.package, locale)
+                    : t('plan.free')}
+            </p>
+            {!event.package && (
+                <Button asChild size="sm" className="mt-2 w-full rounded-full">
+                    <Link href={pricing({ query: { event: event.id } })}>
+                        <Sparkles className="size-4" />
+                        {t('plan.upgrade')}
+                    </Link>
+                </Button>
+            )}
+        </div>
+    );
+}
+
+function PlanChip({ event }: { event: PlannerEvent }) {
+    const { t, locale } = useTranslation();
+
+    if (event.package) {
+        return (
+            <span className="rounded-full bg-accent px-2 text-xs text-accent-foreground">
+                {packageName(event.package, locale)}
+            </span>
+        );
+    }
+
+    return (
+        <Link
+            href={pricing({ query: { event: event.id } })}
+            className="flex items-center gap-1 rounded-full bg-primary px-2 text-xs font-medium text-primary-foreground"
+        >
+            <Sparkles className="size-3" />
+            {t('plan.upgrade')}
         </Link>
     );
 }

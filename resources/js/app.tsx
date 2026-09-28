@@ -2,6 +2,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
+import AdminLayout from '@/layouts/admin-layout';
 import AppLayout from '@/layouts/app-layout';
 import { initializeLocale } from '@/lib/i18n';
 import AuthLayout from '@/layouts/auth-layout';
@@ -13,10 +14,14 @@ void createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     layout: (name) => {
         switch (true) {
-            case name === 'welcome' || name === 'invitation':
+            case name === 'welcome' ||
+                name === 'invitation' ||
+                name === 'pricing':
                 return null;
             case name.startsWith('auth/'):
                 return AuthLayout;
+            case name.startsWith('admin/'):
+                return AdminLayout;
             case name.startsWith('settings/'):
                 return [AppLayout, SettingsLayout];
             default:
@@ -33,7 +38,7 @@ void createInertiaApp({
         );
     },
     progress: {
-        color: '#e11d48',
+        color: '#b07d2b',
     },
 });
 

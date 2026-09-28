@@ -12,11 +12,11 @@ import {
     Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
-import { LanguageSwitcher } from '@/components/language-switcher';
+import { PublicHeader } from '@/components/public-header';
 import { Button } from '@/components/ui/button';
 import type { TranslationKey } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n';
-import { dashboard, login, register } from '@/routes';
+import { dashboard, register } from '@/routes';
 
 const features: {
     title: TranslationKey;
@@ -53,7 +53,7 @@ function InvitationPreview() {
         <div className="relative mx-auto w-full max-w-sm">
             <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-gradient-to-br from-primary/25 via-accent to-transparent blur-2xl" />
 
-            <div className="rotate-[-2deg] rounded-[2rem] bg-card p-3 shadow-2xl shadow-primary/15 ring-1 ring-primary/20">
+            <div className="rotate-[-2deg] rounded-[2rem] bg-card p-3 shadow-2xl ring-1 shadow-primary/15 ring-primary/20">
                 <div className="rounded-[1.6rem] border border-primary/40 p-1.5">
                     <div className="flex flex-col items-center rounded-[1.3rem] border border-primary/25 bg-gradient-to-b from-accent/70 to-card px-6 py-10 text-center">
                         <svg
@@ -151,39 +151,7 @@ export default function Welcome() {
                         className="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[720px] bg-[radial-gradient(ellipse_at_top_right,var(--accent),transparent_60%)]"
                     />
 
-                    <header className="relative mx-auto flex max-w-6xl items-center gap-3 px-4 py-5 sm:px-6">
-                        <AppLogo />
-                        <div className="ml-auto flex items-center gap-2">
-                            <LanguageSwitcher />
-                            {auth.user ? (
-                                <Button asChild className="rounded-full">
-                                    <Link href={dashboard()}>
-                                        {t('welcome.dashboard')}
-                                    </Link>
-                                </Button>
-                            ) : (
-                                <>
-                                    <Button
-                                        asChild
-                                        variant="ghost"
-                                        className="rounded-full"
-                                    >
-                                        <Link href={login()}>
-                                            {t('welcome.login')}
-                                        </Link>
-                                    </Button>
-                                    <Button
-                                        asChild
-                                        className="hidden rounded-full sm:inline-flex"
-                                    >
-                                        <Link href={register()}>
-                                            {t('welcome.register')}
-                                        </Link>
-                                    </Button>
-                                </>
-                            )}
-                        </div>
-                    </header>
+                    <PublicHeader />
 
                     <section className="relative mx-auto grid max-w-6xl items-center gap-16 px-4 pt-10 pb-24 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:pt-16">
                         <div className="text-center lg:text-left">
