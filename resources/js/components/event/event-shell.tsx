@@ -5,7 +5,9 @@ import {
     Gift,
     LayoutGrid,
     MapPin,
+    Paintbrush,
     Pencil,
+    Plus,
     ReceiptText,
     Users,
 } from 'lucide-react';
@@ -14,6 +16,7 @@ import EventController from '@/actions/App/Http/Controllers/EventController';
 import ExpenseController from '@/actions/App/Http/Controllers/ExpenseController';
 import GiftController from '@/actions/App/Http/Controllers/GiftController';
 import GuestController from '@/actions/App/Http/Controllers/GuestController';
+import InvitationController from '@/actions/App/Http/Controllers/InvitationController';
 import TaskController from '@/actions/App/Http/Controllers/TaskController';
 import { EventFormDialog } from '@/components/event/event-form-dialog';
 import { Button } from '@/components/ui/button';
@@ -60,6 +63,16 @@ export function EventShell({ event, title, actions, children }: Props) {
             key: 'tab.tasks',
             href: TaskController.index.url(event.id),
             icon: ClipboardCheck,
+        },
+        {
+            key: 'tab.design',
+            href: InvitationController.index.url(event.id),
+            icon: Paintbrush,
+        },
+        {
+            key: 'tab.add_template',
+            href: InvitationController.catalog.url(event.id),
+            icon: Plus,
         },
     ];
 

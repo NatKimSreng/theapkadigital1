@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import GuestController from '@/actions/App/Http/Controllers/GuestController';
 import { ConfirmDelete } from '@/components/event/confirm-delete';
 import { EventShell } from '@/components/event/event-shell';
+import { GuestInviteActions } from '@/components/event/guest-invite';
 import {
     SelectField,
     TextField,
@@ -100,9 +101,11 @@ function GuestFields({
 export default function Guests({
     event,
     guests,
+    inviteReady,
 }: {
     event: PlannerEvent;
     guests: Guest[];
+    inviteReady: boolean;
 }) {
     const { t } = useTranslation();
     const [search, setSearch] = useState('');
@@ -279,7 +282,12 @@ export default function Guests({
                                         : '—'}
                                 </td>
                                 <td className="px-4 py-3">
-                                    <div className="flex justify-end gap-1">
+                                    <div className="flex items-center justify-end gap-1.5">
+                                        <GuestInviteActions
+                                            event={event}
+                                            guest={guest}
+                                            ready={inviteReady}
+                                        />
                                         <FormDialog
                                             title={t('guest.edit')}
                                             form={GuestController.update.form({

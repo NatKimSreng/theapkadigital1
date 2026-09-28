@@ -33,6 +33,9 @@ export type Guest = {
     party_size: number;
     note: string | null;
     gifts_sum_amount_usd?: string | null;
+    invite_code?: string;
+    invite_url?: string | null;
+    invite_sent_at?: string | null;
 };
 
 export type GiftMethod = 'cash' | 'aba' | 'acleda' | 'wing' | 'other';
@@ -135,3 +138,82 @@ export const EXPENSE_CATEGORIES: ExpenseCategory[] = [
     'ceremony',
     'other',
 ];
+
+export type InvitationLang = 'km' | 'en';
+
+export const INVITATION_TEXT_KEYS = [
+    'title',
+    'host_left',
+    'host_right',
+    'joiner',
+    'invite_line',
+    'guest_name',
+    'date_text',
+    'venue_text',
+    'message_title',
+    'message',
+    'thanks_title',
+    'thanks',
+    'groom_parents',
+    'bride_parents',
+] as const;
+
+export type InvitationTextKey = (typeof INVITATION_TEXT_KEYS)[number];
+
+export type InvitationTexts = Partial<Record<InvitationTextKey, string | null>>;
+
+export type AgendaItem = {
+    time: string | null;
+    km: string | null;
+    en: string | null;
+};
+
+export type GiftAccount = {
+    name?: string | null;
+    number?: string | null;
+    link?: string | null;
+};
+
+export type InvitationSettings = {
+    texts?: Partial<Record<InvitationLang, InvitationTexts>>;
+    agenda?: AgendaItem[];
+    hide_hosts?: boolean;
+    primary_color?: string | null;
+    secondary_color?: string | null;
+    gold_text?: boolean;
+    map_url?: string | null;
+    language?: InvitationLang;
+    event_time?: string | null;
+    show_countdown?: boolean;
+    gift?: { usd?: GiftAccount; khr?: GiftAccount };
+    gallery_paths?: string[];
+    opening?: 'doors' | 'envelope' | 'curtain' | 'fade';
+    effect?: 'none' | 'petals' | 'sparkles' | 'hearts';
+};
+
+export const INVITATION_MEDIA = [
+    'cover',
+    'background',
+    'frame',
+    'music',
+    'map',
+    'khqr_usd',
+    'khqr_khr',
+] as const;
+
+export const MAX_GALLERY = 16;
+
+export type InvitationMediaKey = (typeof INVITATION_MEDIA)[number];
+
+export type InvitationMedia = Record<InvitationMediaKey, string | null> & {
+    gallery: string[];
+};
+
+export type Invitation = {
+    id: number;
+    public_id: string;
+    template: string;
+    settings: InvitationSettings | null;
+    is_active: boolean;
+    media: InvitationMedia;
+};

@@ -79,6 +79,14 @@ class Event extends Model
     }
 
     /**
+     * @return HasMany<Invitation, $this>
+     */
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class);
+    }
+
+    /**
      * Summary figures used by the event dashboard.
      *
      * @return array<string, mixed>
