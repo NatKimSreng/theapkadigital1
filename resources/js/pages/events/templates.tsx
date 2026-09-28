@@ -126,7 +126,7 @@ export default function Templates({
                                             <Button
                                                 asChild
                                                 size="sm"
-                                                className="rounded-full bg-rose-300 text-white hover:bg-rose-400"
+                                                className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
                                             >
                                                 <Link
                                                     href={InvitationController.index.url(
@@ -199,7 +199,7 @@ export default function Templates({
                                     <p className="leading-snug font-semibold">
                                         {t(template.name)}
                                     </p>
-                                    <span className="shrink-0 rounded-full border border-rose-400 px-2 text-xs text-rose-600">
+                                    <span className="shrink-0 rounded-full border border-primary/60 px-2 text-xs text-primary">
                                         {t('templates.premium')}
                                     </span>
                                 </div>

@@ -112,7 +112,7 @@ export default function EventDashboard({
                             </span>
                         </div>
                         <div
-                            className="h-2.5 overflow-hidden rounded-full bg-rose-200/70 dark:bg-rose-900/50"
+                            className="h-2.5 overflow-hidden rounded-full bg-accent"
                             role="progressbar"
                             aria-valuenow={spentPercent}
                             aria-valuemin={0}
@@ -123,7 +123,7 @@ export default function EventDashboard({
                                     'h-full rounded-full',
                                     spentPercent > 100
                                         ? 'bg-red-600'
-                                        : 'bg-rose-500',
+                                        : 'bg-primary',
                                 )}
                                 style={{
                                     width: `${Math.min(spentPercent, 100)}%`,

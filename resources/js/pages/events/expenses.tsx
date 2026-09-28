@@ -154,7 +154,7 @@ export default function Expenses({
                     </p>
                     <p className="text-2xl font-bold">{formatUsd(estimated)}</p>
                 </div>
-                <div className="rounded-2xl border bg-rose-50 p-4 dark:bg-rose-950/30">
+                <div className="rounded-2xl border bg-accent/60 p-4">
                     <p className="text-sm text-muted-foreground">
                         {t('expense.actual')}
                     </p>

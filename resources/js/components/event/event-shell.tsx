@@ -120,7 +120,7 @@ export function EventShell({ event, title, actions, children }: Props) {
                                     <CalendarDays className="size-4" />
                                     {formatDate(event.event_date, locale)}
                                     {days !== null && (
-                                        <span className="ml-1 rounded-full bg-rose-100 px-2 text-xs text-rose-700 dark:bg-rose-950 dark:text-rose-300">
+                                        <span className="ml-1 rounded-full bg-accent px-2 text-xs text-accent-foreground">
                                             {days > 0
                                                 ? t('event.days_left', {
                                                       count: days,

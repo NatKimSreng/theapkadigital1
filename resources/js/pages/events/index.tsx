@@ -42,7 +42,7 @@ export default function EventsIndex({ events }: { events: PlannerEvent[] }) {
 
                 {events.length === 0 ? (
                     <div className="mt-10 flex flex-col items-center gap-4 rounded-2xl border border-dashed p-12 text-center">
-                        <div className="flex size-14 items-center justify-center rounded-full bg-rose-100 text-primary dark:bg-rose-950">
+                        <div className="flex size-14 items-center justify-center rounded-full bg-accent text-primary">
                             <HeartHandshake className="size-7" />
                         </div>
                         <p className="max-w-sm text-muted-foreground">
@@ -60,7 +60,7 @@ export default function EventsIndex({ events }: { events: PlannerEvent[] }) {
                                     key={event.id}
                                     href={EventController.show(event.id)}
                                     prefetch
-                                    className="group flex flex-col gap-3 rounded-2xl border bg-gradient-to-br from-rose-50 to-white p-5 transition-shadow hover:shadow-md dark:from-rose-950/30 dark:to-card"
+                                    className="group flex flex-col gap-3 rounded-2xl border bg-gradient-to-br from-accent/60 to-card p-5 transition-shadow hover:shadow-md"
                                 >
                                     <div className="flex items-start justify-between gap-2">
                                         <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
