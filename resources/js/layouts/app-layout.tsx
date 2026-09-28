@@ -9,7 +9,7 @@ export default function AppLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex min-h-svh flex-col bg-rose-50/60 dark:bg-background">
+        <div className="flex min-h-svh flex-col bg-background">
             <AppHeader />
             <main className="flex w-full flex-1 flex-col p-3 sm:p-5">
                 {children}

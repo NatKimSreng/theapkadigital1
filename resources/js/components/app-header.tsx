@@ -34,9 +34,9 @@ export function AppHeader() {
                     href={eventsIndex()}
                     prefetch
                     className={cn(
-                        'flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-rose-50 dark:hover:bg-rose-950/40',
+                        'flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-accent',
                         isCurrentUrl(eventsIndex()) &&
-                            'bg-rose-50 dark:bg-rose-950/40',
+                            'bg-accent',
                     )}
                 >
                     <ListChecks className="size-4" />

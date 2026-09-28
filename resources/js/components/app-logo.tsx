@@ -2,11 +2,11 @@ import { HeartHandshake } from 'lucide-react';
 
 export default function AppLogo() {
     return (
-        <div className="flex items-center gap-2 rounded-full bg-rose-50 py-1 pr-3 pl-1.5 dark:bg-rose-950/40">
-            <div className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <HeartHandshake className="size-5" />
+        <div className="flex items-center gap-2 py-1 pr-3 pl-1">
+            <div className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-[oklch(0.78_0.11_85)] to-primary text-primary-foreground shadow-sm ring-1 ring-primary/30">
+                <HeartHandshake className="size-[18px]" />
             </div>
-            <span className="text-lg font-bold tracking-tight text-primary">
+            <span className="font-serif text-xl font-semibold tracking-wide text-foreground">
                 Theapka
             </span>
         </div>

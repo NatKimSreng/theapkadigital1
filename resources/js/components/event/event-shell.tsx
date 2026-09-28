@@ -82,81 +82,132 @@ export function EventShell({ event, title, actions, children }: Props) {
         <>
             <Head title={`${title} · ${event.name}`} />
 
-            <div className="rounded-3xl bg-card p-3 shadow-sm sm:p-5">
-                <nav className="-mx-1 overflow-x-auto px-1 pb-1">
-                    <div className="inline-flex gap-1 rounded-2xl bg-muted p-1.5">
-                        {tabs.map((tab) => {
-                            const active = isCurrentUrl(tab.href);
-
-                            return (
-                                <Link
+            <div className="mx-auto grid w-full max-w-7xl grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[15rem_minmax(0,1fr)]">
+                <aside className="min-w-0 lg:sticky lg:top-20 lg:self-start">
+                    <div className="hidden rounded-3xl border bg-card p-4 shadow-sm lg:block">
+                        <p className="font-serif text-xl leading-snug font-semibold">
+                            {event.name}
+                        </p>
+                        {event.event_date && (
+                            <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
+                                <CalendarDays className="size-4 shrink-0" />
+                                {formatDate(event.event_date, locale)}
+                            </p>
+                        )}
+                        {event.venue && (
+                            <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
+                                <MapPin className="size-4 shrink-0" />
+                                {event.venue}
+                            </p>
+                        )}
+                        {days !== null && (
+                            <p className="mt-3 inline-block rounded-full bg-accent px-3 py-0.5 text-xs font-medium text-accent-foreground">
+                                {days > 0
+                                    ? t('event.days_left', { count: days })
+                                    : days === 0
+                                      ? t('event.today')
+                                      : t('event.passed')}
+                            </p>
+                        )}
+                        <div className="my-4 h-px bg-border" />
+                        <nav className="flex flex-col gap-1">
+                            {tabs.map((tab) => (
+                                <NavLink
                                     key={tab.key}
                                     href={tab.href}
-                                    prefetch
-                                    preserveScroll
-                                    className={cn(
-                                        'flex min-w-24 flex-col items-center gap-1 rounded-xl px-4 py-2.5 text-xs whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground sm:min-w-28 sm:text-sm',
-                                        active &&
-                                            'bg-background font-medium text-primary shadow-sm hover:text-primary',
-                                    )}
-                                >
-                                    <tab.icon className="size-5" />
-                                    {t(tab.key)}
-                                </Link>
-                            );
-                        })}
+                                    active={isCurrentUrl(tab.href)}
+                                    icon={tab.icon}
+                                    label={t(tab.key)}
+                                />
+                            ))}
+                        </nav>
                     </div>
-                </nav>
 
-                <div className="mt-4 flex flex-wrap items-start justify-between gap-3">
-                    <div className="space-y-1">
-                        <h1 className="text-xl font-bold">{title}</h1>
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-                            <span className="font-medium text-foreground">
+                    <nav className="-mx-3 overflow-x-auto px-3 pb-1 lg:hidden">
+                        <div className="flex w-max gap-2">
+                            {tabs.map((tab) => {
+                                const active = isCurrentUrl(tab.href);
+
+                                return (
+                                    <Link
+                                        key={tab.key}
+                                        href={tab.href}
+                                        prefetch
+                                        preserveScroll
+                                        className={cn(
+                                            'flex items-center gap-1.5 rounded-full border bg-card px-4 py-2 text-sm whitespace-nowrap text-muted-foreground transition-colors',
+                                            active &&
+                                                'border-primary bg-primary font-medium text-primary-foreground',
+                                        )}
+                                    >
+                                        <tab.icon className="size-4" />
+                                        {t(tab.key)}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </nav>
+                </aside>
+
+                <div className="min-w-0 rounded-3xl border bg-card p-4 shadow-sm sm:p-6">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <h1 className="font-serif text-3xl font-semibold">
+                                {title}
+                            </h1>
+                            <p className="text-sm text-muted-foreground lg:hidden">
                                 {event.name}
-                            </span>
-                            {event.event_date && (
-                                <span className="flex items-center gap-1">
-                                    <CalendarDays className="size-4" />
-                                    {formatDate(event.event_date, locale)}
-                                    {days !== null && (
-                                        <span className="ml-1 rounded-full bg-rose-100 px-2 text-xs text-rose-700 dark:bg-rose-950 dark:text-rose-300">
-                                            {days > 0
-                                                ? t('event.days_left', {
-                                                      count: days,
-                                                  })
-                                                : days === 0
-                                                  ? t('event.today')
-                                                  : t('event.passed')}
-                                        </span>
-                                    )}
-                                </span>
-                            )}
-                            {event.venue && (
-                                <span className="flex items-center gap-1">
-                                    <MapPin className="size-4" />
-                                    {event.venue}
-                                </span>
-                            )}
+                            </p>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                            {actions}
+                            <EventFormDialog
+                                event={event}
+                                trigger={
+                                    <Button
+                                        variant="outline"
+                                        className="rounded-full"
+                                    >
+                                        <Pencil className="size-4" />
+                                        {t('event.edit')}
+                                    </Button>
+                                }
+                            />
                         </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-2">
-                        {actions}
-                        <EventFormDialog
-                            event={event}
-                            trigger={
-                                <Button className="rounded-full">
-                                    <Pencil className="size-4" />
-                                    {t('event.edit')}
-                                </Button>
-                            }
-                        />
-                    </div>
+                    <div className="mt-6">{children}</div>
                 </div>
-
-                <div className="mt-5">{children}</div>
             </div>
         </>
+    );
+}
+
+function NavLink({
+    href,
+    active,
+    icon: Icon,
+    label,
+}: {
+    href: string;
+    active: boolean;
+    icon: typeof Users;
+    label: string;
+}) {
+    return (
+        <Link
+            href={href}
+            prefetch
+            preserveScroll
+            className={cn(
+                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground',
+                active &&
+                    'bg-primary font-medium text-primary-foreground hover:bg-primary hover:text-primary-foreground',
+            )}
+        >
+            <Icon className="size-[18px]" />
+            {label}
+        </Link>
     );
 }

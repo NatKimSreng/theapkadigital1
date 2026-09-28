@@ -131,7 +131,7 @@ function SendInviteDialog({ event, guest, ready }: Props) {
                     className={cn(
                         roundButton,
                         sent &&
-                            'border-transparent bg-rose-600 text-white hover:bg-rose-700',
+                            'border-transparent bg-primary text-primary-foreground hover:bg-primary/90',
                     )}
                 >
                     {sent ? (
@@ -146,7 +146,7 @@ function SendInviteDialog({ event, guest, ready }: Props) {
                     {t('invite.send_title', { name: guest.name })}
                 </DialogTitle>
                 {sent && guest.invite_sent_at && (
-                    <DialogDescription className="flex items-center gap-1.5 text-rose-600">
+                    <DialogDescription className="flex items-center gap-1.5 text-primary">
                         <CheckCheck className="size-4" />
                         {t('invite.sent_at', {
                             date: formatDate(
