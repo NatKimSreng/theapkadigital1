@@ -15,7 +15,7 @@ export default function Orders({ orders }: { orders: Order[] }) {
         <>
             <Head title={t('orders.title')} />
 
-            <div className="mx-auto w-full max-w-4xl rounded-3xl border bg-card p-5 shadow-sm sm:p-8">
+            <div className="rounded-3xl border bg-card p-5 shadow-sm sm:p-7">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
                         <h1 className="font-serif text-3xl font-semibold">

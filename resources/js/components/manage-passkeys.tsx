@@ -1,9 +1,10 @@
 import { router } from '@inertiajs/react';
 import { KeyRound } from 'lucide-react';
 import { destroy } from '@/actions/Laravel/Passkeys/Http/Controllers/PasskeyRegistrationController';
-import Heading from '@/components/heading';
 import PasskeyItem from '@/components/passkey-item';
 import PasskeyRegistration from '@/components/passkey-register';
+import { SettingsCard } from '@/layouts/settings/layout';
+import { useTranslation } from '@/lib/i18n';
 import type { Passkey } from '@/types/auth';
 
 export type Props = {
@@ -12,14 +13,16 @@ export type Props = {
 };
 
 const EmptyState = () => {
+    const { t } = useTranslation();
+
     return (
         <div className="p-8 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-muted">
                 <KeyRound className="h-7 w-7 text-muted-foreground" />
             </div>
-            <p className="font-medium">No passkeys yet</p>
+            <p className="font-medium">{t('settings.passkeys_empty')}</p>
             <p className="mt-1 text-sm text-muted-foreground">
-                Add a passkey to sign in without a password
+                {t('settings.passkeys_empty_desc')}
             </p>
         </div>
     );
@@ -27,6 +30,7 @@ const EmptyState = () => {
 
 export default function ManagePasskeys(props: Props) {
     const passkeys = props.passkeys ?? [];
+    const { t } = useTranslation();
 
     const handleDelete = (id: number, onError: () => void) => {
         router.delete(destroy.url(id), {
@@ -44,14 +48,11 @@ export default function ManagePasskeys(props: Props) {
     }
 
     return (
-        <div className="space-y-6">
-            <Heading
-                variant="small"
-                title="Passkeys"
-                description="Manage your passkeys for passwordless sign-in"
-            />
-
-            <div className="overflow-hidden rounded-lg border border-border">
+        <SettingsCard
+            title={t('settings.passkeys_title')}
+            description={t('settings.passkeys_desc')}
+        >
+            <div className="mb-5 overflow-hidden rounded-2xl border border-border">
                 {passkeys.length > 0 ? (
                     passkeys.map((passkey) => (
                         <PasskeyItem
@@ -66,6 +67,6 @@ export default function ManagePasskeys(props: Props) {
             </div>
 
             <PasskeyRegistration onSuccess={handleRegisterSuccess} />
-        </div>
+        </SettingsCard>
     );
 }

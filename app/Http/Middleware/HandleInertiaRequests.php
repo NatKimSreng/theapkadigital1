@@ -46,7 +46,6 @@ class HandleInertiaRequests extends Middleware
             'adminPending' => fn () => $request->user()?->is_admin
                 ? Order::query()->where('status', Order::PENDING)->count()
                 : null,
-            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
 }

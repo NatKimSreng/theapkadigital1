@@ -1,32 +1,51 @@
 import { Head } from '@inertiajs/react';
 import AppearanceTabs from '@/components/appearance-tabs';
-import Heading from '@/components/heading';
-import { edit as editAppearance } from '@/routes/appearance';
+import { SettingsCard } from '@/layouts/settings/layout';
+import type { Locale } from '@/lib/i18n';
+import { useTranslation } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
+
+const LANGUAGES: { value: Locale; label: string }[] = [
+    { value: 'km', label: 'ភាសាខ្មែរ' },
+    { value: 'en', label: 'English' },
+];
 
 export default function Appearance() {
+    const { t, locale, setLocale } = useTranslation();
+
     return (
         <>
-            <Head title="Appearance settings" />
+            <Head title={t('settings.appearance')} />
 
-            <h1 className="sr-only">Appearance settings</h1>
-
-            <div className="space-y-6">
-                <Heading
-                    variant="small"
-                    title="Appearance settings"
-                    description="Update the appearance settings for your account"
-                />
+            <SettingsCard
+                title={t('settings.theme')}
+                description={t('settings.theme_desc')}
+            >
                 <AppearanceTabs />
-            </div>
+            </SettingsCard>
+
+            <SettingsCard
+                title={t('settings.language')}
+                description={t('settings.language_desc')}
+            >
+                <div className="inline-flex gap-1 rounded-full bg-muted p-1">
+                    {LANGUAGES.map((language) => (
+                        <button
+                            key={language.value}
+                            type="button"
+                            onClick={() => setLocale(language.value)}
+                            className={cn(
+                                'rounded-full px-5 py-1.5 text-sm transition-colors',
+                                locale === language.value
+                                    ? 'bg-background font-medium shadow-sm'
+                                    : 'text-muted-foreground hover:text-foreground',
+                            )}
+                        >
+                            {language.label}
+                        </button>
+                    ))}
+                </div>
+            </SettingsCard>
         </>
     );
 }
-
-Appearance.layout = {
-    breadcrumbs: [
-        {
-            title: 'Appearance settings',
-            href: editAppearance(),
-        },
-    ],
-};

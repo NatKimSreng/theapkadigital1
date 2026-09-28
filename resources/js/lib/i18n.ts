@@ -505,6 +505,129 @@ const en = {
     'admin.guests': ':count guests',
     'admin.previous': 'Previous',
     'admin.next': 'Next',
+    'auth.login': 'Log in',
+    'auth.login_title': 'Welcome back',
+    'auth.login_desc': 'Log in to keep planning your event',
+    'auth.email': 'Email address',
+    'auth.password': 'Password',
+    'auth.forgot': 'Forgot password?',
+    'auth.remember': 'Remember me',
+    'auth.no_account': "Don't have an account?",
+    'auth.sign_up': 'Sign up',
+    'auth.register': 'Register',
+    'auth.register_title': 'Create your account',
+    'auth.register_desc': 'Start planning your special day for free',
+    'auth.name': 'Name',
+    'auth.name_placeholder': 'Your full name',
+    'auth.confirm_password': 'Confirm password',
+    'auth.create_account': 'Create account',
+    'auth.have_account': 'Already have an account?',
+    'auth.forgot_title': 'Forgot password',
+    'auth.forgot_desc':
+        "Enter your email and we'll send you a link to reset your password",
+    'auth.send_reset_link': 'Send reset link',
+    'auth.back_to': 'Remembered it?',
+    'auth.reset_title': 'Set a new password',
+    'auth.reset_desc': 'Choose a new password for your account',
+    'auth.new_password': 'New password',
+    'auth.reset_button': 'Save new password',
+    'auth.confirm_title': 'Confirm your password',
+    'auth.confirm_desc':
+        'For your security, please confirm your password before continuing.',
+    'auth.confirm_button': 'Confirm',
+    'auth.passkey_confirm': 'Confirm with a passkey',
+    'auth.passkey_confirming': 'Confirming…',
+    'auth.or_password': 'Or confirm with your password',
+    'auth.passkey_sign_in': 'Sign in with a passkey',
+    'auth.passkey_loading': 'Signing in…',
+    'auth.or_email': 'Or continue with email',
+    'auth.show_password': 'Show password',
+    'auth.hide_password': 'Hide password',
+    'auth.two_factor': 'Two-factor authentication',
+    'auth.recovery_title': 'Recovery code',
+    'auth.recovery_desc':
+        'Enter one of your emergency recovery codes to access your account.',
+    'auth.use_auth_code': 'use an authentication code',
+    'auth.code_title': 'Authentication code',
+    'auth.code_desc': 'Enter the code from your authenticator app.',
+    'auth.use_recovery_code': 'use a recovery code',
+    'auth.recovery_placeholder': 'Enter recovery code',
+    'auth.continue': 'Continue',
+    'auth.or_you_can': 'or you can',
+    'settings.profile': 'Profile',
+    'settings.profile_desc': 'Update your name and email address',
+    'settings.security': 'Security',
+    'settings.appearance': 'Appearance & language',
+    'settings.password_title': 'Change password',
+    'settings.password_desc':
+        'Use a long, unique password to keep your account safe',
+    'settings.current_password': 'Current password',
+    'settings.theme': 'Theme',
+    'settings.theme_desc': 'Choose light, dark, or match your device',
+    'settings.language': 'Language',
+    'settings.language_desc': 'The language used across Theapka',
+    'settings.light': 'Light',
+    'settings.dark': 'Dark',
+    'settings.system': 'Device',
+    'settings.delete_title': 'Delete account',
+    'settings.delete_desc':
+        'Permanently delete your account and all your events',
+    'settings.warning': 'Warning',
+    'settings.delete_warning': 'This cannot be undone.',
+    'settings.delete_confirm': 'Delete your account?',
+    'settings.delete_confirm_desc':
+        'All your events, guests, gifts and invitations will be permanently deleted. Enter your password to confirm.',
+    'settings.2fa_title': 'Two-factor authentication',
+    'settings.2fa_desc': 'Add an extra layer of security to your account',
+    'settings.2fa_on':
+        'When you log in, you will be asked for a code from the authenticator app on your phone.',
+    'settings.2fa_off':
+        'Turn this on to be asked for a code from an authenticator app (like Google Authenticator) each time you log in.',
+    'settings.2fa_disable': 'Turn off',
+    'settings.2fa_enable': 'Turn on',
+    'settings.2fa_continue': 'Continue setup',
+    'settings.2fa_manual': 'or enter the code manually',
+    'settings.2fa_enabled_title': 'Two-factor authentication is on',
+    'settings.2fa_enabled_desc':
+        'Scan the QR code or enter the setup key in your authenticator app.',
+    'settings.2fa_verify_title': 'Enter the code',
+    'settings.2fa_verify_desc':
+        'Enter the 6-digit code from your authenticator app',
+    'settings.2fa_setup_title': 'Turn on two-factor authentication',
+    'settings.2fa_setup_desc':
+        'Scan the QR code or enter the setup key in your authenticator app to finish.',
+    'settings.back': 'Back',
+    'settings.confirm': 'Confirm',
+    'settings.close': 'Close',
+    'settings.recovery_title': 'Recovery codes',
+    'settings.recovery_desc':
+        'Use these if you lose your phone. Keep them somewhere safe.',
+    'settings.recovery_view': 'Show recovery codes',
+    'settings.recovery_hide': 'Hide recovery codes',
+    'settings.recovery_regenerate': 'New codes',
+    'settings.recovery_hint':
+        'Each code works once. Create new codes if you run out.',
+    'settings.passkeys_title': 'Passkeys',
+    'settings.passkeys_desc':
+        'Sign in with your fingerprint, face or device PIN instead of a password',
+    'settings.passkeys_empty': 'No passkeys yet',
+    'settings.passkeys_empty_desc':
+        'Add a passkey to sign in without a password',
+    'settings.passkeys_unsupported': 'This browser does not support passkeys.',
+    'settings.passkey_add': 'Add passkey',
+    'settings.passkey_name': 'Passkey name',
+    'settings.passkey_name_placeholder': 'e.g. My phone',
+    'settings.passkey_name_hint':
+        'A name helps you recognise this passkey later.',
+    'settings.passkey_register': 'Save passkey',
+    'settings.passkey_registering': 'Saving…',
+    'settings.passkey_added': 'Added :when',
+    'settings.passkey_last_used': 'Last used :when',
+    'settings.passkey_remove': 'Remove passkey',
+    'settings.passkey_removing': 'Removing…',
+    'settings.passkey_remove_confirm':
+        'Remove the ":name" passkey? You will no longer be able to sign in with it.',
+    'settings.something_wrong': 'Something went wrong.',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -995,6 +1118,118 @@ const km: Record<TranslationKey, string> = {
     'admin.guests': 'ភ្ញៀវ :count',
     'admin.previous': 'មុន',
     'admin.next': 'បន្ទាប់',
+    'auth.login': 'ចូលគណនី',
+    'auth.login_title': 'សូមស្វាគមន៍ការត្រឡប់មកវិញ',
+    'auth.login_desc': 'ចូលគណនីដើម្បីបន្តរៀបចំកម្មវិធីរបស់អ្នក',
+    'auth.email': 'អាសយដ្ឋានអ៊ីមែល',
+    'auth.password': 'ពាក្យសម្ងាត់',
+    'auth.forgot': 'ភ្លេចពាក្យសម្ងាត់?',
+    'auth.remember': 'ចងចាំខ្ញុំ',
+    'auth.no_account': 'មិនទាន់មានគណនី?',
+    'auth.sign_up': 'ចុះឈ្មោះ',
+    'auth.register': 'ចុះឈ្មោះ',
+    'auth.register_title': 'បង្កើតគណនីរបស់អ្នក',
+    'auth.register_desc': 'ចាប់ផ្តើមរៀបចំថ្ងៃពិសេសរបស់អ្នកដោយឥតគិតថ្លៃ',
+    'auth.name': 'ឈ្មោះ',
+    'auth.name_placeholder': 'ឈ្មោះពេញរបស់អ្នក',
+    'auth.confirm_password': 'បញ្ជាក់ពាក្យសម្ងាត់',
+    'auth.create_account': 'បង្កើតគណនី',
+    'auth.have_account': 'មានគណនីរួចហើយ?',
+    'auth.forgot_title': 'ភ្លេចពាក្យសម្ងាត់',
+    'auth.forgot_desc': 'បញ្ចូលអ៊ីមែលរបស់អ្នក យើងនឹងផ្ញើតំណសម្រាប់កំណត់ពាក្យសម្ងាត់ឡើងវិញ',
+    'auth.send_reset_link': 'ផ្ញើតំណកំណត់ឡើងវិញ',
+    'auth.back_to': 'នឹកឃើញវិញហើយ?',
+    'auth.reset_title': 'កំណត់ពាក្យសម្ងាត់ថ្មី',
+    'auth.reset_desc': 'ជ្រើសរើសពាក្យសម្ងាត់ថ្មីសម្រាប់គណនីរបស់អ្នក',
+    'auth.new_password': 'ពាក្យសម្ងាត់ថ្មី',
+    'auth.reset_button': 'រក្សាទុកពាក្យសម្ងាត់ថ្មី',
+    'auth.confirm_title': 'បញ្ជាក់ពាក្យសម្ងាត់របស់អ្នក',
+    'auth.confirm_desc': 'ដើម្បីសុវត្ថិភាព សូមបញ្ជាក់ពាក្យសម្ងាត់របស់អ្នកមុននឹងបន្ត។',
+    'auth.confirm_button': 'បញ្ជាក់',
+    'auth.passkey_confirm': 'បញ្ជាក់ដោយ Passkey',
+    'auth.passkey_confirming': 'កំពុងបញ្ជាក់…',
+    'auth.or_password': 'ឬបញ្ជាក់ដោយពាក្យសម្ងាត់',
+    'auth.passkey_sign_in': 'ចូលដោយ Passkey',
+    'auth.passkey_loading': 'កំពុងចូល…',
+    'auth.or_email': 'ឬបន្តដោយអ៊ីមែល',
+    'auth.show_password': 'បង្ហាញពាក្យសម្ងាត់',
+    'auth.hide_password': 'លាក់ពាក្យសម្ងាត់',
+    'auth.two_factor': 'ការផ្ទៀងផ្ទាត់ពីរជំហាន',
+    'auth.recovery_title': 'លេខកូដសង្គ្រោះ',
+    'auth.recovery_desc': 'បញ្ចូលលេខកូដសង្គ្រោះបន្ទាន់មួយ ដើម្បីចូលគណនីរបស់អ្នក។',
+    'auth.use_auth_code': 'ប្រើលេខកូដផ្ទៀងផ្ទាត់',
+    'auth.code_title': 'លេខកូដផ្ទៀងផ្ទាត់',
+    'auth.code_desc': 'បញ្ចូលលេខកូដពីកម្មវិធីផ្ទៀងផ្ទាត់របស់អ្នក។',
+    'auth.use_recovery_code': 'ប្រើលេខកូដសង្គ្រោះ',
+    'auth.recovery_placeholder': 'បញ្ចូលលេខកូដសង្គ្រោះ',
+    'auth.continue': 'បន្ត',
+    'auth.or_you_can': 'ឬអ្នកអាច',
+    'settings.profile': 'ប្រវត្តិរូប',
+    'settings.profile_desc': 'កែប្រែឈ្មោះ និងអ៊ីមែលរបស់អ្នក',
+    'settings.security': 'សុវត្ថិភាព',
+    'settings.appearance': 'រូបរាង និងភាសា',
+    'settings.password_title': 'ប្តូរពាក្យសម្ងាត់',
+    'settings.password_desc': 'ប្រើពាក្យសម្ងាត់វែង និងពិសេស ដើម្បីរក្សាសុវត្ថិភាពគណនី',
+    'settings.current_password': 'ពាក្យសម្ងាត់បច្ចុប្បន្ន',
+    'settings.theme': 'ផ្ទៃពណ៌',
+    'settings.theme_desc': 'ជ្រើសរើសភ្លឺ ងងឹត ឬតាមឧបករណ៍របស់អ្នក',
+    'settings.language': 'ភាសា',
+    'settings.language_desc': 'ភាសាដែលប្រើនៅក្នុង Theapka',
+    'settings.light': 'ភ្លឺ',
+    'settings.dark': 'ងងឹត',
+    'settings.system': 'តាមឧបករណ៍',
+    'settings.delete_title': 'លុបគណនី',
+    'settings.delete_desc': 'លុបគណនី និងកម្មវិធីទាំងអស់របស់អ្នកជាអចិន្ត្រៃយ៍',
+    'settings.warning': 'ប្រយ័ត្ន',
+    'settings.delete_warning': 'សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។',
+    'settings.delete_confirm': 'តើអ្នកពិតជាចង់លុបគណនីមែនទេ?',
+    'settings.delete_confirm_desc':
+        'កម្មវិធី ភ្ញៀវ ចំណងដៃ និងធៀបការទាំងអស់របស់អ្នកនឹងត្រូវលុបជាអចិន្ត្រៃយ៍។ សូមបញ្ចូលពាក្យសម្ងាត់ដើម្បីបញ្ជាក់។',
+    'settings.2fa_title': 'ការផ្ទៀងផ្ទាត់ពីរជំហាន',
+    'settings.2fa_desc': 'បន្ថែមសុវត្ថិភាពមួយកម្រិតទៀតដល់គណនីរបស់អ្នក',
+    'settings.2fa_on': 'ពេលចូលគណនី អ្នកនឹងត្រូវបញ្ចូលលេខកូដពីកម្មវិធីផ្ទៀងផ្ទាត់នៅលើទូរសព្ទរបស់អ្នក។',
+    'settings.2fa_off':
+        'បើកមុខងារនេះ ដើម្បីបញ្ចូលលេខកូដពីកម្មវិធីផ្ទៀងផ្ទាត់ (ដូចជា Google Authenticator) រាល់ពេលចូលគណនី។',
+    'settings.2fa_disable': 'បិទ',
+    'settings.2fa_enable': 'បើក',
+    'settings.2fa_continue': 'បន្តការរៀបចំ',
+    'settings.2fa_manual': 'ឬបញ្ចូលលេខកូដដោយដៃ',
+    'settings.2fa_enabled_title': 'ការផ្ទៀងផ្ទាត់ពីរជំហានត្រូវបានបើក',
+    'settings.2fa_enabled_desc':
+        'ស្កេន QR code ឬបញ្ចូលលេខកូដរៀបចំនៅក្នុងកម្មវិធីផ្ទៀងផ្ទាត់របស់អ្នក។',
+    'settings.2fa_verify_title': 'បញ្ចូលលេខកូដ',
+    'settings.2fa_verify_desc': 'បញ្ចូលលេខកូដ ៦ ខ្ទង់ពីកម្មវិធីផ្ទៀងផ្ទាត់របស់អ្នក',
+    'settings.2fa_setup_title': 'បើកការផ្ទៀងផ្ទាត់ពីរជំហាន',
+    'settings.2fa_setup_desc':
+        'ស្កេន QR code ឬបញ្ចូលលេខកូដរៀបចំនៅក្នុងកម្មវិធីផ្ទៀងផ្ទាត់ ដើម្បីបញ្ចប់។',
+    'settings.back': 'ត្រឡប់',
+    'settings.confirm': 'បញ្ជាក់',
+    'settings.close': 'បិទ',
+    'settings.recovery_title': 'លេខកូដសង្គ្រោះ',
+    'settings.recovery_desc':
+        'ប្រើលេខកូដទាំងនេះ ប្រសិនបើអ្នកបាត់ទូរសព្ទ។ សូមរក្សាទុកនៅកន្លែងមានសុវត្ថិភាព។',
+    'settings.recovery_view': 'បង្ហាញលេខកូដសង្គ្រោះ',
+    'settings.recovery_hide': 'លាក់លេខកូដសង្គ្រោះ',
+    'settings.recovery_regenerate': 'បង្កើតលេខកូដថ្មី',
+    'settings.recovery_hint': 'លេខកូដនីមួយៗប្រើបានតែម្តង។ សូមបង្កើតលេខកូដថ្មី ពេលប្រើអស់។',
+    'settings.passkeys_title': 'Passkeys',
+    'settings.passkeys_desc': 'ចូលគណនីដោយស្នាមម្រាមដៃ មុខ ឬលេខ PIN ឧបករណ៍ ជំនួសពាក្យសម្ងាត់',
+    'settings.passkeys_empty': 'មិនទាន់មាន Passkey',
+    'settings.passkeys_empty_desc': 'បន្ថែម Passkey ដើម្បីចូលដោយគ្មានពាក្យសម្ងាត់',
+    'settings.passkeys_unsupported': 'កម្មវិធីរុករកនេះមិនគាំទ្រ Passkey ទេ។',
+    'settings.passkey_add': 'បន្ថែម Passkey',
+    'settings.passkey_name': 'ឈ្មោះ Passkey',
+    'settings.passkey_name_placeholder': 'ឧ. ទូរសព្ទរបស់ខ្ញុំ',
+    'settings.passkey_name_hint': 'ឈ្មោះជួយឱ្យអ្នកចំណាំ Passkey នេះនៅពេលក្រោយ។',
+    'settings.passkey_register': 'រក្សាទុក Passkey',
+    'settings.passkey_registering': 'កំពុងរក្សាទុក…',
+    'settings.passkey_added': 'បានបន្ថែម :when',
+    'settings.passkey_last_used': 'ប្រើចុងក្រោយ :when',
+    'settings.passkey_remove': 'លុប Passkey',
+    'settings.passkey_removing': 'កំពុងលុប…',
+    'settings.passkey_remove_confirm':
+        'លុប Passkey ":name"? អ្នកនឹងមិនអាចចូលដោយប្រើវាទៀតទេ។',
+    'settings.something_wrong': 'មានបញ្ហាអ្វីមួយកើតឡើង។',
 };
 
 export type Locale = 'km' | 'en';
@@ -1020,8 +1255,17 @@ export function getLocale(): Locale {
     return currentLocale;
 }
 
+/**
+ * Tells the server which language to use for its messages (validation
+ * errors, password emails).
+ */
+function writeLocaleCookie(locale: Locale): void {
+    document.cookie = `${STORAGE_KEY}=${locale};path=/;max-age=31536000;samesite=lax`;
+}
+
 export function setLocale(locale: Locale): void {
     currentLocale = locale;
+    writeLocaleCookie(locale);
 
     try {
         localStorage.setItem(STORAGE_KEY, locale);
@@ -1035,6 +1279,7 @@ export function setLocale(locale: Locale): void {
 
 export function initializeLocale(): void {
     document.documentElement.lang = currentLocale;
+    writeLocaleCookie(currentLocale);
 }
 
 function subscribe(listener: () => void): () => void {
