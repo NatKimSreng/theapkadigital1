@@ -1,6 +1,7 @@
 import { Link, router } from '@inertiajs/react';
-import { Pencil, Plus, Search, Sparkles } from 'lucide-react';
+import { Gift, Pencil, Plus, Search, Sparkles } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import GiftController from '@/actions/App/Http/Controllers/GiftController';
 import GuestController from '@/actions/App/Http/Controllers/GuestController';
 import { ConfirmDelete } from '@/components/event/confirm-delete';
 import { EventShell } from '@/components/event/event-shell';
@@ -11,9 +12,10 @@ import {
     selectClassName,
 } from '@/components/event/fields';
 import { FormDialog } from '@/components/event/form-dialog';
+import { GiftFields } from '@/components/event/gift-fields';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { formatUsd } from '@/lib/format';
+import { formatKhr, formatUsd } from '@/lib/format';
 import { useTranslation } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { pricing } from '@/routes';
@@ -96,6 +98,78 @@ function GuestFields({
                 error={errors.note}
             />
         </div>
+    );
+}
+
+/**
+ * The guest's gift: tap to edit it, or to record one if there is none yet.
+ * A guest with several gifts edits the first; the rest are on the Gifts tab.
+ */
+function GuestGiftCell({
+    event,
+    guest,
+}: {
+    event: PlannerEvent;
+    guest: Guest;
+}) {
+    const { t } = useTranslation();
+    const gifts = guest.gifts ?? [];
+    const gift = gifts[0];
+    const usd = gifts.reduce((sum, item) => sum + Number(item.amount_usd), 0);
+    const khr = gifts.reduce((sum, item) => sum + Number(item.amount_khr), 0);
+
+    return (
+        <FormDialog
+            title={gift ? t('gift.edit') : t('gift.add')}
+            form={
+                gift
+                    ? GiftController.update.form({
+                          event: event.id,
+                          gift: gift.id,
+                      })
+                    : GiftController.store.form(event.id)
+            }
+            trigger={
+                gift ? (
+                    <button
+                        type="button"
+                        className="group inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-right tabular-nums hover:bg-accent"
+                        aria-label={t('gift.edit')}
+                    >
+                        <span className="leading-tight">
+                            {usd > 0 && (
+                                <span className="block font-medium">
+                                    {formatUsd(usd)}
+                                </span>
+                            )}
+                            {khr > 0 && (
+                                <span className="block text-xs text-muted-foreground">
+                                    {formatKhr(khr)}
+                                </span>
+                            )}
+                            {usd === 0 && khr === 0 && '—'}
+                        </span>
+                        <Pencil className="size-3.5 text-muted-foreground opacity-60 group-hover:opacity-100" />
+                    </button>
+                ) : (
+                    <button
+                        type="button"
+                        className="inline-flex items-center gap-1 rounded-full border border-dashed px-2.5 py-1 text-xs text-muted-foreground hover:border-primary hover:text-primary"
+                    >
+                        <Gift className="size-3.5" />
+                        {t('gift.add')}
+                    </button>
+                )
+            }
+        >
+            {(errors) => (
+                <GiftFields
+                    gift={gift}
+                    forGuest={{ id: guest.id, name: guest.name }}
+                    errors={errors}
+                />
+            )}
+        </FormDialog>
     );
 }
 
@@ -307,14 +381,11 @@ export default function Guests({
                                         ))}
                                     </select>
                                 </td>
-                                <td className="px-4 py-3 text-right tabular-nums">
-                                    {guest.gifts_sum_amount_usd
-                                        ? formatUsd(
-                                              Number(
-                                                  guest.gifts_sum_amount_usd,
-                                              ),
-                                          )
-                                        : '—'}
+                                <td className="px-4 py-3 text-right">
+                                    <GuestGiftCell
+                                        event={event}
+                                        guest={guest}
+                                    />
                                 </td>
                                 <td className="px-4 py-3">
                                     <div className="flex items-center justify-end gap-1.5">

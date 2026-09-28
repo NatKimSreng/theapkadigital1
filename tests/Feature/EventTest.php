@@ -90,6 +90,22 @@ class EventTest extends TestCase
         $this->assertDatabaseMissing('guests', ['id' => $guest->id]);
     }
 
+    public function test_guest_list_includes_each_guests_gifts()
+    {
+        $user = User::factory()->create();
+        $event = $this->eventFor($user);
+        $guest = $event->guests()->create(['name' => 'Dara']);
+        $event->gifts()->create(['guest_id' => $guest->id, 'giver_name' => 'Dara', 'amount_usd' => 50, 'amount_khr' => 40000]);
+
+        $this->actingAs($user)
+            ->get(route('events.guests.index', $event))
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('events/guests')
+                ->where('guests.0.gifts.0.amount_usd', 50)
+                ->where('guests.0.gifts.0.amount_khr', 40000)
+            );
+    }
+
     public function test_users_cannot_access_other_users_events()
     {
         $owner = User::factory()->create();

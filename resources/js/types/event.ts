@@ -36,7 +36,7 @@ export type Guest = {
     status: GuestStatus;
     party_size: number;
     note: string | null;
-    gifts_sum_amount_usd?: string | null;
+    gifts?: Gift[];
     invite_code?: string;
     invite_url?: string | null;
     invite_sent_at?: string | null;

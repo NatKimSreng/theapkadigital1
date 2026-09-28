@@ -24,7 +24,7 @@ class GuestController extends Controller
 
         return Inertia::render('events/guests', [
             'event' => $event,
-            'guests' => $event->guests()->withSum('gifts', 'amount_usd')->latest()->get(),
+            'guests' => $event->guests()->with('gifts')->latest()->get(),
             'inviteReady' => $event->invitations()->exists(),
             'guestLimit' => $event->plan()->guest_limit,
         ]);
