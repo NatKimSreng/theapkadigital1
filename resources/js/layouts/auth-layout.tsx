@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Check, HeartHandshake } from 'lucide-react';
+import { Check } from 'lucide-react';
 import type { ReactNode } from 'react';
 import AppLogo from '@/components/app-logo';
 import { LanguageSwitcher } from '@/components/language-switcher';
@@ -38,16 +38,11 @@ export default function AuthLayout({
                     className="absolute inset-5 rounded-[2rem] border border-[oklch(0.76_0.11_80/0.3)]"
                 />
 
-                <Link
-                    href={home()}
-                    className="relative flex items-center gap-2.5"
-                >
-                    <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-[oklch(0.82_0.11_85)] to-[oklch(0.66_0.12_75)] text-[oklch(0.2_0.02_60)]">
-                        <HeartHandshake className="size-5" />
-                    </span>
-                    <span className="font-serif text-2xl font-semibold tracking-wide">
-                        Theapka
-                    </span>
+                <Link href={home()} className="relative w-fit">
+                    <AppLogo
+                        size="lg"
+                        className="[&_.text-primary]:text-[oklch(0.8_0.11_82)]"
+                    />
                 </Link>
 
                 <div className="relative my-auto max-w-md">

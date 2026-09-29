@@ -65,7 +65,7 @@ class BlogController extends Controller
                 'publisher' => [
                     '@type' => 'Organization',
                     'name' => Seo::siteName(),
-                    'logo' => ['@type' => 'ImageObject', 'url' => asset('apple-touch-icon.png')],
+                    'logo' => ['@type' => 'ImageObject', 'url' => asset('images/logo.png')],
                 ],
             ])],
         );
