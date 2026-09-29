@@ -1,5 +1,7 @@
 import type { TranslationKey } from '@/lib/i18n';
 import type { InvitationLang } from '@/types';
+import type { Motif } from './motifs';
+import type { Texture } from './textures';
 
 export type TemplateCategory =
     | 'wedding'
@@ -40,6 +42,9 @@ export type TemplateDefinition = {
         hero?: HeroStyle;
         /** Tint over a full-screen cover photo, top to bottom. */
         overlay?: string;
+        /** The design's own background texture and section ornament. */
+        texture?: Texture;
+        motif?: Motif;
         opening: 'doors' | 'envelope' | 'curtain' | 'fade';
         effect: 'none' | 'petals' | 'sparkles' | 'hearts';
     };
@@ -86,6 +91,8 @@ export const TEMPLATES: TemplateDefinition[] = [
             panel: 'rgba(0, 0, 0, 0.22)',
             ornament: 'frame',
             hero: 'fullbleed',
+            texture: 'damask',
+            motif: 'diamond',
             overlay:
                 'linear-gradient(180deg, rgba(90,15,28,0.8) 0%, rgba(90,15,28,0.2) 30%, rgba(59,9,19,0.15) 48%, rgba(59,9,19,0.82) 78%, #3b0913 100%)',
             opening: 'doors',
@@ -107,6 +114,8 @@ export const TEMPLATES: TemplateDefinition[] = [
             panel: 'rgba(255, 255, 255, 0.6)',
             ornament: 'rings',
             hero: 'arch',
+            texture: 'shimmer',
+            motif: 'rings',
             opening: 'envelope',
             effect: 'sparkles',
         },
@@ -126,6 +135,8 @@ export const TEMPLATES: TemplateDefinition[] = [
             panel: 'rgba(255, 255, 255, 0.65)',
             ornament: 'balloons',
             hero: 'polaroid',
+            texture: 'confetti',
+            motif: 'bunting',
             opening: 'curtain',
             effect: 'hearts',
         },
@@ -144,6 +155,8 @@ export const TEMPLATES: TemplateDefinition[] = [
             panel: 'rgba(255, 255, 255, 0.08)',
             ornament: 'house',
             hero: 'framed',
+            texture: 'grid',
+            motif: 'roof',
             opening: 'doors',
             effect: 'sparkles',
         },
@@ -162,6 +175,8 @@ export const TEMPLATES: TemplateDefinition[] = [
             panel: 'rgba(255, 255, 255, 0.55)',
             ornament: 'hearts',
             hero: 'circle',
+            texture: 'linen',
+            motif: 'vine',
             opening: 'envelope',
             effect: 'hearts',
         },
@@ -180,6 +195,8 @@ export const TEMPLATES: TemplateDefinition[] = [
             panel: 'rgba(255, 255, 255, 0.07)',
             ornament: 'frame',
             hero: 'cinematic',
+            texture: 'grain',
+            motif: 'spires',
             opening: 'curtain',
             effect: 'sparkles',
         },
@@ -199,6 +216,8 @@ export const TEMPLATES: TemplateDefinition[] = [
             panel: 'rgba(255, 255, 255, 0.72)',
             ornament: 'hearts',
             hero: 'split',
+            texture: 'watercolor',
+            motif: 'lotus',
             opening: 'envelope',
             effect: 'petals',
         },

@@ -15,6 +15,7 @@ import {
     Rise,
 } from './animations';
 import { HeroPhoto, photoFocus } from './heroes';
+import { SectionMotif } from './motifs';
 import { Ornament } from './ornaments';
 import { PaperLayout } from './paper-layout';
 import {
@@ -35,6 +36,7 @@ import type { RsvpConfig } from './rsvp';
 import { RsvpForm } from './rsvp';
 import {
     BODY_FONT,
+    SCRIPT_FONT,
     TITLE_FONT,
     backgroundStyle,
     calendarUrl,
@@ -42,6 +44,7 @@ import {
     resolveInvitation,
 } from './resolve';
 import type { TemplateDefinition } from './templates';
+import { textureLayer } from './textures';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -155,6 +158,24 @@ function ClassicLayout({
         fontFamily: TITLE_FONT,
     };
 
+    const motif = theme.motif && (
+        <SectionMotif
+            motif={theme.motif}
+            primary={primary}
+            secondary={secondary}
+        />
+    );
+
+    // English names read best in script, as on Paper Frame.
+    const nameStyle =
+        data.lang === 'en'
+            ? { ...headlineStyle(data, primary), fontFamily: SCRIPT_FONT }
+            : titleStyle;
+    const nameClass =
+        data.lang === 'en'
+            ? 'text-[30px] leading-tight break-words'
+            : 'text-[17px] leading-[1.8] break-words';
+
     const hero = theme.hero ?? 'framed';
     const cinematic = hero === 'cinematic';
     const fullbleed = hero === 'fullbleed' || cinematic;
@@ -165,6 +186,7 @@ function ClassicLayout({
             <h1 className="text-[28px] leading-[1.7]" style={titleStyle}>
                 {data.title}
             </h1>
+            {motif && <div className="mt-1">{motif}</div>}
         </Rise>
     );
 
@@ -175,9 +197,9 @@ function ClassicLayout({
             className="mt-5 grid w-full grid-cols-[1fr_auto_1fr] items-center gap-2"
         >
             <p
-                className="text-[17px] leading-[1.8] break-words"
+                className={nameClass}
                 style={{
-                    ...titleStyle,
+                    ...nameStyle,
                     gridColumn: data.hostRight ? undefined : '1 / -1',
                 }}
             >
@@ -188,10 +210,7 @@ function ClassicLayout({
                     <span className="text-sm" style={{ color: secondary }}>
                         {data.joiner}
                     </span>
-                    <p
-                        className="text-[17px] leading-[1.8] break-words"
-                        style={titleStyle}
-                    >
+                    <p className={nameClass} style={nameStyle}>
                         {data.hostRight}
                     </p>
                 </>
@@ -200,16 +219,27 @@ function ClassicLayout({
     );
 
     const heading = (text: string) => (
-        <h2 className="text-[19px] leading-[1.9]" style={titleStyle}>
-            {text}
-        </h2>
+        <div className="space-y-1.5">
+            {motif}
+            <h2 className="text-[19px] leading-[1.9]" style={titleStyle}>
+                {text}
+            </h2>
+        </div>
     );
+
+    const background = backgroundStyle(data, media);
+    const textured =
+        theme.texture && !media.background
+            ? {
+                  background: `${textureLayer(theme.texture, secondary)}, ${theme.background}`,
+              }
+            : background;
 
     return (
         <div
             className="relative w-full overflow-hidden"
             style={{
-                ...backgroundStyle(data, media),
+                ...textured,
                 color: theme.text,
                 fontFamily: BODY_FONT,
             }}
