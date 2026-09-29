@@ -4,8 +4,21 @@ set -e
 
 cd /app
 
-# storage/app is the persistent disk: uploads, receipts and the SQLite file.
-mkdir -p storage/app/public storage/app/private/receipts \
+# storage/app must be a persistent volume: it holds uploads, payment
+# receipts and the SQLite database. Anything else in the container is
+# replaced on every deploy.
+STORAGE=/app/storage/app
+
+if [ -n "$RAILWAY_ENVIRONMENT" ] && [ "$RAILWAY_VOLUME_MOUNT_PATH" != "$STORAGE" ]; then
+    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    echo "!! WARNING: no Railway volume is mounted at $STORAGE"
+    echo "!! (current volume: ${RAILWAY_VOLUME_MOUNT_PATH:-none})."
+    echo "!! The database and all uploads WILL BE LOST on the next deploy."
+    echo "!! Railway -> service -> Settings -> Volumes -> mount path $STORAGE"
+    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+fi
+
+mkdir -p "$STORAGE/public" "$STORAGE/private/receipts" \
     storage/framework/cache/data storage/framework/sessions storage/framework/views \
     storage/logs bootstrap/cache
 
@@ -13,8 +26,17 @@ mkdir -p storage/app/public storage/app/private/receipts \
 chmod -R 775 storage bootstrap/cache
 
 if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
-    DB_FILE="${DB_DATABASE:-/app/storage/app/database.sqlite}"
-    [ -f "$DB_FILE" ] || touch "$DB_FILE"
+    # Laravel's default (database/database.sqlite) lives in the image and is
+    # wiped on deploy, so always keep SQLite on the persistent volume.
+    export DB_DATABASE="${DB_DATABASE:-$STORAGE/database.sqlite}"
+
+    case "$DB_DATABASE" in
+        "$STORAGE"/*) ;;
+        *) echo "!! WARNING: DB_DATABASE=$DB_DATABASE is outside $STORAGE and will be lost on deploy." ;;
+    esac
+
+    [ -f "$DB_DATABASE" ] || touch "$DB_DATABASE"
+    echo "Using SQLite database at $DB_DATABASE"
 fi
 
 php artisan storage:link --force
