@@ -7,6 +7,7 @@ import {
     demoSettings,
 } from '@/components/invitation/demo';
 import { InvitationCard } from '@/components/invitation/invitation-card';
+import { isDarkTheme } from '@/components/invitation/resolve';
 import { findTemplate } from '@/components/invitation/templates';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/lib/i18n';
@@ -41,9 +42,9 @@ export default function TemplateDemo({
             <div
                 className={cn(
                     'min-h-svh pb-20',
-                    template.layout === 'paper'
-                        ? 'bg-stone-200'
-                        : 'bg-neutral-900',
+                    isDarkTheme(template.theme)
+                        ? 'bg-neutral-900'
+                        : 'bg-stone-200',
                 )}
             >
                 <main className="relative mx-auto min-h-svh max-w-[480px] shadow-2xl">

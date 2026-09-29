@@ -188,6 +188,21 @@ export function resolveInvitation(
 }
 
 /**
+ * Dark designs (light text) sit on a dark page; light ones on a light page.
+ */
+export function isDarkTheme(theme: { text: string }): boolean {
+    const hex = theme.text.replace('#', '');
+
+    if (!/^[0-9a-f]{6}$/i.test(hex)) {
+        return false;
+    }
+
+    const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
+
+    return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6;
+}
+
+/**
  * Text style for headings: flat colour, or a gold gradient when enabled.
  */
 export function headlineStyle(

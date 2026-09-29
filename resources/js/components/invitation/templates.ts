@@ -14,6 +14,7 @@ export type Ornament = 'frame' | 'rings' | 'balloons' | 'house' | 'hearts';
  * How the cover shows the couple's photo; each design uses its own.
  */
 export type HeroStyle =
+    | 'oval'
     | 'fullbleed'
     | 'cinematic'
     | 'split'
@@ -27,7 +28,6 @@ export type TemplateDefinition = {
     category: TemplateCategory;
     name: TranslationKey;
     free: boolean;
-    layout?: 'classic' | 'paper';
     /** Which sample photo leads this design's previews. */
     demoPhoto?: number;
     theme?: {
@@ -59,7 +59,6 @@ export const TEMPLATES: TemplateDefinition[] = [
         name: 'template.paper-frame',
         free: true,
         demoPhoto: 0,
-        layout: 'paper',
         theme: {
             primary: '#7e6749',
             secondary: '#b09371',
@@ -67,6 +66,7 @@ export const TEMPLATES: TemplateDefinition[] = [
             text: '#8a755a',
             panel: 'rgba(255, 255, 255, 0.55)',
             ornament: 'rings',
+            hero: 'oval',
             opening: 'doors',
             effect: 'petals',
         },
