@@ -1,4 +1,4 @@
-import { CalendarDays, MapPin } from 'lucide-react';
+import { CalendarDays, CalendarPlus, MapPin } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type {
@@ -19,6 +19,7 @@ import { PaperLayout } from './paper-layout';
 import {
     AgendaList,
     Countdown,
+    DaysToGo,
     DetailRow,
     Gallery,
     GiftSection,
@@ -35,6 +36,7 @@ import {
     BODY_FONT,
     TITLE_FONT,
     backgroundStyle,
+    calendarUrl,
     headlineStyle,
     resolveInvitation,
 } from './resolve';
@@ -146,6 +148,7 @@ function ClassicLayout({
     const details = useRef<HTMLDivElement>(null);
     const { theme, copy, primary, secondary } = data;
     const photos = media.gallery;
+    const calendar = calendarUrl(data);
     const titleStyle = {
         ...headlineStyle(data, primary),
         fontFamily: TITLE_FONT,
@@ -281,10 +284,14 @@ function ClassicLayout({
                     </Rise>
                 )}
 
+                <Rise motion={motion} step={6}>
+                    <DaysToGo data={data} className="mt-3" />
+                </Rise>
+
                 {!compact && (
                     <ScrollHint
                         label={copy.scrollDown}
-                        showEnglish={data.lang === 'km'}
+                        showEnglish={data.lang === 'km' && data.bilingual}
                         onClick={() =>
                             details.current?.scrollIntoView({
                                 behavior: 'smooth',
@@ -331,6 +338,22 @@ function ClassicLayout({
                         <Section motion={motion}>
                             {heading(copy.countdown)}
                             <Countdown data={data} />
+                            {calendar && (
+                                <a
+                                    href={calendar}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-[13px] font-semibold shadow-sm"
+                                    style={{
+                                        borderColor: primary,
+                                        color: primary,
+                                        background: theme.panel,
+                                    }}
+                                >
+                                    <CalendarPlus className="size-4" />
+                                    {copy.reminder}
+                                </a>
+                            )}
                         </Section>
                     )}
 

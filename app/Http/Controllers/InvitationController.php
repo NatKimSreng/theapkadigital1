@@ -138,6 +138,7 @@ class InvitationController extends Controller
             'settings.hide_hosts' => ['nullable', 'boolean'],
             'settings.map_url' => ['nullable', 'url:https', 'max:500'],
             'settings.language' => ['nullable', Rule::in(self::LANGUAGES)],
+            'settings.languages' => ['nullable', Rule::in(['both', ...self::LANGUAGES])],
             'settings.event_time' => ['nullable', 'date_format:H:i'],
             'settings.show_countdown' => ['nullable', 'boolean'],
             'settings.opening' => ['nullable', Rule::in(['doors', 'envelope', 'curtain', 'fade'])],

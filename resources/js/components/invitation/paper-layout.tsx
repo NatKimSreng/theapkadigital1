@@ -8,6 +8,7 @@ import type { LayoutProps } from './invitation-card';
 import { Ornament } from './ornaments';
 import {
     Countdown,
+    DaysToGo,
     Gallery,
     GiftSection,
     MusicButton,
@@ -159,6 +160,10 @@ export function PaperLayout({
                     </Rise>
                 )}
 
+                <Rise motion={motion} step={4}>
+                    <DaysToGo data={data} className="mt-4 bg-white/60" />
+                </Rise>
+
                 {calendar && !compact && (
                     <Rise motion={motion} step={4}>
                         <PillLink href={calendar} color={primary}>
@@ -299,7 +304,7 @@ export function PaperLayout({
 
                     {data.showCountdown && (
                         <Section motion={motion} data={data}>
-                            <Card data={data}>
+                            <Card data={data} className="px-3">
                                 <Heading data={data}>{copy.countdown}</Heading>
                                 <Countdown data={data} />
                                 {data.dateText && (
@@ -382,14 +387,16 @@ function Section({
 
 function Card({
     data,
+    className = 'px-5',
     children,
 }: {
     data: ResolvedInvitation;
+    className?: string;
     children: ReactNode;
 }) {
     return (
         <div
-            className="relative space-y-4 rounded-2xl border px-5 py-8 shadow-sm"
+            className={`relative space-y-4 rounded-2xl border py-8 shadow-sm ${className}`}
             style={{
                 borderColor: `${data.secondary}99`,
                 background: 'rgba(255,255,255,0.7)',

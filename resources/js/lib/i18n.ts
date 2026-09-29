@@ -738,6 +738,16 @@ const en = {
     'settings_admin.payment_desc': 'Shown to customers on the checkout page.',
     'settings_admin.khqr_hint': 'Your KHQR code image, shown at checkout.',
     'settings_admin.social': 'Social & support',
+    'design.languages': 'Languages on the invitation',
+    'design.languages_hint':
+        'Show both, or only one language if you don’t need the other.',
+    'design.languages_both': 'Khmer & English',
+    'design.languages_km': 'Khmer only',
+    'design.languages_en': 'English only',
+    'design.single_language':
+        'Guests see the invitation in :lang only, without a language switch.',
+    'design.countdown_needs_date':
+        'Add the event date in the event details to show the countdown.',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -1440,6 +1450,14 @@ const km: Record<TranslationKey, string> = {
     'settings_admin.payment_desc': 'បង្ហាញដល់អតិថិជននៅទំព័រទូទាត់។',
     'settings_admin.khqr_hint': 'រូបភាព KHQR របស់អ្នក ដែលបង្ហាញនៅទំព័រទូទាត់។',
     'settings_admin.social': 'បណ្តាញសង្គម និងជំនួយ',
+    'design.languages': 'ភាសានៅលើធៀប',
+    'design.languages_hint': 'បង្ហាញទាំងពីរ ឬតែមួយភាសា ប្រសិនបើមិនត្រូវការភាសាមួយទៀត។',
+    'design.languages_both': 'ខ្មែរ និង អង់គ្លេស',
+    'design.languages_km': 'ខ្មែរតែប៉ុណ្ណោះ',
+    'design.languages_en': 'អង់គ្លេសតែប៉ុណ្ណោះ',
+    'design.single_language': 'ភ្ញៀវឃើញធៀបជា:lang តែប៉ុណ្ណោះ ដោយគ្មានប៊ូតុងប្តូរភាសា។',
+    'design.countdown_needs_date':
+        'សូមបញ្ចូលថ្ងៃកម្មវិធីក្នុងព័ត៌មានកម្មវិធី ដើម្បីបង្ហាញការរាប់ថយក្រោយ។',
 };
 
 export type Locale = 'km' | 'en';
