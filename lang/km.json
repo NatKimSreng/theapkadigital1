@@ -7,5 +7,12 @@
     "You are receiving this email because we received a password reset request for your account.": "អ្នកទទួលបានអ៊ីមែលនេះ ព្រោះមានសំណើកំណត់ពាក្យសម្ងាត់ឡើងវិញសម្រាប់គណនីរបស់អ្នក។",
     "Reset Password": "កំណត់ពាក្យសម្ងាត់ឡើងវិញ",
     "This password reset link will expire in :count minutes.": "តំណនេះនឹងផុតកំណត់ក្នុងរយៈពេល :count នាទី។",
-    "If you did not request a password reset, no further action is required.": "ប្រសិនបើអ្នកមិនបានស្នើសុំទេ សូមមិនអើពើនឹងអ៊ីមែលនេះ។"
+    "If you did not request a password reset, no further action is required.": "ប្រសិនបើអ្នកមិនបានស្នើសុំទេ សូមមិនអើពើនឹងអ៊ីមែលនេះ។",
+    "Pricing": "តម្លៃ",
+    "Theapka plans for digital wedding invitations, guest lists and gift tracking. Start free; paid plans from $:price.": "កញ្ចប់ Theapka សម្រាប់ធៀបការឌីជីថល បញ្ជីភ្ញៀវ និងកត់ត្រាចំណងដៃ។ ចាប់ផ្តើមដោយឥតគិតថ្លៃ កញ្ចប់បង់ប្រាក់ចាប់ពី $:price។",
+    "Digital wedding invitations and event planning": "ធៀបការឌីជីថល និងការរៀបចំកម្មវិធី",
+    "Wedding ideas, Khmer traditions and planning tips from Theapka.": "គំនិតរៀបចំមង្គលការ ប្រពៃណីខ្មែរ និងគន្លឹះរៀបចំកម្មវិធីពី Theapka។",
+    "Blog": "អត្ថបទ",
+    "Dear :name, you are invited.": "សូមគោរពអញ្ជើញ :name",
+    "You are invited.": "សូមគោរពអញ្ជើញ"
 }

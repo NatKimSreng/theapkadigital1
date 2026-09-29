@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Order;
 use App\Models\Package;
+use App\Models\Setting;
+use App\Support\Seo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -19,10 +21,30 @@ class OrderController extends Controller
      */
     public function pricing(Request $request): Response
     {
+        $packages = Package::query()->where('is_active', true)->ordered()->get();
+
         return Inertia::render('pricing', [
-            'packages' => Package::query()->where('is_active', true)->ordered()->get(),
+            'packages' => $packages,
             'eventId' => $request->integer('event') ?: null,
-        ]);
+        ])->withViewData('seo', Seo::page(
+            title: __('Pricing'),
+            description: __('Theapka plans for digital wedding invitations, guest lists and gift tracking. Start free; paid plans from $:price.', [
+                'price' => rtrim(rtrim(number_format((float) $packages->where('price', '>', 0)->min('price'), 2), '0'), '.'),
+            ]),
+            schema: [[
+                '@context' => 'https://schema.org',
+                '@type' => 'Product',
+                'name' => Seo::siteName(),
+                'description' => __('Digital wedding invitations and event planning'),
+                'offers' => $packages->map(fn (Package $package) => [
+                    '@type' => 'Offer',
+                    'name' => $package->name,
+                    'price' => number_format($package->price, 2, '.', ''),
+                    'priceCurrency' => 'USD',
+                    'url' => route('pricing'),
+                ])->all(),
+            ]],
+        ));
     }
 
     /**
@@ -103,11 +125,6 @@ class OrderController extends Controller
      */
     private function paymentDetails(): array
     {
-        $payment = config('theapka.payment');
-
-        return [
-            ...$payment,
-            'khqr_image' => $payment['khqr_image'] ? asset($payment['khqr_image']) : null,
-        ];
+        return Setting::payment();
     }
 }

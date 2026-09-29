@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Guest;
 use App\Models\Invitation;
+use App\Support\Seo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -289,6 +290,20 @@ class InvitationController extends Controller
         $event = $invitation->event;
         $reply = $guest ? $event->rsvps()->where('guest_id', $guest->id)->first() : null;
 
+        $couple = collect([$event->groom_name, $event->bride_name])->filter()->implode(' & ');
+        $details = collect([
+            $event->event_date?->translatedFormat('j F Y'),
+            $event->venue,
+        ])->filter()->implode(' · ');
+
+        // Invitations are private: rich previews when shared, but never indexed.
+        $seo = new Seo(
+            title: $couple !== '' ? $couple : $event->name,
+            description: trim(($guestName ? __('Dear :name, you are invited.', ['name' => $guestName]).' ' : '').$details) ?: __('You are invited.'),
+            image: $invitation->media['cover'] ?? $invitation->media['gallery'][0] ?? null,
+            url: url()->current(),
+        );
+
         return Inertia::render('invitation', [
             'event' => [
                 ...$event->only(['id', 'name', 'type', 'groom_name', 'bride_name', 'venue']),
@@ -303,7 +318,7 @@ class InvitationController extends Controller
                 'reply' => $reply?->only(['attending', 'message']),
             ],
             'lang' => in_array($request->query('lang'), self::LANGUAGES, true) ? $request->query('lang') : null,
-        ]);
+        ])->withViewData('seo', $seo);
     }
 
     /**

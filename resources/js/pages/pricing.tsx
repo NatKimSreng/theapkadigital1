@@ -1,5 +1,6 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Check, Minus, Sparkles } from 'lucide-react';
+import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 import { Button } from '@/components/ui/button';
 import { packageDescription, packageName } from '@/lib/billing';
@@ -208,6 +209,7 @@ export default function Pricing({
                         </ol>
                     </section>
                 </main>
+                <PublicFooter />
             </div>
         </>
     );

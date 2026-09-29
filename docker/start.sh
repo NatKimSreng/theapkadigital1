@@ -5,9 +5,12 @@ set -e
 cd /app
 
 # storage/app is the persistent disk: uploads, receipts and the SQLite file.
-mkdir -p storage/app/public storage/app/private \
+mkdir -p storage/app/public storage/app/private/receipts \
     storage/framework/cache/data storage/framework/sessions storage/framework/views \
     storage/logs bootstrap/cache
+
+# Ensure storage directories are writable
+chmod -R 775 storage bootstrap/cache
 
 if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
     DB_FILE="${DB_DATABASE:-/app/storage/app/database.sqlite}"

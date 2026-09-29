@@ -1,9 +1,12 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
     ArrowLeft,
+    CalendarHeart,
     LayoutDashboard,
+    Newspaper,
     Package as PackageIcon,
     Receipt,
+    Settings,
     Users,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
@@ -46,6 +49,17 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             icon: PackageIcon,
         },
         { label: 'admin.users', href: admin.users.index.url(), icon: Users },
+        {
+            label: 'admin.events',
+            href: admin.events.index.url(),
+            icon: CalendarHeart,
+        },
+        { label: 'admin.blog', href: admin.posts.index.url(), icon: Newspaper },
+        {
+            label: 'admin.site_settings',
+            href: admin.settings.edit.url(),
+            icon: Settings,
+        },
     ];
 
     const active = (item: (typeof items)[number]) =>

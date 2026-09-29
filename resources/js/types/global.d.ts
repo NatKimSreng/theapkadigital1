@@ -6,6 +6,12 @@ declare module 'react' {
     }
 }
 
+declare global {
+    interface Window {
+        gtag?: (...args: unknown[]) => void;
+    }
+}
+
 declare module '@inertiajs/core' {
     export interface InertiaConfig {
         sharedPageProps: {

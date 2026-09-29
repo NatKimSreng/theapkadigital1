@@ -1,4 +1,5 @@
 export type * from './auth';
 export type * from './billing';
+export type * from './blog';
 export type * from './event';
 export type * from './ui';
