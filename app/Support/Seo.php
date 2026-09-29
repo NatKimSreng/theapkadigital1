@@ -102,7 +102,7 @@ final class Seo
                 '@type' => 'Organization',
                 'name' => self::siteName(),
                 'url' => url('/'),
-                'logo' => asset('apple-touch-icon.png'),
+                'logo' => asset('images/logo.png'),
                 'sameAs' => $sameAs ?: null,
             ]),
             [

@@ -1,13 +1,39 @@
-import { HeartHandshake } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-export default function AppLogo() {
+/**
+ * The TK emblem with the TheapKa Digital wordmark.
+ */
+export default function AppLogo({
+    className,
+    size = 'md',
+}: {
+    className?: string;
+    size?: 'md' | 'lg';
+}) {
     return (
-        <div className="flex items-center gap-2 py-1 pr-3 pl-1">
-            <div className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-[oklch(0.78_0.11_85)] to-primary text-primary-foreground shadow-sm ring-1 ring-primary/30">
-                <HeartHandshake className="size-[18px]" />
-            </div>
-            <span className="font-serif text-xl font-semibold tracking-wide text-foreground">
-                Theapka
+        <div className={cn('flex items-center gap-2 py-1 pr-2', className)}>
+            <img
+                src="/images/logo-mark.webp"
+                alt=""
+                width={size === 'lg' ? 56 : 44}
+                height={size === 'lg' ? 40 : 31}
+                className={cn(
+                    'shrink-0 object-contain drop-shadow-sm',
+                    size === 'lg' ? 'h-10 w-14' : 'h-8 w-11',
+                )}
+            />
+            <span className="flex flex-col leading-none">
+                <span
+                    className={cn(
+                        'font-serif font-bold tracking-wide',
+                        size === 'lg' ? 'text-2xl' : 'text-xl',
+                    )}
+                >
+                    TheapKa
+                </span>
+                <span className="mt-0.5 text-[9px] font-semibold tracking-[0.35em] text-primary">
+                    DIGITAL
+                </span>
             </span>
         </div>
     );
