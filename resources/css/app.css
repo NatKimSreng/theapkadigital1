@@ -233,6 +233,23 @@
     animation: inv-twinkle ease-in-out infinite;
 }
 
+/* The seconds digit drops in each tick of the invitation countdown. */
+@keyframes inv-tick {
+    from {
+        opacity: 0.35;
+        transform: translateY(-35%);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.inv-tick {
+    animation: inv-tick 0.35s ease-out;
+}
+
 .inv-float {
     animation: inv-float 6s ease-in-out infinite;
 }
@@ -259,7 +276,8 @@
     .inv-fall,
     .inv-twinkle,
     .inv-float,
-    .inv-pulse {
+    .inv-pulse,
+    .inv-tick {
         animation: none;
     }
 

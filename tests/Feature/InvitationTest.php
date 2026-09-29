@@ -157,6 +157,30 @@ class InvitationTest extends TestCase
             ->assertSessionHasErrors(['settings.map_url', 'settings.language']);
     }
 
+    public function test_invitation_can_be_limited_to_one_language()
+    {
+        $user = User::factory()->create();
+        $event = $this->eventFor($user);
+        $invitation = $event->invitations()->create(['template' => 'royal-wedding']);
+
+        $this->actingAs($user)
+            ->put(route('events.invitations.update', [$event, $invitation]), [
+                'settings' => json_encode(['languages' => 'km']),
+            ])
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame('km', $invitation->refresh()->settings['languages']);
+
+        $this->get(route('invitations.share', $invitation->public_id))
+            ->assertInertia(fn (Assert $page) => $page->where('invitation.settings.languages', 'km'));
+
+        $this->actingAs($user)
+            ->put(route('events.invitations.update', [$event, $invitation]), [
+                'settings' => json_encode(['languages' => 'fr']),
+            ])
+            ->assertSessionHasErrors('settings.languages');
+    }
+
     public function test_paper_frame_template_saves_parents_time_and_bank_details()
     {
         $user = User::factory()->create();

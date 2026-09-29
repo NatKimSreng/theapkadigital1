@@ -14,5 +14,13 @@
     "Wedding ideas, Khmer traditions and planning tips from Theapka.": "គំនិតរៀបចំមង្គលការ ប្រពៃណីខ្មែរ និងគន្លឹះរៀបចំកម្មវិធីពី Theapka។",
     "Blog": "អត្ថបទ",
     "Dear :name, you are invited.": "សូមគោរពអញ្ជើញ :name",
-    "You are invited.": "សូមគោរពអញ្ជើញ"
+    "You are invited.": "សូមគោរពអញ្ជើញ",
+    "Row :row: :message": "ជួរទី :row៖ :message",
+    "Row :row: the link \":slug\" is also used on row :other.": "ជួរទី :row៖ តំណ \":slug\" ត្រូវបានប្រើនៅជួរទី :other ដែរ។",
+    "…and :count more problems.": "…និងបញ្ហា :count ទៀត។",
+    "The file is not UTF-8. In Excel choose \"Save as → CSV UTF-8\"; Google Sheets exports UTF-8 already.": "ឯកសារមិនមែនជា UTF-8 ទេ។ ក្នុង Excel សូមជ្រើស \"Save as → CSV UTF-8\"; Google Sheets ផ្តល់ UTF-8 ស្រាប់។",
+    "The file is empty.": "ឯកសារទទេ។",
+    "The first row must have the column names. Missing: :columns.": "ជួរទីមួយត្រូវមានឈ្មោះជួរឈរ។ ខ្វះ៖ :columns។",
+    "Too many rows: import at most :max posts at a time.": "ជួរច្រើនពេក៖ អាចនាំចូលបានច្រើនបំផុត :max អត្ថបទក្នុងមួយដង។",
+    "The file has no posts under the column names.": "មិនមានអត្ថបទនៅក្រោមឈ្មោះជួរឈរទេ។"
 }

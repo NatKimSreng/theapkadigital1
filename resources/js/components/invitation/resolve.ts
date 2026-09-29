@@ -96,6 +96,36 @@ export function longDate(value: string | null, lang: InvitationLang): string {
 }
 
 /**
+ * The languages an invitation is shown in, in display order.
+ */
+export function invitationLangs(
+    settings: InvitationSettings,
+): InvitationLang[] {
+    const mode = settings.languages ?? 'both';
+
+    return mode === 'both' ? ['km', 'en'] : [mode];
+}
+
+/**
+ * The language a guest sees first: the one in the link if it's offered,
+ * then the host's default, then the first offered language.
+ */
+export function startLang(
+    settings: InvitationSettings,
+    requested?: InvitationLang | null,
+): InvitationLang {
+    const langs = invitationLangs(settings);
+
+    for (const lang of [requested, settings.language]) {
+        if (lang && langs.includes(lang)) {
+            return lang;
+        }
+    }
+
+    return langs[0];
+}
+
+/**
  * Resolves an invitation's texts and colours in one language, falling back to
  * the template defaults and the event's own details for anything left blank.
  */
@@ -115,6 +145,7 @@ export function resolveInvitation(
         theme,
         copy,
         lang,
+        bilingual: invitationLangs(settings).length > 1,
         title: texts.title || copy.titles[template.category],
         hostLeft:
             texts.host_left || event.groom_name || (single ? event.name : ''),

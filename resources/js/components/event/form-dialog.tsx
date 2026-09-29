@@ -20,6 +20,7 @@ type Props = {
     children: (errors: Record<string, string>) => ReactNode;
     footer?: ReactNode;
     resetOnSuccess?: boolean;
+    submitLabel?: string;
 };
 
 /**
@@ -32,6 +33,7 @@ export function FormDialog({
     children,
     footer,
     resetOnSuccess = false,
+    submitLabel,
 }: Props) {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
@@ -63,7 +65,7 @@ export function FormDialog({
                                         </Button>
                                     </DialogClose>
                                     <Button type="submit" disabled={processing}>
-                                        {t('common.save')}
+                                        {submitLabel ?? t('common.save')}
                                     </Button>
                                 </div>
                             </DialogFooter>

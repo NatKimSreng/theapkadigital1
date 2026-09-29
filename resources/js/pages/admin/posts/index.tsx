@@ -1,6 +1,7 @@
 import { Form, Head, Link } from '@inertiajs/react';
 import { Eye, Plus, Search } from 'lucide-react';
 import PostController from '@/actions/App/Http/Controllers/Admin/PostController';
+import { ImportPostsDialog } from '@/components/blog/import-dialog';
 import { PostCover } from '@/components/blog/post-card';
 import { Pagination } from '@/components/pagination';
 import { Button } from '@/components/ui/button';
@@ -40,12 +41,15 @@ export default function AdminPosts({
             <AdminPage
                 title={t('admin.blog')}
                 actions={
-                    <Button asChild className="rounded-full">
-                        <Link href={PostController.create()}>
-                            <Plus className="size-4" />
-                            {t('posts.new')}
-                        </Link>
-                    </Button>
+                    <div className="flex flex-wrap gap-2">
+                        <ImportPostsDialog />
+                        <Button asChild className="rounded-full">
+                            <Link href={PostController.create()}>
+                                <Plus className="size-4" />
+                                {t('posts.new')}
+                            </Link>
+                        </Button>
+                    </div>
                 }
             >
                 <div className="mb-5 flex flex-wrap items-center gap-3">

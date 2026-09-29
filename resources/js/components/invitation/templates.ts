@@ -188,6 +188,10 @@ type Copy = {
     brideLabel: string;
     countdown: string;
     today: string;
+    todayShort: string;
+    tomorrowOrSoon: string;
+    daysToGo: string;
+    passed: string;
     units: { day: string; hour: string; minute: string; second: string };
     rsvpTitle: string;
     rsvpQuestion: string;
@@ -252,6 +256,10 @@ export const COPY: Record<InvitationLang, Copy> = {
         brideLabel: 'កូនស្រីនាម',
         countdown: 'ពេលវេលានៅសល់រហូតដល់ថ្ងៃកម្មវិធី',
         today: 'ថ្ងៃនេះគឺជាថ្ងៃពិសេសរបស់យើងខ្ញុំ',
+        todayShort: 'ថ្ងៃនេះហើយ!',
+        tomorrowOrSoon: 'ជិតដល់ហើយ!',
+        daysToGo: 'នៅសល់ :count ថ្ងៃទៀត',
+        passed: 'កម្មវិធីបានប្រព្រឹត្តទៅដោយជោគជ័យ។ សូមអរគុណចំពោះការចូលរួម និងពរជ័យ!',
         rsvpTitle: 'សារជូនពរ',
         rsvpQuestion: 'បញ្ជាក់ពីវត្តមានអ្នក',
         attending: 'ចូលរួម',
@@ -314,6 +322,10 @@ export const COPY: Record<InvitationLang, Copy> = {
         brideLabel: 'The bride',
         countdown: 'Countdown to the big day',
         today: 'Today is our special day',
+        todayShort: 'Today is the day!',
+        tomorrowOrSoon: 'Almost here!',
+        daysToGo: ':count days to go',
+        passed: 'The celebration has taken place. Thank you for your love and blessings!',
         rsvpTitle: 'RSVP & Wishes',
         rsvpQuestion: 'Will you be joining us?',
         attending: 'Attending',

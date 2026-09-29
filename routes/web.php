@@ -56,6 +56,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('events', [Admin\EventController::class, 'index'])->name('events.index');
     Route::post('posts/images', [Admin\PostController::class, 'image'])->name('posts.image');
     Route::post('posts/preview', [Admin\PostController::class, 'preview'])->name('posts.preview');
+    Route::post('posts/import', [Admin\PostController::class, 'import'])->name('posts.import');
+    Route::get('posts/import-template', [Admin\PostController::class, 'importTemplate'])->name('posts.template');
     Route::resource('posts', Admin\PostController::class)->except(['show']);
     Route::get('settings', [Admin\SettingController::class, 'edit'])->name('settings.edit');
     Route::post('settings', [Admin\SettingController::class, 'update'])->name('settings.update');

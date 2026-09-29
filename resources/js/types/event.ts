@@ -178,6 +178,8 @@ export type GiftAccount = {
     link?: string | null;
 };
 
+export type InvitationLanguages = 'both' | InvitationLang;
+
 export type InvitationSettings = {
     texts?: Partial<Record<InvitationLang, InvitationTexts>>;
     agenda?: AgendaItem[];
@@ -187,6 +189,8 @@ export type InvitationSettings = {
     gold_text?: boolean;
     map_url?: string | null;
     language?: InvitationLang;
+    /** Which languages guests see; one language hides the switcher. */
+    languages?: InvitationLanguages;
     event_time?: string | null;
     show_countdown?: boolean;
     gift?: { usd?: GiftAccount; khr?: GiftAccount };

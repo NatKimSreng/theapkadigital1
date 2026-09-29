@@ -62,6 +62,15 @@ return [
         'title' => 'ចំណងជើង',
         'price' => 'តម្លៃ',
         'message' => 'សារ',
+        'body' => 'ខ្លឹមសារ',
+        'slug' => 'តំណ',
+        'excerpt' => 'សេចក្តីសង្ខេប',
+        'locale' => 'ភាសា',
+        'published' => 'ការផ្សាយ',
+        'published_at' => 'ថ្ងៃផ្សាយ',
+        'meta_title' => 'ចំណងជើងសម្រាប់ Google',
+        'meta_description' => 'ការពិពណ៌នាសម្រាប់ Google',
+        'csv' => 'ឯកសារ CSV',
     ],
 
 ];

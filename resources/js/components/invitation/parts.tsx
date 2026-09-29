@@ -1,9 +1,17 @@
-import { Clock, Hand, Music, Navigation, Pause, Send } from 'lucide-react';
+import {
+    Clock,
+    Hand,
+    Hourglass,
+    Music,
+    Navigation,
+    Pause,
+    Send,
+} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { InvitationMedia } from '@/types';
 import type { ResolvedInvitation } from './resolve';
-import { eventStart } from './resolve';
+import { eventStart, khmerDigits } from './resolve';
 
 export function MusicButton({
     src,
@@ -185,71 +193,188 @@ export function Gallery({ photos }: { photos: string[] }) {
     );
 }
 
-function remaining(target: Date) {
-    const diff = Math.max(0, target.getTime() - Date.now());
+type CountdownState =
+    | {
+          phase: 'before';
+          day: number;
+          hour: number;
+          minute: number;
+          second: number;
+      }
+    | { phase: 'today' }
+    | { phase: 'after' };
 
-    return {
-        done: diff === 0,
-        day: Math.floor(diff / 86_400_000),
-        hour: Math.floor(diff / 3_600_000) % 24,
-        minute: Math.floor(diff / 60_000) % 60,
-        second: Math.floor(diff / 1000) % 60,
-    };
+function sameDay(a: Date, b: Date): boolean {
+    return (
+        a.getFullYear() === b.getFullYear() &&
+        a.getMonth() === b.getMonth() &&
+        a.getDate() === b.getDate()
+    );
 }
 
-export function Countdown({ data }: { data: ResolvedInvitation }) {
+function countdownState(target: Date): CountdownState {
+    const now = new Date();
+    const diff = target.getTime() - now.getTime();
+
+    if (diff > 0) {
+        return {
+            phase: 'before',
+            day: Math.floor(diff / 86_400_000),
+            hour: Math.floor(diff / 3_600_000) % 24,
+            minute: Math.floor(diff / 60_000) % 60,
+            second: Math.floor(diff / 1000) % 60,
+        };
+    }
+
+    // The whole event day counts as "today", even after the start time.
+    return sameDay(now, target) ? { phase: 'today' } : { phase: 'after' };
+}
+
+/**
+ * Re-renders every second (or once a minute when seconds aren't shown)
+ * with the time left until the event.
+ */
+function useCountdown(
+    data: ResolvedInvitation,
+    everySecond = true,
+): CountdownState | null {
     const target = eventStart(data);
-    const [left, setLeft] = useState(() => (target ? remaining(target) : null));
     const targetTime = target?.getTime();
+    const [state, setState] = useState(() =>
+        target ? countdownState(target) : null,
+    );
 
     useEffect(() => {
         if (targetTime === undefined) {
             return;
         }
 
-        const tick = () => setLeft(remaining(new Date(targetTime)));
+        const tick = () => setState(countdownState(new Date(targetTime)));
         tick();
-        const timer = window.setInterval(tick, 1000);
+        const timer = window.setInterval(tick, everySecond ? 1000 : 60_000);
 
         return () => window.clearInterval(timer);
-    }, [targetTime]);
+    }, [targetTime, everySecond]);
 
-    if (!left) {
+    return state;
+}
+
+function digits(data: ResolvedInvitation, value: number, pad = 2): string {
+    const text = String(value).padStart(pad, '0');
+
+    return data.lang === 'km' ? khmerDigits(text) : text;
+}
+
+export function Countdown({ data }: { data: ResolvedInvitation }) {
+    const state = useCountdown(data);
+
+    if (!state) {
         return null;
     }
 
-    if (left.done) {
+    if (state.phase !== 'before') {
         return (
             <p
-                className="text-lg font-semibold"
-                style={{ color: data.primary }}
+                className="rounded-2xl border px-4 py-5 text-lg leading-8 font-semibold"
+                style={{
+                    color: data.primary,
+                    borderColor: `${data.primary}55`,
+                    background: data.theme.panel,
+                }}
             >
-                {data.copy.today}
+                {state.phase === 'today' ? data.copy.today : data.copy.passed}
             </p>
         );
     }
 
+    const units = ['day', 'hour', 'minute', 'second'] as const;
+
     return (
-        <div className="grid grid-cols-4 gap-2">
-            {(['day', 'hour', 'minute', 'second'] as const).map((unit) => (
+        <div
+            className="mx-auto grid w-full max-w-xs grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] items-center gap-1"
+            role="timer"
+            aria-live="off"
+        >
+            {units.flatMap((unit, index) => [
+                index > 0 && (
+                    <span
+                        key={`${unit}-sep`}
+                        aria-hidden
+                        className="pb-5 text-lg font-bold opacity-60"
+                        style={{ color: data.primary }}
+                    >
+                        :
+                    </span>
+                ),
                 <div
                     key={unit}
-                    className="rounded-2xl border py-3 shadow-sm"
+                    className="relative min-w-0 overflow-hidden rounded-2xl border px-0.5 pt-3 pb-2 shadow-sm"
                     style={{
                         borderColor: `${data.primary}55`,
                         background: data.theme.panel,
                     }}
                 >
+                    <span
+                        aria-hidden
+                        className="absolute inset-x-0 top-0 h-1"
+                        style={{
+                            background: `linear-gradient(90deg, ${data.primary}, ${data.secondary})`,
+                        }}
+                    />
                     <p
-                        className="text-2xl font-bold tabular-nums"
+                        key={unit === 'second' ? state.second : undefined}
+                        className={`text-[clamp(1.05rem,5.5vw,1.65rem)] leading-none font-bold tabular-nums ${unit === 'second' ? 'inv-tick' : ''}`}
                         style={{ color: data.primary }}
                     >
-                        {String(left[unit]).padStart(2, '0')}
+                        {digits(data, state[unit], unit === 'day' ? 1 : 2)}
                     </p>
-                    <p className="text-xs">{data.copy.units[unit]}</p>
-                </div>
-            ))}
+                    <p className="mt-1.5 truncate text-[11px] leading-5">
+                        {data.copy.units[unit]}
+                    </p>
+                </div>,
+            ])}
         </div>
+    );
+}
+
+/**
+ * A small "23 days to go" badge for the invitation cover.
+ */
+export function DaysToGo({
+    data,
+    className,
+}: {
+    data: ResolvedInvitation;
+    className?: string;
+}) {
+    const state = useCountdown(data, false);
+
+    if (!data.showCountdown || !state || state.phase === 'after') {
+        return null;
+    }
+
+    const text =
+        state.phase === 'today'
+            ? data.copy.todayShort
+            : state.day === 0
+              ? data.copy.tomorrowOrSoon
+              : data.copy.daysToGo.replace(
+                    ':count',
+                    digits(data, state.day, 1),
+                );
+
+    return (
+        <p
+            className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[13px] font-semibold shadow-sm backdrop-blur-sm ${className ?? ''}`}
+            style={{
+                color: data.primary,
+                borderColor: `${data.primary}77`,
+                background: data.theme.panel,
+            }}
+        >
+            <Hourglass className="size-4" />
+            {text}
+        </p>
     );
 }
 

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Support\PostImporter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -80,6 +82,32 @@ class PostController extends Controller
         Inertia::flash('toast', ['type' => 'success', 'message' => 'toast.deleted']);
 
         return to_route('admin.posts.index');
+    }
+
+    /**
+     * Creates or updates posts from a CSV file (e.g. exported from Excel or Google Sheets).
+     */
+    public function import(Request $request, PostImporter $importer): RedirectResponse
+    {
+        $request->validate(['csv' => ['required', 'file', 'mimes:csv,txt', 'extensions:csv,txt', 'max:5120']]);
+
+        $result = $importer->import($request->file('csv'), $request->user()->id);
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => 'toast.posts_imported',
+            'params' => $result,
+        ]);
+
+        return to_route('admin.posts.index');
+    }
+
+    public function importTemplate(): HttpResponse
+    {
+        return response(PostImporter::template(), 200, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="theapka-blog-template.csv"',
+        ]);
     }
 
     /**

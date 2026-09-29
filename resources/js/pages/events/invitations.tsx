@@ -30,7 +30,7 @@ import {
     OPENING_STYLES,
 } from '@/components/invitation/animations';
 import { InvitationCard } from '@/components/invitation/invitation-card';
-import { resolveInvitation } from '@/components/invitation/resolve';
+import { resolveInvitation, startLang } from '@/components/invitation/resolve';
 import type { TemplateDefinition } from '@/components/invitation/templates';
 import { findTemplate } from '@/components/invitation/templates';
 import { Button } from '@/components/ui/button';
@@ -44,6 +44,7 @@ import type {
     GiftAccount,
     Invitation,
     InvitationLang,
+    InvitationLanguages,
     InvitationMedia,
     InvitationMediaKey,
     InvitationSettings,
@@ -51,6 +52,13 @@ import type {
     PlannerEvent,
 } from '@/types';
 import { INVITATION_MEDIA, MAX_GALLERY } from '@/types/event';
+
+const LANGUAGE_MODES: { value: InvitationLanguages; label: TranslationKey }[] =
+    [
+        { value: 'both', label: 'design.languages_both' },
+        { value: 'km', label: 'design.languages_km' },
+        { value: 'en', label: 'design.languages_en' },
+    ];
 
 type GuestOption = { id: number; name: string; invite_url: string | null };
 
@@ -253,8 +261,8 @@ function Editor({
     const [settings, setSettings] = useState<InvitationSettings>(
         invitation.settings ?? {},
     );
-    const [lang, setLang] = useState<InvitationLang>(
-        invitation.settings?.language ?? 'km',
+    const [lang, setLang] = useState<InvitationLang>(() =>
+        startLang(invitation.settings ?? {}),
     );
     const [files, setFiles] = useState<
         Partial<Record<InvitationMediaKey, File>>
@@ -319,6 +327,17 @@ function Editor({
         key: K,
         value: InvitationSettings[K],
     ) => setSettings((current) => ({ ...current, [key]: value }));
+
+    const languageMode = settings.languages ?? 'both';
+
+    const chooseLanguages = (mode: InvitationLanguages) => {
+        set('languages', mode);
+
+        // With one language there is nothing else to edit.
+        if (mode !== 'both') {
+            setLang(mode);
+        }
+    };
 
     const setText = (key: InvitationTextKey, value: string) =>
         setSettings((current) => ({
@@ -514,35 +533,78 @@ function Editor({
                 </div>
 
                 <div className={cn('space-y-5 bg-muted/40 p-4', paneHeight)}>
-                    <div className="flex items-center justify-between gap-3 rounded-2xl bg-blue-50 px-4 py-3 text-sm dark:bg-blue-950">
-                        <div className="flex items-center gap-2">
-                            <span
-                                className={cn(
-                                    lang === 'km'
-                                        ? 'font-medium text-blue-700 dark:text-blue-300'
-                                        : 'text-muted-foreground',
-                                )}
-                            >
-                                {t('design.lang_km')}
-                            </span>
-                            <Toggle
-                                checked={lang === 'en'}
-                                label={t('design.lang_en')}
-                                onChange={(on) => setLang(on ? 'en' : 'km')}
-                            />
-                            <span
-                                className={cn(
-                                    lang === 'en'
-                                        ? 'font-medium text-blue-700 dark:text-blue-300'
-                                        : 'text-muted-foreground',
-                                )}
-                            >
-                                {t('design.lang_en')}
-                            </span>
+                    <div className="space-y-3 rounded-2xl bg-blue-50 p-4 text-sm dark:bg-blue-950">
+                        <div>
+                            <p className="font-semibold">
+                                {t('design.languages')}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                                {t('design.languages_hint')}
+                            </p>
                         </div>
-                        <span className="text-xs text-muted-foreground">
-                            {t('design.editing', { lang: langLabel })}
-                        </span>
+                        <div
+                            role="radiogroup"
+                            aria-label={t('design.languages')}
+                            className="grid grid-cols-3 gap-1 rounded-xl bg-background p-1"
+                        >
+                            {LANGUAGE_MODES.map((mode) => (
+                                <button
+                                    key={mode.value}
+                                    type="button"
+                                    role="radio"
+                                    aria-checked={languageMode === mode.value}
+                                    onClick={() => chooseLanguages(mode.value)}
+                                    className={cn(
+                                        'rounded-lg px-2 py-2 text-xs leading-tight font-medium transition-colors',
+                                        languageMode === mode.value
+                                            ? 'bg-blue-600 text-white shadow-sm'
+                                            : 'text-muted-foreground hover:bg-muted',
+                                    )}
+                                >
+                                    {t(mode.label)}
+                                </button>
+                            ))}
+                        </div>
+                        {languageMode === 'both' ? (
+                            <div className="flex items-center justify-between gap-3 border-t border-blue-200 pt-3 dark:border-blue-900">
+                                <div className="flex items-center gap-2">
+                                    <span
+                                        className={cn(
+                                            lang === 'km'
+                                                ? 'font-medium text-blue-700 dark:text-blue-300'
+                                                : 'text-muted-foreground',
+                                        )}
+                                    >
+                                        {t('design.lang_km')}
+                                    </span>
+                                    <Toggle
+                                        checked={lang === 'en'}
+                                        label={t('design.lang_en')}
+                                        onChange={(on) =>
+                                            setLang(on ? 'en' : 'km')
+                                        }
+                                    />
+                                    <span
+                                        className={cn(
+                                            lang === 'en'
+                                                ? 'font-medium text-blue-700 dark:text-blue-300'
+                                                : 'text-muted-foreground',
+                                        )}
+                                    >
+                                        {t('design.lang_en')}
+                                    </span>
+                                </div>
+                                <span className="text-xs text-muted-foreground">
+                                    {t('design.editing', { lang: langLabel })}
+                                </span>
+                            </div>
+                        ) : (
+                            <p className="border-t border-blue-200 pt-3 text-xs text-muted-foreground dark:border-blue-900">
+                                {t('design.single_language', {
+                                    lang: langLabel,
+                                })}
+                            </p>
+                        )}
                     </div>
 
                     <Panel title={t('design.music')} dot="bg-blue-500">
@@ -682,6 +744,11 @@ function Editor({
                         </div>
                         <ToggleRow
                             label={t('design.show_countdown')}
+                            hint={
+                                event.event_date
+                                    ? undefined
+                                    : t('design.countdown_needs_date')
+                            }
                             checked={settings.show_countdown ?? true}
                             onChange={(on) => set('show_countdown', on)}
                         />
@@ -971,28 +1038,30 @@ function Editor({
                         </Button>
                     </Panel>
 
-                    <Panel title={t('design.language')} dot="bg-blue-500">
-                        <select
-                            aria-label={t('design.language')}
-                            value={settings.language ?? 'km'}
-                            onChange={(e) =>
-                                set(
-                                    'language',
-                                    e.target.value as InvitationLang,
-                                )
-                            }
-                            className={cn(
-                                selectClassName,
-                                'w-40 bg-background',
-                            )}
-                        >
-                            <option value="km">Khmer</option>
-                            <option value="en">English</option>
-                        </select>
-                        <p className="text-xs text-muted-foreground">
-                            {t('design.language_hint')}
-                        </p>
-                    </Panel>
+                    {languageMode === 'both' && (
+                        <Panel title={t('design.language')} dot="bg-blue-500">
+                            <select
+                                aria-label={t('design.language')}
+                                value={settings.language ?? 'km'}
+                                onChange={(e) =>
+                                    set(
+                                        'language',
+                                        e.target.value as InvitationLang,
+                                    )
+                                }
+                                className={cn(
+                                    selectClassName,
+                                    'w-40 bg-background',
+                                )}
+                            >
+                                <option value="km">Khmer</option>
+                                <option value="en">English</option>
+                            </select>
+                            <p className="text-xs text-muted-foreground">
+                                {t('design.language_hint')}
+                            </p>
+                        </Panel>
+                    )}
 
                     <SharePanel invitation={invitation} guests={guests} />
                 </div>
