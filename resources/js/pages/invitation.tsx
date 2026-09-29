@@ -4,7 +4,6 @@ import { InvitationCard } from '@/components/invitation/invitation-card';
 import type { InvitationEvent } from '@/components/invitation/resolve';
 import {
     invitationLangs,
-    isDarkTheme,
     resolveInvitation,
     startLang,
 } from '@/components/invitation/resolve';
@@ -58,9 +57,9 @@ export default function PublicInvitation({
             <div
                 className={cn(
                     'min-h-svh',
-                    isDarkTheme(template.theme)
-                        ? 'bg-neutral-900'
-                        : 'bg-stone-200',
+                    template.layout === 'paper'
+                        ? 'bg-stone-200'
+                        : 'bg-neutral-900',
                 )}
             >
                 <main className="relative mx-auto min-h-svh max-w-[480px] shadow-2xl">
