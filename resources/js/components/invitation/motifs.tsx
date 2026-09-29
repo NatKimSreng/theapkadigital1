@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
  * Each design's own signature ornament, drawn above section headings.
  */
 export type Motif =
+    | 'bloom'
     | 'diamond'
     | 'spires'
     | 'lotus'
@@ -36,6 +37,34 @@ function Rule({ color, x1, x2 }: { color: string; x1: number; x2: number }) {
 export function SectionMotif({ motif, primary, secondary, className }: Props) {
     const art = (() => {
         switch (motif) {
+            case 'bloom':
+                return (
+                    <>
+                        <Rule color={secondary} x1={10} x2={76} />
+                        <Rule color={secondary} x1={124} x2={190} />
+                        <path
+                            d="M84 24c4-8 10-10 14-6M116 24c-4-8-10-10-14-6"
+                            fill="none"
+                            stroke="#8fae7e"
+                            strokeWidth="1.6"
+                        />
+                        <g transform="translate(100 18)">
+                            {[0, 72, 144, 216, 288].map((angle) => (
+                                <ellipse
+                                    key={angle}
+                                    cy="-5"
+                                    rx="6"
+                                    ry="5.5"
+                                    fill={secondary}
+                                    fillOpacity="0.85"
+                                    transform={`rotate(${angle})`}
+                                />
+                            ))}
+                            <circle r="4" fill="#fbe3e8" />
+                            <circle r="1.8" fill={primary} />
+                        </g>
+                    </>
+                );
             case 'diamond':
                 return (
                     <>

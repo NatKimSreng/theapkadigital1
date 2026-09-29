@@ -28,11 +28,10 @@ export default defineConfig({
             formVariants: true,
         }),
     ]),
-    ssr: {
-        // A self-contained server bundle, so production needs only Node and
-        // not node_modules.
-        noExternal: true,
-    },
+    // Production builds make a self-contained server bundle, so the server
+    // needs only Node and not node_modules. The dev server can't inline
+    // CommonJS packages like react this way, so it keeps them external.
+    ssr: process.argv.includes('build') ? { noExternal: true } : {},
     server: {
         watch: {
             ignored: [

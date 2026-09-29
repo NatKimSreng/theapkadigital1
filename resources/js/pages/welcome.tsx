@@ -59,9 +59,9 @@ function Eyebrow({ children }: { children: ReactNode }) {
 // The first is the front phone in the hero, the second the one behind it.
 const FEATURED = [
     'paper-frame',
+    'blush-garden',
     'royal-wedding',
     'angkor-cinematic',
-    'lotus-garden',
 ]
     .map((key) => findTemplate(key))
     .filter((template): template is TemplateDefinition => !!template?.theme);

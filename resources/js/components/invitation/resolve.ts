@@ -96,6 +96,32 @@ export function longDate(value: string | null, lang: InvitationLang): string {
 }
 
 /**
+ * The couple's initials for a monogram crest, preferring the English names
+ * ("Sok Visal" & "Chan Sreynich" -> "VS" uses given names' first letters).
+ */
+function monogram(
+    settings: InvitationSettings,
+    event: InvitationEvent,
+): string {
+    const names = [
+        settings.texts?.en?.host_left || event.groom_name || event.name,
+        settings.texts?.en?.host_right || event.bride_name || '',
+    ];
+
+    const letters = names
+        .map((name) => {
+            const words = (name ?? '').trim().split(/\s+/).filter(Boolean);
+            // Khmer names put the family name first, so use the given name.
+            const given = words.length > 1 ? words[words.length - 1] : words[0];
+
+            return given ? Array.from(given)[0].toUpperCase() : '';
+        })
+        .filter(Boolean);
+
+    return letters.join('') || '♥';
+}
+
+/**
  * The languages an invitation is shown in, in display order.
  */
 export function invitationLangs(
@@ -173,7 +199,8 @@ export function resolveInvitation(
             .filter((item) => item.time || item.title),
         primary: settings.primary_color || theme.primary,
         secondary: settings.secondary_color || theme.secondary,
-        gold: settings.gold_text ?? false,
+        gold: settings.gold_text ?? theme.gold ?? false,
+        monogram: monogram(settings, event),
         hideHosts: settings.hide_hosts ?? false,
         showCountdown: (settings.show_countdown ?? true) && !!event.event_date,
         gift: settings.gift ?? {},

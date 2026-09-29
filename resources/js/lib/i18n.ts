@@ -819,6 +819,7 @@ const en = {
         'Every post has a cover image (:count missing)',
     'analytics.seo_post_descriptions':
         'Every post has a summary (:count missing)',
+    'template.blush-garden': 'Blush Garden',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -1594,6 +1595,7 @@ const km: Record<TranslationKey, string> = {
     'analytics.seo_posts': 'មានអត្ថបទយ៉ាងហោចណាស់ ៥ (ឥឡូវ :count)',
     'analytics.seo_post_covers': 'គ្រប់អត្ថបទមានរូបគម្រប (ខ្វះ :count)',
     'analytics.seo_post_descriptions': 'គ្រប់អត្ថបទមានសេចក្តីសង្ខេប (ខ្វះ :count)',
+    'template.blush-garden': 'សួនផ្កាពណ៌ផ្កាឈូក',
 };
 
 export type Locale = 'km' | 'en';

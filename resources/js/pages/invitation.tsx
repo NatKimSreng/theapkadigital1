@@ -64,7 +64,7 @@ export default function PublicInvitation({
             >
                 <main className="relative mx-auto min-h-svh max-w-[480px] shadow-2xl">
                     {langs.length > 1 && (
-                        <div className="absolute top-3 left-3 z-20 flex overflow-hidden rounded-full bg-black/40 text-xs text-white backdrop-blur-sm">
+                        <div className="absolute top-3 left-3 z-40 flex overflow-hidden rounded-full bg-black/40 text-xs text-white backdrop-blur-sm">
                             {langs.map((option) => (
                                 <button
                                     key={option}

@@ -39,7 +39,7 @@ export function TemplatePreviewDialog({
                 {template && (
                     <>
                         <div className="relative min-h-0 flex-1 overflow-y-auto">
-                            <div className="absolute top-3 left-3 z-20 flex overflow-hidden rounded-full bg-black/40 text-xs text-white backdrop-blur-sm">
+                            <div className="absolute top-3 left-3 z-40 flex overflow-hidden rounded-full bg-black/40 text-xs text-white backdrop-blur-sm">
                                 {(['km', 'en'] as const).map((option) => (
                                     <button
                                         key={option}

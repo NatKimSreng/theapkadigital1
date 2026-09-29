@@ -14,6 +14,7 @@ import {
     Reveal,
     Rise,
 } from './animations';
+import { GardenCover } from './garden';
 import { HeroPhoto, photoFocus } from './heroes';
 import { SectionMotif } from './motifs';
 import { Ornament } from './ornaments';
@@ -248,156 +249,174 @@ function ClassicLayout({
                 <MusicButton src={media.music} autoStart={autoStartMusic} />
             )}
 
-            <section
-                className={cn(
-                    'relative flex flex-col items-center px-6 pb-8 text-center',
-                    fullbleed
-                        ? cn(
-                              'pt-10',
-                              compact ? 'min-h-[480px]' : 'min-h-[720px]',
-                          )
-                        : 'min-h-[640px] pt-12',
-                )}
-            >
-                {fullbleed && media.cover && (
-                    <>
-                        <img
-                            src={media.cover}
-                            alt=""
-                            className="absolute inset-0 size-full object-cover"
-                            style={photoFocus(media.cover)}
-                        />
-                        <div
-                            aria-hidden
-                            className="absolute inset-0"
-                            style={{
-                                background: cinematic
-                                    ? 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 38%, rgba(10,8,6,0.75) 66%, #0d0b08 100%)'
-                                    : (theme.overlay ??
-                                      'linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.12) 30%, rgba(0,0,0,0.1) 48%, rgba(0,0,0,0.72) 78%, rgba(0,0,0,0.88) 100%)'),
-                            }}
-                        />
-                        {cinematic && (
+            {hero === 'garden' ? (
+                <GardenCover
+                    data={data}
+                    guestName={guestName}
+                    motion={motion}
+                    onScrollDown={
+                        compact
+                            ? undefined
+                            : () =>
+                                  details.current?.scrollIntoView({
+                                      behavior: 'smooth',
+                                  })
+                    }
+                />
+            ) : (
+                <section
+                    className={cn(
+                        'relative flex flex-col items-center px-6 pb-8 text-center',
+                        fullbleed
+                            ? cn(
+                                  'pt-10',
+                                  compact ? 'min-h-[480px]' : 'min-h-[720px]',
+                              )
+                            : 'min-h-[640px] pt-12',
+                    )}
+                >
+                    {fullbleed && media.cover && (
+                        <>
+                            <img
+                                src={media.cover}
+                                alt=""
+                                className="absolute inset-0 size-full object-cover"
+                                style={photoFocus(media.cover)}
+                            />
                             <div
                                 aria-hidden
-                                className="absolute inset-x-0 top-0 h-12 bg-black"
+                                className="absolute inset-0"
+                                style={{
+                                    background: cinematic
+                                        ? 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 38%, rgba(10,8,6,0.75) 66%, #0d0b08 100%)'
+                                        : (theme.overlay ??
+                                          'linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.12) 30%, rgba(0,0,0,0.1) 48%, rgba(0,0,0,0.72) 78%, rgba(0,0,0,0.88) 100%)'),
+                                }}
                             />
-                        )}
-                    </>
-                )}
-
-                {split && media.cover && (
-                    <div className="-mx-6 -mt-12 mb-6 self-stretch">
-                        <img
-                            src={media.cover}
-                            alt=""
-                            className="h-80 w-full object-cover"
-                            style={{
-                                ...photoFocus(media.cover),
-                                maskImage:
-                                    'linear-gradient(180deg, black 62%, transparent 100%)',
-                                WebkitMaskImage:
-                                    'linear-gradient(180deg, black 62%, transparent 100%)',
-                            }}
-                        />
-                    </div>
-                )}
-
-                {theme.ornament === 'frame' && (
-                    <div
-                        className="pointer-events-none absolute inset-3 z-10 rounded-sm border-2"
-                        style={{ borderColor: `${primary}88` }}
-                    />
-                )}
-
-                <div className="relative z-10 flex w-full flex-1 flex-col items-center">
-                    {!(cinematic && media.cover) && titleBlock}
-
-                    {fullbleed && media.cover ? (
-                        <>
-                            <div className="flex-1" />
-                            {cinematic && titleBlock}
-                        </>
-                    ) : (
-                        <>
-                            {hosts}
-                            {!split && (
-                                <Rise
-                                    motion={motion}
-                                    step={2}
-                                    className="my-6 flex flex-1 items-center justify-center"
-                                >
-                                    <HeroPhoto
-                                        style={hero}
-                                        src={media.cover}
-                                        data={data}
-                                        motion={motion}
-                                    />
-                                </Rise>
+                            {cinematic && (
+                                <div
+                                    aria-hidden
+                                    className="absolute inset-x-0 top-0 h-12 bg-black"
+                                />
                             )}
                         </>
                     )}
 
-                    {fullbleed && media.cover && hosts}
-
-                    <Rise
-                        motion={motion}
-                        step={3}
-                        className={split ? 'mt-5' : ''}
-                    >
-                        <p
-                            className="text-[17px] leading-[1.8]"
-                            style={titleStyle}
-                        >
-                            {data.inviteLine}
-                        </p>
-                    </Rise>
-
-                    <Rise motion={motion} step={4} className="mt-3 w-full">
-                        <div
-                            className="rounded-full border-2 px-5 py-2.5 shadow-md backdrop-blur-sm"
-                            style={{
-                                borderColor: primary,
-                                background: theme.panel,
-                            }}
-                        >
-                            <p
-                                className="truncate text-[17px] leading-[1.9]"
-                                style={titleStyle}
-                            >
-                                {guestName}
-                            </p>
+                    {split && media.cover && (
+                        <div className="-mx-6 -mt-12 mb-6 self-stretch">
+                            <img
+                                src={media.cover}
+                                alt=""
+                                className="h-80 w-full object-cover"
+                                style={{
+                                    ...photoFocus(media.cover),
+                                    maskImage:
+                                        'linear-gradient(180deg, black 62%, transparent 100%)',
+                                    WebkitMaskImage:
+                                        'linear-gradient(180deg, black 62%, transparent 100%)',
+                                }}
+                            />
                         </div>
-                    </Rise>
-
-                    {data.dateText && (
-                        <Rise motion={motion} step={5}>
-                            <p
-                                className="mt-4 text-[15px] font-semibold"
-                                style={headlineStyle(data, secondary)}
-                            >
-                                {data.dateText}
-                            </p>
-                        </Rise>
                     )}
 
-                    <Rise motion={motion} step={6}>
-                        <DaysToGo data={data} className="mt-3" />
-                    </Rise>
-
-                    {!compact && (
-                        <ScrollHint
-                            label={copy.scrollDown}
-                            showEnglish={data.lang === 'km' && data.bilingual}
-                            onClick={() =>
-                                details.current?.scrollIntoView({
-                                    behavior: 'smooth',
-                                })
-                            }
+                    {theme.ornament === 'frame' && (
+                        <div
+                            className="pointer-events-none absolute inset-3 z-10 rounded-sm border-2"
+                            style={{ borderColor: `${primary}88` }}
                         />
                     )}
-                </div>
-            </section>
+
+                    <div className="relative z-10 flex w-full flex-1 flex-col items-center">
+                        {!(cinematic && media.cover) && titleBlock}
+
+                        {fullbleed && media.cover ? (
+                            <>
+                                <div className="flex-1" />
+                                {cinematic && titleBlock}
+                            </>
+                        ) : (
+                            <>
+                                {hosts}
+                                {!split && (
+                                    <Rise
+                                        motion={motion}
+                                        step={2}
+                                        className="my-6 flex flex-1 items-center justify-center"
+                                    >
+                                        <HeroPhoto
+                                            style={hero}
+                                            src={media.cover}
+                                            data={data}
+                                            motion={motion}
+                                        />
+                                    </Rise>
+                                )}
+                            </>
+                        )}
+
+                        {fullbleed && media.cover && hosts}
+
+                        <Rise
+                            motion={motion}
+                            step={3}
+                            className={split ? 'mt-5' : ''}
+                        >
+                            <p
+                                className="text-[17px] leading-[1.8]"
+                                style={titleStyle}
+                            >
+                                {data.inviteLine}
+                            </p>
+                        </Rise>
+
+                        <Rise motion={motion} step={4} className="mt-3 w-full">
+                            <div
+                                className="rounded-full border-2 px-5 py-2.5 shadow-md backdrop-blur-sm"
+                                style={{
+                                    borderColor: primary,
+                                    background: theme.panel,
+                                }}
+                            >
+                                <p
+                                    className="truncate text-[17px] leading-[1.9]"
+                                    style={titleStyle}
+                                >
+                                    {guestName}
+                                </p>
+                            </div>
+                        </Rise>
+
+                        {data.dateText && (
+                            <Rise motion={motion} step={5}>
+                                <p
+                                    className="mt-4 text-[15px] font-semibold"
+                                    style={headlineStyle(data, secondary)}
+                                >
+                                    {data.dateText}
+                                </p>
+                            </Rise>
+                        )}
+
+                        <Rise motion={motion} step={6}>
+                            <DaysToGo data={data} className="mt-3" />
+                        </Rise>
+
+                        {!compact && (
+                            <ScrollHint
+                                label={copy.scrollDown}
+                                showEnglish={
+                                    data.lang === 'km' && data.bilingual
+                                }
+                                onClick={() =>
+                                    details.current?.scrollIntoView({
+                                        behavior: 'smooth',
+                                    })
+                                }
+                            />
+                        )}
+                    </div>
+                </section>
+            )}
 
             {!compact && (
                 <div

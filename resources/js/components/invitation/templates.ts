@@ -16,6 +16,7 @@ export type Ornament = 'frame' | 'rings' | 'balloons' | 'house' | 'hearts';
  * How the cover shows the couple's photo; each design uses its own.
  */
 export type HeroStyle =
+    | 'garden'
     | 'fullbleed'
     | 'cinematic'
     | 'split'
@@ -45,6 +46,8 @@ export type TemplateDefinition = {
         /** The design's own background texture and section ornament. */
         texture?: Texture;
         motif?: Motif;
+        /** Gold-foil headings unless the couple turns them off. */
+        gold?: boolean;
         opening: 'doors' | 'envelope' | 'curtain' | 'fade';
         effect: 'none' | 'petals' | 'sparkles' | 'hearts';
     };
@@ -179,6 +182,28 @@ export const TEMPLATES: TemplateDefinition[] = [
             motif: 'vine',
             opening: 'envelope',
             effect: 'hearts',
+        },
+    },
+    {
+        key: 'blush-garden',
+        category: 'wedding',
+        name: 'template.blush-garden',
+        free: false,
+        demoPhoto: 1,
+        theme: {
+            primary: '#b8862b',
+            secondary: '#d98ca0',
+            background:
+                'linear-gradient(180deg, #fdeef0 0%, #fbe6e8 50%, #fdf3ee 100%)',
+            text: '#7a5a3a',
+            panel: 'rgba(255, 255, 255, 0.72)',
+            ornament: 'hearts',
+            hero: 'garden',
+            texture: 'watercolor',
+            motif: 'bloom',
+            gold: true,
+            opening: 'fade',
+            effect: 'petals',
         },
     },
     {

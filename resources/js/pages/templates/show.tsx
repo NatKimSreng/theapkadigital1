@@ -47,7 +47,7 @@ export default function TemplateDemo({
                 )}
             >
                 <main className="relative mx-auto min-h-svh max-w-[480px] shadow-2xl">
-                    <div className="absolute top-3 left-3 z-20 flex overflow-hidden rounded-full bg-black/40 text-xs text-white backdrop-blur-sm">
+                    <div className="absolute top-3 left-3 z-40 flex overflow-hidden rounded-full bg-black/40 text-xs text-white backdrop-blur-sm">
                         {(['km', 'en'] as const).map((option) => (
                             <button
                                 key={option}
