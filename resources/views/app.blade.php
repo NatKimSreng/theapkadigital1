@@ -42,9 +42,14 @@
 
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
-        <x-inertia::head>
-            @include('partials.seo')
-        </x-inertia::head>
+        {{-- SEO tags always come from the server. <x-inertia::head> would
+             swap them out for the server-rendered head, so that head is added
+             here instead, minus its <title> so there is only one. --}}
+        @include('partials.seo')
+        @php($ssr = app(\Inertia\Ssr\SsrState::class)->dispatch())
+        @if ($ssr)
+            {!! preg_replace('#<title\b[^>]*>.*?</title>#s', '', $ssr->head) !!}
+        @endif
     </head>
     <body class="font-sans antialiased">
         <x-inertia::app />

@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Ssr\Gateway;
+use Inertia\Ssr\Response as SsrResponse;
 use Tests\TestCase;
 
 class SeoTest extends TestCase
@@ -22,6 +24,24 @@ class SeoTest extends TestCase
             ->assertSee('<meta name="robots" content="index, follow, max-image-preview:large">', false)
             ->assertSee('"@type":"Organization"', false)
             ->assertSee('<meta property="og:image" content="'.asset('og-image.png').'">', false);
+    }
+
+    public function test_server_rendered_pages_keep_their_seo_tags_and_one_title()
+    {
+        $this->app->instance(Gateway::class, new class implements Gateway
+        {
+            public function dispatch(array $page): ?SsrResponse
+            {
+                return new SsrResponse('<title data-inertia="">Client title</title>', '<div id="app">Rendered</div>');
+            }
+        });
+
+        $html = $this->get(route('pricing'))->assertOk()->getContent();
+
+        $this->assertStringContainsString('<meta name="description"', $html);
+        $this->assertStringContainsString('<meta property="og:title"', $html);
+        $this->assertStringContainsString('Rendered', $html);
+        $this->assertSame(1, substr_count($html, '<title'));
     }
 
     public function test_private_pages_are_noindex()
