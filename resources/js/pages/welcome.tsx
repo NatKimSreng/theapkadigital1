@@ -56,10 +56,11 @@ function Eyebrow({ children }: { children: ReactNode }) {
     );
 }
 
+// The first is the front phone in the hero, the second the one behind it.
 const FEATURED = [
-    'angkor-cinematic',
-    'royal-wedding',
     'paper-frame',
+    'royal-wedding',
+    'angkor-cinematic',
     'lotus-garden',
 ]
     .map((key) => findTemplate(key))
