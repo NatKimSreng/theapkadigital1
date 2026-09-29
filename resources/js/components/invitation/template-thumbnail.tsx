@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
+import { demoEvent, demoMedia, demoSettings } from './demo';
 import { InvitationCard } from './invitation-card';
-import type { InvitationEvent } from './resolve';
-import { emptyMedia } from './resolve';
 import type { TemplateDefinition } from './templates';
 
 const DESIGN_WIDTH = 360;
-const NO_MEDIA = emptyMedia();
 
 /**
- * A static, scaled-down render of a template's cover section.
+ * A static, scaled-down render of a template's cover, filled with the
+ * sample photos and names.
  */
 export function TemplateThumbnail({
     template,
-    event,
+    className = 'aspect-[3/4]',
 }: {
     template: TemplateDefinition;
-    event: InvitationEvent;
+    className?: string;
 }) {
     const box = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(0.75);
@@ -38,7 +38,10 @@ export function TemplateThumbnail({
     return (
         <div
             ref={box}
-            className="pointer-events-none relative aspect-[9/8] overflow-hidden"
+            className={cn(
+                'pointer-events-none relative overflow-hidden',
+                className,
+            )}
         >
             <div
                 className="absolute top-0 left-0 origin-top-left"
@@ -46,9 +49,9 @@ export function TemplateThumbnail({
             >
                 <InvitationCard
                     template={template}
-                    settings={{}}
-                    media={NO_MEDIA}
-                    event={event}
+                    settings={demoSettings(template)}
+                    media={demoMedia(template)}
+                    event={demoEvent(template)}
                     lang="km"
                     compact
                 />

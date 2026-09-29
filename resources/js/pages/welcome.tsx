@@ -1,9 +1,9 @@
 import { Head, Link, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import {
     ArrowRight,
     CalendarHeart,
-    CheckCircle2,
     ClipboardCheck,
     Gift,
     Languages,
@@ -12,13 +12,20 @@ import {
     Users,
 } from 'lucide-react';
 import { PostCard } from '@/components/blog/post-card';
+import { TemplateCard } from '@/components/invitation/template-card';
+import { TemplatePreviewDialog } from '@/components/invitation/template-preview';
+import { TemplateThumbnail } from '@/components/invitation/template-thumbnail';
+import type { TemplateDefinition } from '@/components/invitation/templates';
+import { findTemplate } from '@/components/invitation/templates';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 import { Button } from '@/components/ui/button';
 import type { TranslationKey } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
 import { dashboard, register } from '@/routes';
 import blog from '@/routes/blog';
+import { index as templatesIndex } from '@/routes/templates';
 import type { PostSummary } from '@/types';
 
 const features: {
@@ -49,91 +56,65 @@ function Eyebrow({ children }: { children: ReactNode }) {
     );
 }
 
-function InvitationPreview() {
-    const { t } = useTranslation();
+const FEATURED = [
+    'angkor-cinematic',
+    'royal-wedding',
+    'paper-frame',
+    'lotus-garden',
+]
+    .map((key) => findTemplate(key))
+    .filter((template): template is TemplateDefinition => !!template?.theme);
+
+function Phone({
+    template,
+    className,
+    onOpen,
+}: {
+    template: TemplateDefinition;
+    className?: string;
+    onOpen: () => void;
+}) {
+    return (
+        <button
+            type="button"
+            onClick={onOpen}
+            className={cn(
+                'block w-56 overflow-hidden rounded-[2.4rem] border-[7px] border-neutral-900 bg-neutral-900 shadow-2xl shadow-black/30 transition-transform hover:-translate-y-1 sm:w-64',
+                className,
+            )}
+        >
+            <TemplateThumbnail
+                template={template}
+                className="aspect-[9/17] rounded-[1.9rem]"
+            />
+        </button>
+    );
+}
+
+function HeroPhones({
+    onOpen,
+}: {
+    onOpen: (template: TemplateDefinition) => void;
+}) {
+    const [front, back] = FEATURED;
 
     return (
-        <div className="relative mx-auto w-full max-w-sm">
-            <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-gradient-to-br from-primary/25 via-accent to-transparent blur-2xl" />
-
-            <div className="rotate-[-2deg] rounded-[2rem] bg-card p-3 shadow-2xl ring-1 shadow-primary/15 ring-primary/20">
-                <div className="rounded-[1.6rem] border border-primary/40 p-1.5">
-                    <div className="flex flex-col items-center rounded-[1.3rem] border border-primary/25 bg-gradient-to-b from-accent/70 to-card px-6 py-10 text-center">
-                        <svg
-                            viewBox="0 0 120 20"
-                            className="h-5 w-28 text-primary"
-                            aria-hidden
-                        >
-                            <path
-                                d="M2 10h44M74 10h44"
-                                stroke="currentColor"
-                                strokeWidth="1"
-                            />
-                            <path
-                                d="M60 2l6 8-6 8-6-8z"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.2"
-                            />
-                            <circle
-                                cx="50"
-                                cy="10"
-                                r="1.6"
-                                fill="currentColor"
-                            />
-                            <circle
-                                cx="70"
-                                cy="10"
-                                r="1.6"
-                                fill="currentColor"
-                            />
-                        </svg>
-                        <p className="mt-6 text-[11px] tracking-[0.3em] text-muted-foreground uppercase">
-                            {t('welcome.mock_label')}
-                        </p>
-                        <p className="mt-3 font-['Great_Vibes'] text-5xl leading-tight text-primary">
-                            Sophea
-                        </p>
-                        <p className="font-serif text-2xl text-muted-foreground italic">
-                            &amp;
-                        </p>
-                        <p className="font-['Great_Vibes'] text-5xl leading-tight text-primary">
-                            Dara
-                        </p>
-                        <div className="mt-6 h-px w-24 bg-primary/40" />
-                        <p className="mt-4 font-serif text-lg">
-                            {t('welcome.mock_date')}
-                        </p>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                            Phnom Penh
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="absolute -top-4 -left-2 flex items-center gap-3 rounded-2xl bg-card/95 px-4 py-3 shadow-lg ring-1 ring-border backdrop-blur sm:-left-14">
-                <div className="flex size-9 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-                    <CheckCircle2 className="size-5" />
-                </div>
-                <div className="text-left">
-                    <p className="text-lg leading-none font-semibold">128</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                        {t('welcome.mock_rsvp')}
-                    </p>
-                </div>
-            </div>
-
-            <div className="absolute -right-2 -bottom-6 flex items-center gap-3 rounded-2xl bg-card/95 px-4 py-3 shadow-lg ring-1 ring-border backdrop-blur sm:-right-12">
-                <div className="flex size-9 items-center justify-center rounded-full bg-accent text-primary">
-                    <Gift className="size-5" />
-                </div>
-                <div className="text-left">
-                    <p className="text-lg leading-none font-semibold">$4,250</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                        {t('welcome.mock_gifts')}
-                    </p>
-                </div>
-            </div>
+        <div className="relative mx-auto flex h-[520px] w-full max-w-md items-center justify-center sm:h-[580px]">
+            <div className="absolute inset-10 -z-10 rounded-full bg-gradient-to-br from-primary/30 via-accent to-transparent blur-3xl" />
+            {back && (
+                <Phone
+                    template={back}
+                    onOpen={() => onOpen(back)}
+                    className="absolute top-2 right-0 hidden rotate-6 opacity-95 sm:block"
+                />
+            )}
+            {front && (
+                <Phone
+                    template={front}
+                    onOpen={() => onOpen(front)}
+                    className="relative -rotate-3 sm:-translate-x-16"
+                />
+            )}
         </div>
     );
 }
@@ -143,6 +124,9 @@ export default function Welcome({ posts }: { posts: PostSummary[] }) {
     const { t } = useTranslation();
     const startHref = auth.user ? dashboard() : register();
     const startLabel = auth.user ? t('welcome.dashboard') : t('welcome.start');
+    const [previewing, setPreviewing] = useState<TemplateDefinition | null>(
+        null,
+    );
 
     return (
         <>
@@ -184,7 +168,7 @@ export default function Welcome({ posts }: { posts: PostSummary[] }) {
                                     variant="outline"
                                     className="h-12 rounded-full border-primary/40 bg-transparent px-8"
                                 >
-                                    <a href="#features">
+                                    <a href="#templates">
                                         {t('welcome.explore')}
                                     </a>
                                 </Button>
@@ -211,9 +195,43 @@ export default function Welcome({ posts }: { posts: PostSummary[] }) {
                             </dl>
                         </div>
 
-                        <InvitationPreview />
+                        <HeroPhones onOpen={setPreviewing} />
                     </section>
                 </div>
+
+                <section
+                    id="templates"
+                    className="mx-auto max-w-6xl scroll-mt-8 px-4 pb-24 sm:px-6"
+                >
+                    <div className="flex flex-wrap items-end justify-between gap-4">
+                        <div>
+                            <Eyebrow>{t('showcase.eyebrow')}</Eyebrow>
+                            <h2 className="mt-4 font-serif text-4xl font-semibold sm:text-5xl">
+                                {t('showcase.home_title')}
+                            </h2>
+                            <p className="mt-3 max-w-xl text-muted-foreground">
+                                {t('showcase.home_subtitle')}
+                            </p>
+                        </div>
+                        <Link
+                            href={templatesIndex()}
+                            className="flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                        >
+                            {t('showcase.see_all')}
+                            <ArrowRight className="size-4" />
+                        </Link>
+                    </div>
+                    <div className="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+                        {FEATURED.map((template) => (
+                            <TemplateCard
+                                key={template.key}
+                                template={template}
+                                premium={!template.free}
+                                onPreview={() => setPreviewing(template)}
+                            />
+                        ))}
+                    </div>
+                </section>
 
                 <section
                     id="features"
@@ -339,6 +357,16 @@ export default function Welcome({ posts }: { posts: PostSummary[] }) {
 
                 <PublicFooter />
             </div>
+
+            <TemplatePreviewDialog
+                template={previewing}
+                onClose={() => setPreviewing(null)}
+                actions={
+                    <Button asChild size="sm" className="rounded-full">
+                        <Link href={startHref}>{t('showcase.use')}</Link>
+                    </Button>
+                }
+            />
         </>
     );
 }

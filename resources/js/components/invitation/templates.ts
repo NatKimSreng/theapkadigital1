@@ -10,12 +10,26 @@ export type TemplateCategory =
 
 export type Ornament = 'frame' | 'rings' | 'balloons' | 'house' | 'hearts';
 
+/**
+ * How the cover shows the couple's photo; each design uses its own.
+ */
+export type HeroStyle =
+    | 'fullbleed'
+    | 'cinematic'
+    | 'split'
+    | 'arch'
+    | 'polaroid'
+    | 'circle'
+    | 'framed';
+
 export type TemplateDefinition = {
     key: string;
     category: TemplateCategory;
     name: TranslationKey;
     free: boolean;
     layout?: 'classic' | 'paper';
+    /** Which sample photo leads this design's previews. */
+    demoPhoto?: number;
     theme?: {
         primary: string;
         secondary: string;
@@ -23,6 +37,9 @@ export type TemplateDefinition = {
         text: string;
         panel: string;
         ornament: Ornament;
+        hero?: HeroStyle;
+        /** Tint over a full-screen cover photo, top to bottom. */
+        overlay?: string;
         opening: 'doors' | 'envelope' | 'curtain' | 'fade';
         effect: 'none' | 'petals' | 'sparkles' | 'hearts';
     };
@@ -41,6 +58,7 @@ export const TEMPLATES: TemplateDefinition[] = [
         category: 'wedding',
         name: 'template.paper-frame',
         free: true,
+        demoPhoto: 0,
         layout: 'paper',
         theme: {
             primary: '#7e6749',
@@ -58,6 +76,7 @@ export const TEMPLATES: TemplateDefinition[] = [
         category: 'wedding',
         name: 'template.royal-wedding',
         free: false,
+        demoPhoto: 3,
         theme: {
             primary: '#f5d78e',
             secondary: '#fff4d6',
@@ -66,6 +85,9 @@ export const TEMPLATES: TemplateDefinition[] = [
             text: '#fbe9d0',
             panel: 'rgba(0, 0, 0, 0.22)',
             ornament: 'frame',
+            hero: 'fullbleed',
+            overlay:
+                'linear-gradient(180deg, rgba(90,15,28,0.8) 0%, rgba(90,15,28,0.2) 30%, rgba(59,9,19,0.15) 48%, rgba(59,9,19,0.82) 78%, #3b0913 100%)',
             opening: 'doors',
             effect: 'sparkles',
         },
@@ -75,6 +97,7 @@ export const TEMPLATES: TemplateDefinition[] = [
         category: 'engagement',
         name: 'template.golden-engagement',
         free: true,
+        demoPhoto: 1,
         theme: {
             primary: '#f9af59',
             secondary: '#b08e4f',
@@ -83,6 +106,7 @@ export const TEMPLATES: TemplateDefinition[] = [
             text: '#6b5536',
             panel: 'rgba(255, 255, 255, 0.6)',
             ornament: 'rings',
+            hero: 'arch',
             opening: 'envelope',
             effect: 'sparkles',
         },
@@ -92,6 +116,7 @@ export const TEMPLATES: TemplateDefinition[] = [
         category: 'birthday',
         name: 'template.blossom-birthday',
         free: true,
+        demoPhoto: 2,
         theme: {
             primary: '#e0567a',
             secondary: '#f4a261',
@@ -100,6 +125,7 @@ export const TEMPLATES: TemplateDefinition[] = [
             text: '#7a3b4f',
             panel: 'rgba(255, 255, 255, 0.65)',
             ornament: 'balloons',
+            hero: 'polaroid',
             opening: 'curtain',
             effect: 'hearts',
         },
@@ -109,6 +135,7 @@ export const TEMPLATES: TemplateDefinition[] = [
         category: 'housewarming',
         name: 'template.modern-housewarming',
         free: true,
+        demoPhoto: 2,
         theme: {
             primary: '#e9c46a',
             secondary: '#f4f1de',
@@ -116,6 +143,7 @@ export const TEMPLATES: TemplateDefinition[] = [
             text: '#e8eef4',
             panel: 'rgba(255, 255, 255, 0.08)',
             ornament: 'house',
+            hero: 'framed',
             opening: 'doors',
             effect: 'sparkles',
         },
@@ -125,6 +153,7 @@ export const TEMPLATES: TemplateDefinition[] = [
         category: 'anniversary',
         name: 'template.classic-anniversary',
         free: false,
+        demoPhoto: 1,
         theme: {
             primary: '#c9a227',
             secondary: '#7b2d3b',
@@ -132,21 +161,47 @@ export const TEMPLATES: TemplateDefinition[] = [
             text: '#5b3a29',
             panel: 'rgba(255, 255, 255, 0.55)',
             ornament: 'hearts',
+            hero: 'circle',
             opening: 'envelope',
             effect: 'hearts',
         },
     },
     {
-        key: 'premium-folding',
+        key: 'angkor-cinematic',
         category: 'wedding',
-        name: 'template.premium-folding',
+        name: 'template.angkor-cinematic',
         free: false,
+        demoPhoto: 0,
+        theme: {
+            primary: '#e8c77a',
+            secondary: '#f6e7c1',
+            background: 'linear-gradient(180deg, #14110d 0%, #1f1a14 100%)',
+            text: '#f3ead8',
+            panel: 'rgba(255, 255, 255, 0.07)',
+            ornament: 'frame',
+            hero: 'cinematic',
+            opening: 'curtain',
+            effect: 'sparkles',
+        },
     },
     {
-        key: 'premium-multilingual',
+        key: 'lotus-garden',
         category: 'wedding',
-        name: 'template.premium-multilingual',
+        name: 'template.lotus-garden',
         free: false,
+        demoPhoto: 1,
+        theme: {
+            primary: '#b5557a',
+            secondary: '#6f8f72',
+            background:
+                'linear-gradient(180deg, #fbf6f1 0%, #f6eee6 60%, #efe6dc 100%)',
+            text: '#4d3a36',
+            panel: 'rgba(255, 255, 255, 0.72)',
+            ornament: 'hearts',
+            hero: 'split',
+            opening: 'envelope',
+            effect: 'petals',
+        },
     },
 ];
 

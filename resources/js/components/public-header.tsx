@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/lib/i18n';
 import { dashboard, home, login, pricing, register } from '@/routes';
 import blog from '@/routes/blog';
+import { index as templatesIndex } from '@/routes/templates';
 
 /**
  * The header of the public pages (home, pricing and blog).
@@ -17,6 +18,12 @@ export function PublicHeader() {
         <header className="relative mx-auto flex max-w-6xl items-center gap-3 px-4 py-5 sm:px-6">
             <Link href={home()}>
                 <AppLogo />
+            </Link>
+            <Link
+                href={templatesIndex()}
+                className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:block"
+            >
+                {t('nav.templates')}
             </Link>
             <Link
                 href={pricing()}

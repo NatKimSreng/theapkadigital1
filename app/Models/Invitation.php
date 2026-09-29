@@ -31,12 +31,14 @@ class Invitation extends Model
         'blossom-birthday',
         'modern-housewarming',
         'classic-anniversary',
+        'angkor-cinematic',
+        'lotus-garden',
     ];
 
     /**
      * Templates that need a package with premium templates.
      */
-    public const PREMIUM_TEMPLATES = ['royal-wedding', 'classic-anniversary'];
+    public const PREMIUM_TEMPLATES = ['royal-wedding', 'classic-anniversary', 'angkor-cinematic', 'lotus-garden'];
 
     public const MAX_PER_EVENT = 2;
 

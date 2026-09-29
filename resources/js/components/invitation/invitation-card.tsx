@@ -14,6 +14,7 @@ import {
     Reveal,
     Rise,
 } from './animations';
+import { HeroPhoto, photoFocus } from './heroes';
 import { Ornament } from './ornaments';
 import { PaperLayout } from './paper-layout';
 import {
@@ -154,6 +155,50 @@ function ClassicLayout({
         fontFamily: TITLE_FONT,
     };
 
+    const hero = theme.hero ?? 'framed';
+    const cinematic = hero === 'cinematic';
+    const fullbleed = hero === 'fullbleed' || cinematic;
+    const split = hero === 'split';
+
+    const titleBlock = (
+        <Rise motion={motion} step={0}>
+            <h1 className="text-[28px] leading-[1.7]" style={titleStyle}>
+                {data.title}
+            </h1>
+        </Rise>
+    );
+
+    const hosts = !data.hideHosts && data.hostLeft && (
+        <Rise
+            motion={motion}
+            step={1}
+            className="mt-5 grid w-full grid-cols-[1fr_auto_1fr] items-center gap-2"
+        >
+            <p
+                className="text-[17px] leading-[1.8] break-words"
+                style={{
+                    ...titleStyle,
+                    gridColumn: data.hostRight ? undefined : '1 / -1',
+                }}
+            >
+                {data.hostLeft}
+            </p>
+            {data.hostRight && (
+                <>
+                    <span className="text-sm" style={{ color: secondary }}>
+                        {data.joiner}
+                    </span>
+                    <p
+                        className="text-[17px] leading-[1.8] break-words"
+                        style={titleStyle}
+                    >
+                        {data.hostRight}
+                    </p>
+                </>
+            )}
+        </Rise>
+    );
+
     const heading = (text: string) => (
         <h2 className="text-[19px] leading-[1.9]" style={titleStyle}>
             {text}
@@ -173,132 +218,155 @@ function ClassicLayout({
                 <MusicButton src={media.music} autoStart={autoStartMusic} />
             )}
 
-            <section className="relative flex min-h-[640px] flex-col items-center px-6 pt-12 pb-8 text-center">
+            <section
+                className={cn(
+                    'relative flex flex-col items-center px-6 pb-8 text-center',
+                    fullbleed
+                        ? cn(
+                              'pt-10',
+                              compact ? 'min-h-[480px]' : 'min-h-[720px]',
+                          )
+                        : 'min-h-[640px] pt-12',
+                )}
+            >
+                {fullbleed && media.cover && (
+                    <>
+                        <img
+                            src={media.cover}
+                            alt=""
+                            className="absolute inset-0 size-full object-cover"
+                            style={photoFocus(media.cover)}
+                        />
+                        <div
+                            aria-hidden
+                            className="absolute inset-0"
+                            style={{
+                                background: cinematic
+                                    ? 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 38%, rgba(10,8,6,0.75) 66%, #0d0b08 100%)'
+                                    : (theme.overlay ??
+                                      'linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.12) 30%, rgba(0,0,0,0.1) 48%, rgba(0,0,0,0.72) 78%, rgba(0,0,0,0.88) 100%)'),
+                            }}
+                        />
+                        {cinematic && (
+                            <div
+                                aria-hidden
+                                className="absolute inset-x-0 top-0 h-12 bg-black"
+                            />
+                        )}
+                    </>
+                )}
+
+                {split && media.cover && (
+                    <div className="-mx-6 -mt-12 mb-6 self-stretch">
+                        <img
+                            src={media.cover}
+                            alt=""
+                            className="h-80 w-full object-cover"
+                            style={{
+                                ...photoFocus(media.cover),
+                                maskImage:
+                                    'linear-gradient(180deg, black 62%, transparent 100%)',
+                                WebkitMaskImage:
+                                    'linear-gradient(180deg, black 62%, transparent 100%)',
+                            }}
+                        />
+                    </div>
+                )}
+
                 {theme.ornament === 'frame' && (
                     <div
-                        className="pointer-events-none absolute inset-3 rounded-sm border-2"
+                        className="pointer-events-none absolute inset-3 z-10 rounded-sm border-2"
                         style={{ borderColor: `${primary}88` }}
                     />
                 )}
 
-                <Rise motion={motion} step={0}>
-                    <h1
-                        className="text-[28px] leading-[1.7]"
-                        style={titleStyle}
-                    >
-                        {data.title}
-                    </h1>
-                </Rise>
+                <div className="relative z-10 flex w-full flex-1 flex-col items-center">
+                    {!(cinematic && media.cover) && titleBlock}
 
-                {!data.hideHosts && data.hostLeft && (
+                    {fullbleed && media.cover ? (
+                        <>
+                            <div className="flex-1" />
+                            {cinematic && titleBlock}
+                        </>
+                    ) : (
+                        <>
+                            {hosts}
+                            {!split && (
+                                <Rise
+                                    motion={motion}
+                                    step={2}
+                                    className="my-6 flex flex-1 items-center justify-center"
+                                >
+                                    <HeroPhoto
+                                        style={hero}
+                                        src={media.cover}
+                                        data={data}
+                                        motion={motion}
+                                    />
+                                </Rise>
+                            )}
+                        </>
+                    )}
+
+                    {fullbleed && media.cover && hosts}
+
                     <Rise
                         motion={motion}
-                        step={1}
-                        className="mt-5 grid w-full grid-cols-[1fr_auto_1fr] items-center gap-2"
+                        step={3}
+                        className={split ? 'mt-5' : ''}
                     >
                         <p
-                            className="text-[17px] leading-[1.8] break-words"
-                            style={{
-                                ...titleStyle,
-                                gridColumn: data.hostRight
-                                    ? undefined
-                                    : '1 / -1',
-                            }}
-                        >
-                            {data.hostLeft}
-                        </p>
-                        {data.hostRight && (
-                            <>
-                                <span
-                                    className="text-sm"
-                                    style={{ color: secondary }}
-                                >
-                                    {data.joiner}
-                                </span>
-                                <p
-                                    className="text-[17px] leading-[1.8] break-words"
-                                    style={titleStyle}
-                                >
-                                    {data.hostRight}
-                                </p>
-                            </>
-                        )}
-                    </Rise>
-                )}
-
-                <Rise
-                    motion={motion}
-                    step={2}
-                    className="my-6 flex flex-1 items-center justify-center"
-                >
-                    {media.cover ? (
-                        <img
-                            src={media.cover}
-                            alt=""
-                            className="max-h-64 w-full rounded-2xl object-cover shadow-lg"
-                        />
-                    ) : (
-                        <Ornament
-                            type={theme.ornament}
-                            primary={primary}
-                            secondary={secondary}
-                            className={cn(
-                                'h-48 w-48',
-                                motion !== 'static' && 'inv-float',
-                            )}
-                        />
-                    )}
-                </Rise>
-
-                <Rise motion={motion} step={3}>
-                    <p className="text-[17px] leading-[1.8]" style={titleStyle}>
-                        {data.inviteLine}
-                    </p>
-                </Rise>
-
-                <Rise motion={motion} step={4} className="mt-3 w-full">
-                    <div
-                        className="rounded-full border-2 px-5 py-2.5 shadow-md"
-                        style={{
-                            borderColor: primary,
-                            background: theme.panel,
-                        }}
-                    >
-                        <p
-                            className="truncate text-[17px] leading-[1.9]"
+                            className="text-[17px] leading-[1.8]"
                             style={titleStyle}
                         >
-                            {guestName}
-                        </p>
-                    </div>
-                </Rise>
-
-                {data.dateText && (
-                    <Rise motion={motion} step={5}>
-                        <p
-                            className="mt-4 text-[15px] font-semibold"
-                            style={headlineStyle(data, secondary)}
-                        >
-                            {data.dateText}
+                            {data.inviteLine}
                         </p>
                     </Rise>
-                )}
 
-                <Rise motion={motion} step={6}>
-                    <DaysToGo data={data} className="mt-3" />
-                </Rise>
+                    <Rise motion={motion} step={4} className="mt-3 w-full">
+                        <div
+                            className="rounded-full border-2 px-5 py-2.5 shadow-md backdrop-blur-sm"
+                            style={{
+                                borderColor: primary,
+                                background: theme.panel,
+                            }}
+                        >
+                            <p
+                                className="truncate text-[17px] leading-[1.9]"
+                                style={titleStyle}
+                            >
+                                {guestName}
+                            </p>
+                        </div>
+                    </Rise>
 
-                {!compact && (
-                    <ScrollHint
-                        label={copy.scrollDown}
-                        showEnglish={data.lang === 'km' && data.bilingual}
-                        onClick={() =>
-                            details.current?.scrollIntoView({
-                                behavior: 'smooth',
-                            })
-                        }
-                    />
-                )}
+                    {data.dateText && (
+                        <Rise motion={motion} step={5}>
+                            <p
+                                className="mt-4 text-[15px] font-semibold"
+                                style={headlineStyle(data, secondary)}
+                            >
+                                {data.dateText}
+                            </p>
+                        </Rise>
+                    )}
+
+                    <Rise motion={motion} step={6}>
+                        <DaysToGo data={data} className="mt-3" />
+                    </Rise>
+
+                    {!compact && (
+                        <ScrollHint
+                            label={copy.scrollDown}
+                            showEnglish={data.lang === 'km' && data.bilingual}
+                            onClick={() =>
+                                details.current?.scrollIntoView({
+                                    behavior: 'smooth',
+                                })
+                            }
+                        />
+                    )}
+                </div>
             </section>
 
             {!compact && (

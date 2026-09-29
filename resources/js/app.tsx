@@ -17,7 +17,8 @@ void createInertiaApp({
             case name === 'welcome' ||
                 name === 'invitation' ||
                 name === 'pricing' ||
-                name.startsWith('blog/'):
+                name.startsWith('blog/') ||
+                name.startsWith('templates/'):
                 return null;
             case name.startsWith('auth/'):
                 return AuthLayout;

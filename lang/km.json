@@ -22,5 +22,9 @@
     "The file is empty.": "ឯកសារទទេ។",
     "The first row must have the column names. Missing: :columns.": "ជួរទីមួយត្រូវមានឈ្មោះជួរឈរ។ ខ្វះ៖ :columns។",
     "Too many rows: import at most :max posts at a time.": "ជួរច្រើនពេក៖ អាចនាំចូលបានច្រើនបំផុត :max អត្ថបទក្នុងមួយដង។",
-    "The file has no posts under the column names.": "មិនមានអត្ថបទនៅក្រោមឈ្មោះជួរឈរទេ។"
+    "The file has no posts under the column names.": "មិនមានអត្ថបទនៅក្រោមឈ្មោះជួរឈរទេ។",
+    "Invitation templates": "គំរូធៀបការ",
+    "Browse Theapka's digital wedding and event invitation designs — each with photos, countdown, agenda, map, gallery, gift QR and RSVP.": "មើលម៉ូដធៀបការឌីជីថលរបស់ Theapka សម្រាប់មង្គលការ និងកម្មវិធីផ្សេងៗ — មានរូបថត ការរាប់ថយក្រោយ កម្មវិធី ផែនទី វិចិត្រសាល QR ចំណងដៃ និងការឆ្លើយតប។",
+    ":name — invitation template": ":name — គំរូធៀបការ",
+    "See the :name design with sample photos, countdown, agenda, map, gallery and RSVP, then make it yours on Theapka.": "មើលម៉ូដ :name ជាមួយរូបថតគំរូ ការរាប់ថយក្រោយ កម្មវិធី ផែនទី វិចិត្រសាល និងការឆ្លើយតប ហើយបង្កើតជារបស់អ្នកនៅលើ Theapka។"
 }

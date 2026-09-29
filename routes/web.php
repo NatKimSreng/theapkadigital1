@@ -12,10 +12,13 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RsvpController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TemplateController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('pricing', [OrderController::class, 'pricing'])->name('pricing');
+Route::get('templates', [TemplateController::class, 'index'])->name('templates.index');
+Route::get('templates/{template}', [TemplateController::class, 'show'])->name('templates.show');
 Route::get('blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');

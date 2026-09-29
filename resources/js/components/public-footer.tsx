@@ -3,6 +3,7 @@ import AppLogo from '@/components/app-logo';
 import { useTranslation } from '@/lib/i18n';
 import { home, pricing } from '@/routes';
 import blog from '@/routes/blog';
+import { index as templatesIndex } from '@/routes/templates';
 
 /**
  * The footer of the public pages (home, pricing, blog).
@@ -12,6 +13,7 @@ export function PublicFooter() {
 
     const links = [
         { href: home.url(), label: t('nav.home') },
+        { href: templatesIndex.url(), label: t('nav.templates') },
         { href: pricing.url(), label: t('nav.pricing') },
         { href: blog.index.url(), label: t('nav.blog') },
     ];

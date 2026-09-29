@@ -183,8 +183,8 @@ const en = {
     'template.blossom-birthday': 'Blossom birthday',
     'template.modern-housewarming': 'Modern housewarming',
     'template.classic-anniversary': 'Classic anniversary',
-    'template.premium-folding': 'Premium folding card (3 languages)',
-    'template.premium-multilingual': 'Premium wedding card (multilingual)',
+    'template.angkor-cinematic': 'Angkor Cinematic',
+    'template.lotus-garden': 'Lotus Garden',
     'design.my_templates': 'My templates',
     'design.active': 'In use',
     'design.use': 'Use this template',
@@ -771,6 +771,19 @@ const en = {
         'Publish date, e.g. 2026-10-15 09:00. A future date schedules it.',
     'import.col_meta_title': 'Title shown on Google (optional).',
     'import.col_meta_description': 'Description shown on Google (optional).',
+    'nav.templates': 'Templates',
+    'showcase.eyebrow': 'Invitation designs',
+    'showcase.title': 'Invitation templates',
+    'showcase.subtitle':
+        'Every design comes with your photos, countdown, programme, map, gallery, gift QR and RSVP. Tap any design to see it in full.',
+    'showcase.home_title': 'Invitations your guests will remember',
+    'showcase.home_subtitle':
+        'Pick a design, add your photos and details, and send it on Telegram in minutes.',
+    'showcase.see_all': 'See all templates',
+    'showcase.full_demo': 'Open full demo',
+    'showcase.use': 'Use this design',
+    'showcase.cta': 'Start your invitation for free',
+    'showcase.demo_note': 'Demo with sample photos and names',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -956,8 +969,8 @@ const km: Record<TranslationKey, string> = {
     'template.blossom-birthday': 'គម្រូខួបកំណើត',
     'template.modern-housewarming': 'គម្រូពិធីឡើងផ្ទះ',
     'template.classic-anniversary': 'គម្រូខួបអាពាហ៍ពិពាហ៍',
-    'template.premium-folding': 'សំបុត្រប្រណីត folding (៣ភាសា)',
-    'template.premium-multilingual': 'សំបុត្រអាពាហ៍ពិពាហ៍ប្រណីត (ពហុភាសា)',
+    'template.angkor-cinematic': 'អង្គរ ស៊ីណេម៉ា',
+    'template.lotus-garden': 'សួនផ្កាឈូក',
     'design.my_templates': 'គំរូរបស់ខ្ញុំ',
     'design.active': 'កំពុងប្រើ',
     'design.use': 'ប្រើគំរូនេះ',
@@ -1501,6 +1514,19 @@ const km: Record<TranslationKey, string> = {
         'ថ្ងៃផ្សាយ ឧ. 2026-10-15 09:00។ ថ្ងៃខាងមុខ = កំណត់ពេលផ្សាយ។',
     'import.col_meta_title': 'ចំណងជើងលើ Google (ស្រេចចិត្ត)។',
     'import.col_meta_description': 'ការពិពណ៌នាលើ Google (ស្រេចចិត្ត)។',
+    'nav.templates': 'គំរូធៀប',
+    'showcase.eyebrow': 'ម៉ូដធៀបការ',
+    'showcase.title': 'គំរូធៀបការ',
+    'showcase.subtitle':
+        'គ្រប់ម៉ូដមានរូបថតរបស់អ្នក ការរាប់ថយក្រោយ កម្មវិធី ផែនទី វិចិត្រសាល QR ចំណងដៃ និងការឆ្លើយតប។ ចុចលើម៉ូដណាមួយដើម្បីមើលពេញ។',
+    'showcase.home_title': 'ធៀបការដែលភ្ញៀវនឹងចងចាំ',
+    'showcase.home_subtitle':
+        'ជ្រើសម៉ូដ បញ្ចូលរូបថត និងព័ត៌មាន ហើយផ្ញើតាម Telegram ក្នុងរយៈពេលប៉ុន្មាននាទី។',
+    'showcase.see_all': 'មើលគំរូទាំងអស់',
+    'showcase.full_demo': 'បើកមើលពេញ',
+    'showcase.use': 'ប្រើម៉ូដនេះ',
+    'showcase.cta': 'ចាប់ផ្តើមបង្កើតធៀបដោយឥតគិតថ្លៃ',
+    'showcase.demo_note': 'គំរូបង្ហាញ ជាមួយរូបថត និងឈ្មោះគំរូ',
 };
 
 export type Locale = 'km' | 'en';

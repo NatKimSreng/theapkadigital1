@@ -3,8 +3,7 @@ import { Check, Eye, Lock, Phone, Plus, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import InvitationController from '@/actions/App/Http/Controllers/InvitationController';
 import { EventShell } from '@/components/event/event-shell';
-import { InvitationCard } from '@/components/invitation/invitation-card';
-import { emptyMedia } from '@/components/invitation/resolve';
+import { TemplatePreviewDialog } from '@/components/invitation/template-preview';
 import { TemplateThumbnail } from '@/components/invitation/template-thumbnail';
 import type {
     TemplateCategory,
@@ -12,7 +11,6 @@ import type {
 } from '@/components/invitation/templates';
 import { TEMPLATES } from '@/components/invitation/templates';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useTranslation } from '@/lib/i18n';
 import { pricing } from '@/routes';
 import type { PlannerEvent } from '@/types';
@@ -24,8 +22,6 @@ const categoryStyles: Record<TemplateCategory, string> = {
     housewarming: 'bg-amber-100 text-amber-800',
     anniversary: 'bg-purple-100 text-purple-800',
 };
-
-const NO_MEDIA = emptyMedia();
 
 export default function Templates({
     event,
@@ -89,7 +85,7 @@ export default function Templates({
                     aria-label={t('templates.view')}
                 >
                     {badge(template)}
-                    <TemplateThumbnail template={template} event={event} />
+                    <TemplateThumbnail template={template} />
                 </button>
 
                 <div className="flex flex-1 flex-col gap-3 p-3">
@@ -245,25 +241,28 @@ export default function Templates({
                 </div>
             </section>
 
-            <Dialog
-                open={previewing !== null}
-                onOpenChange={(open) => !open && setPreviewing(null)}
-            >
-                <DialogContent className="max-h-[90svh] gap-0 overflow-y-auto p-0 sm:max-w-[420px]">
-                    <DialogTitle className="sr-only">
-                        {previewing && t(previewing.name)}
-                    </DialogTitle>
-                    {previewing && (
-                        <InvitationCard
-                            template={previewing}
-                            settings={{}}
-                            media={NO_MEDIA}
-                            event={event}
-                            lang="km"
-                        />
-                    )}
-                </DialogContent>
-            </Dialog>
+            <TemplatePreviewDialog
+                template={previewing}
+                onClose={() => setPreviewing(null)}
+                actions={
+                    previewing &&
+                    !added[previewing.key] &&
+                    (previewing.free || premiumUnlocked) && (
+                        <Button
+                            size="sm"
+                            className="rounded-full"
+                            disabled={full || adding !== null}
+                            onClick={() => {
+                                choose(previewing);
+                                setPreviewing(null);
+                            }}
+                        >
+                            <Plus className="size-4" />
+                            {t('templates.choose')}
+                        </Button>
+                    )
+                }
+            />
         </EventShell>
     );
 }
