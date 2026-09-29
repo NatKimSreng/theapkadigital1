@@ -44,18 +44,22 @@ void createInertiaApp({
     },
 });
 
-// This will set light / dark mode on load...
-initializeTheme();
-initializeLocale();
+// Browser-only start-up; the same file is also the server-side renderer's
+// entry, where there is no window or document.
+if (typeof window !== 'undefined') {
+    // This will set light / dark mode on load...
+    initializeTheme();
+    initializeLocale();
 
-// Google Analytics (enabled from Admin → Site settings) counts each Inertia page.
-router.on('navigate', (event) => {
-    // After the page's <Head> has set the new title.
-    setTimeout(() => {
-        window.gtag?.('event', 'page_view', {
-            page_location: window.location.href,
-            page_path: event.detail.page.url,
-            page_title: document.title,
+    // Google Analytics (enabled from Admin → Site settings) counts each Inertia page.
+    router.on('navigate', (event) => {
+        // After the page's <Head> has set the new title.
+        setTimeout(() => {
+            window.gtag?.('event', 'page_view', {
+                page_location: window.location.href,
+                page_path: event.detail.page.url,
+                page_title: document.title,
+            });
         });
     });
-});
+}

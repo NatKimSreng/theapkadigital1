@@ -43,4 +43,17 @@ php artisan storage:link --force
 php artisan migrate --force
 php artisan optimize
 
+# Server-side rendering, so search engines and link previews get real HTML.
+# Laravel falls back to browser rendering while it is down, so keep it alive
+# in the background.
+if [ -f bootstrap/ssr/app.js ]; then
+    (
+        while true; do
+            node bootstrap/ssr/app.js
+            echo "SSR server stopped; restarting in 2s"
+            sleep 2
+        done
+    ) &
+fi
+
 exec frankenphp php-server --root public/ --listen ":${PORT:-10000}"

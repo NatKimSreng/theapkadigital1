@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        // Server-side rendering is for search engines and link previews, so
+        // private pages (the planner, admin, personal invitations) skip it.
+        Inertia::withoutSsr([
+            'admin*', 'dashboard', 'events*', 'settings*', 'orders*', 'checkout*',
+            'i/*', 'invite/*', 'confirm-password', 'two-factor-challenge', 'reset-password*',
+        ]);
     }
 
     /**

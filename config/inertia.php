@@ -18,7 +18,10 @@ return [
     'ssr' => [
         'enabled' => true,
         'url' => 'http://127.0.0.1:13714',
-        // 'bundle' => base_path('bootstrap/ssr/ssr.mjs'),
+        // Built by `npm run build:ssr`; docker/start.sh keeps it running.
+        'bundle' => base_path('bootstrap/ssr/app.js'),
+        // Give up quickly and let the browser render if the renderer is slow.
+        'timeout' => 3,
 
     ],
 

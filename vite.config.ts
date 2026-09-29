@@ -28,6 +28,11 @@ export default defineConfig({
             formVariants: true,
         }),
     ]),
+    ssr: {
+        // A self-contained server bundle, so production needs only Node and
+        // not node_modules.
+        noExternal: true,
+    },
     server: {
         watch: {
             ignored: [

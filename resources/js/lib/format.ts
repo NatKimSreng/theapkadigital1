@@ -17,21 +17,79 @@ export function formatNumber(value: number): string {
     return numberFormatter.format(value || 0);
 }
 
+const KM_MONTHS = [
+    'មករា',
+    'កុម្ភៈ',
+    'មីនា',
+    'មេសា',
+    'ឧសភា',
+    'មិថុនា',
+    'កក្កដា',
+    'សីហា',
+    'កញ្ញា',
+    'តុលា',
+    'វិច្ឆិកា',
+    'ធ្នូ',
+];
+
+const EN_MONTHS = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+];
+
+// Timestamps are shown in Cambodian time everywhere, so the server-rendered
+// page and the browser always print the same date.
+const cambodia = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Phnom_Penh',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+});
+
+function dayParts(value: string): { day: number; month: number; year: number } {
+    if (!value.includes('T')) {
+        const [year, month, day] = value.slice(0, 10).split('-').map(Number);
+
+        return { day, month, year };
+    }
+
+    const parts = Object.fromEntries(
+        cambodia
+            .formatToParts(new Date(value))
+            .map((part) => [part.type, Number(part.value)]),
+    );
+
+    return { day: parts.day, month: parts.month, year: parts.year };
+}
+
+/**
+ * "28 កញ្ញា 2026" / "28 Sep 2026". Built by hand rather than with
+ * toLocaleDateString, whose Khmer output differs between Node and browsers.
+ */
 export function formatDate(value: string | null, locale: string): string {
     if (!value) {
         return '—';
     }
 
-    // Plain dates are local days; full timestamps keep their time zone.
-    const date = value.includes('T')
-        ? new Date(value)
-        : new Date(`${value}T00:00:00`);
+    const { day, month, year } = dayParts(value);
 
-    return date.toLocaleDateString(locale === 'km' ? 'km-KH' : 'en-GB', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-    });
+    if (!day || !month || !year) {
+        return '—';
+    }
+
+    const months = locale === 'km' ? KM_MONTHS : EN_MONTHS;
+
+    return `${day} ${months[month - 1]} ${year}`;
 }
 
 export function daysUntil(value: string | null): number | null {

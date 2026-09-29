@@ -1,4 +1,5 @@
 import type { OrderStatus, Package } from '@/types';
+import { formatDate } from '@/lib/format';
 
 type Named = Pick<Package, 'name'> & { name_km?: string | null };
 
@@ -23,12 +24,5 @@ export const statusStyles: Record<OrderStatus, string> = {
 };
 
 export function formatDateTime(value: string | null, locale: string): string {
-    if (!value) {
-        return '—';
-    }
-
-    return new Date(value).toLocaleDateString(
-        locale === 'km' ? 'km-KH' : 'en-GB',
-        { day: 'numeric', month: 'short', year: 'numeric' },
-    );
+    return formatDate(value, locale);
 }

@@ -28,11 +28,14 @@ RUN npm ci
 
 COPY . .
 RUN composer dump-autoload --optimize --no-dev \
-    && APP_KEY=base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA= npm run build \
+    && APP_KEY=base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA= npm run build:ssr \
     && rm -rf node_modules
 
 
 FROM base AS app
+
+# Node runs the server-side renderer (bootstrap/ssr/app.js is self-contained).
+COPY --from=node:22-bookworm-slim /usr/local/bin/node /usr/local/bin/node
 
 COPY --from=build /app /app
 COPY docker/start.sh /usr/local/bin/start

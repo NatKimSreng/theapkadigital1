@@ -475,10 +475,11 @@ function FadeOpening({
 
 // A fixed pseudo-random layout so particles don't jump between renders.
 const PARTICLES = Array.from({ length: 18 }, (_, i) => {
+    // Rounded so server-rendered styles match the browser's exactly.
     const r = (n: number) => {
         const x = Math.sin(i * 12.9898 + n * 78.233) * 43758.5453;
 
-        return x - Math.floor(x);
+        return Math.round((x - Math.floor(x)) * 1000) / 1000;
     };
 
     return {

@@ -240,9 +240,9 @@ function useCountdown(
 ): CountdownState | null {
     const target = eventStart(data);
     const targetTime = target?.getTime();
-    const [state, setState] = useState(() =>
-        target ? countdownState(target) : null,
-    );
+    // Starts empty and fills in after mount: the time left is different by
+    // the time the server-rendered page reaches the browser.
+    const [state, setState] = useState<CountdownState | null>(null);
 
     useEffect(() => {
         if (targetTime === undefined) {
