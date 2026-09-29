@@ -22,10 +22,16 @@ export function formatDate(value: string | null, locale: string): string {
         return '—';
     }
 
-    return new Date(`${value}T00:00:00`).toLocaleDateString(
-        locale === 'km' ? 'km-KH' : 'en-GB',
-        { day: 'numeric', month: 'short', year: 'numeric' },
-    );
+    // Plain dates are local days; full timestamps keep their time zone.
+    const date = value.includes('T')
+        ? new Date(value)
+        : new Date(`${value}T00:00:00`);
+
+    return date.toLocaleDateString(locale === 'km' ? 'km-KH' : 'en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+    });
 }
 
 export function daysUntil(value: string | null): number | null {

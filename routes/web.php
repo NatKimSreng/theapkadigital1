@@ -1,18 +1,25 @@
 <?php
 
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RsvpController;
+use App\Http\Controllers\SeoController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'welcome')->name('home');
+Route::get('/', HomeController::class)->name('home');
 Route::get('pricing', [OrderController::class, 'pricing'])->name('pricing');
+Route::get('blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+Route::get('robots.txt', [SeoController::class, 'robots'])->name('robots');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [EventController::class, 'dashboard'])->name('dashboard');
@@ -46,6 +53,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('packages', Admin\PackageController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('users', Admin\UserController::class)->only(['index', 'show', 'update']);
     Route::patch('events/{event}/package', [Admin\UserController::class, 'updateEventPackage'])->name('events.package');
+    Route::get('events', [Admin\EventController::class, 'index'])->name('events.index');
+    Route::post('posts/images', [Admin\PostController::class, 'image'])->name('posts.image');
+    Route::post('posts/preview', [Admin\PostController::class, 'preview'])->name('posts.preview');
+    Route::resource('posts', Admin\PostController::class)->except(['show']);
+    Route::get('settings', [Admin\SettingController::class, 'edit'])->name('settings.edit');
+    Route::post('settings', [Admin\SettingController::class, 'update'])->name('settings.update');
 });
 
 Route::get('i/{invitation:public_id}', [InvitationController::class, 'share'])->name('invitations.share');

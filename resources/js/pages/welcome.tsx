@@ -11,12 +11,15 @@ import {
     ReceiptText,
     Users,
 } from 'lucide-react';
-import AppLogo from '@/components/app-logo';
+import { PostCard } from '@/components/blog/post-card';
+import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 import { Button } from '@/components/ui/button';
 import type { TranslationKey } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n';
 import { dashboard, register } from '@/routes';
+import blog from '@/routes/blog';
+import type { PostSummary } from '@/types';
 
 const features: {
     title: TranslationKey;
@@ -135,7 +138,7 @@ function InvitationPreview() {
     );
 }
 
-export default function Welcome() {
+export default function Welcome({ posts }: { posts: PostSummary[] }) {
     const { auth } = usePage().props;
     const { t } = useTranslation();
     const startHref = auth.user ? dashboard() : register();
@@ -283,6 +286,31 @@ export default function Welcome() {
                     </ol>
                 </section>
 
+                {posts.length > 0 && (
+                    <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+                        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+                            <div>
+                                <Eyebrow>{t('blog.eyebrow')}</Eyebrow>
+                                <h2 className="mt-3 font-serif text-4xl font-semibold">
+                                    {t('blog.latest')}
+                                </h2>
+                            </div>
+                            <Link
+                                href={blog.index()}
+                                className="flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                            >
+                                {t('blog.all_posts')}
+                                <ArrowRight className="size-4" />
+                            </Link>
+                        </div>
+                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                            {posts.map((post) => (
+                                <PostCard key={post.id} post={post} />
+                            ))}
+                        </div>
+                    </section>
+                )}
+
                 <section className="px-4 pb-24 sm:px-6">
                     <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-[oklch(0.22_0.012_60)] px-6 py-16 text-center text-[oklch(0.96_0.01_85)] sm:px-12">
                         <div
@@ -309,15 +337,7 @@ export default function Welcome() {
                     </div>
                 </section>
 
-                <footer className="border-t border-border/70">
-                    <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:px-6">
-                        <AppLogo />
-                        <p className="sm:ml-auto">
-                            © {new Date().getFullYear()} Theapka.{' '}
-                            {t('welcome.rights')}
-                        </p>
-                    </div>
-                </footer>
+                <PublicFooter />
             </div>
         </>
     );

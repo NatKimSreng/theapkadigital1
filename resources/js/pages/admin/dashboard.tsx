@@ -3,7 +3,13 @@ import {
     CalendarHeart,
     Clock,
     DollarSign,
+    Eye,
+    MailOpen,
+    Newspaper,
+    Plus,
+    Settings,
     TrendingUp,
+    UserPlus,
     Users,
 } from 'lucide-react';
 import {
@@ -39,7 +45,29 @@ type Props = {
         users: number;
         events: number;
         paid_events: number;
+        users_week: number;
+        guests: number;
+        invitations: number;
+        rsvps: number;
+        attending: number;
+        posts: number;
+        drafts: number;
+        post_views: number;
     };
+    recentUsers: {
+        id: number;
+        name: string;
+        email: string;
+        created_at: string;
+        events_count: number;
+    }[];
+    topPosts: {
+        id: number;
+        title: string;
+        slug: string;
+        views: number;
+        published_at: string;
+    }[];
     months: { month: string; revenue: number; users: number }[];
     packages: {
         id: number;
@@ -87,11 +115,44 @@ function Stat({
     );
 }
 
+function MiniStat({
+    icon: Icon,
+    label,
+    value,
+    hint,
+}: {
+    icon: typeof Users;
+    label: string;
+    value: string;
+    hint?: string;
+}) {
+    return (
+        <div className="flex items-center gap-3 rounded-2xl border bg-background p-4">
+            <Icon className="size-5 shrink-0 text-primary" />
+            <div className="min-w-0">
+                <p className="truncate text-xs text-muted-foreground">
+                    {label}
+                </p>
+                <p className="text-xl font-semibold tabular-nums">
+                    {value}
+                    {hint && (
+                        <span className="ml-1.5 text-xs font-normal text-muted-foreground">
+                            {hint}
+                        </span>
+                    )}
+                </p>
+            </div>
+        </div>
+    );
+}
+
 export default function AdminDashboard({
     stats,
     months,
     packages,
     pendingOrders,
+    recentUsers,
+    topPosts,
 }: Props) {
     const { t, locale } = useTranslation();
 
@@ -109,7 +170,30 @@ export default function AdminDashboard({
     return (
         <>
             <Head title={t('admin.overview')} />
-            <AdminPage title={t('admin.overview')}>
+            <AdminPage
+                title={t('admin.overview')}
+                actions={
+                    <div className="flex gap-2">
+                        <Button
+                            asChild
+                            variant="outline"
+                            size="sm"
+                            className="rounded-full"
+                        >
+                            <Link href={admin.settings.edit()}>
+                                <Settings className="size-4" />
+                                {t('admin.site_settings')}
+                            </Link>
+                        </Button>
+                        <Button asChild size="sm" className="rounded-full">
+                            <Link href={admin.posts.create()}>
+                                <Plus className="size-4" />
+                                {t('posts.new')}
+                            </Link>
+                        </Button>
+                    </div>
+                }
+            >
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                     <Stat
                         icon={DollarSign}
@@ -138,6 +222,44 @@ export default function AdminDashboard({
                         hint={t('admin.paid_events', {
                             count: formatNumber(stats.paid_events),
                         })}
+                    />
+                </div>
+
+                <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-5">
+                    <MiniStat
+                        icon={UserPlus}
+                        label={t('admin.new_this_week')}
+                        value={formatNumber(stats.users_week)}
+                    />
+                    <MiniStat
+                        icon={Users}
+                        label={t('admin.guests_total')}
+                        value={formatNumber(stats.guests)}
+                    />
+                    <MiniStat
+                        icon={MailOpen}
+                        label={t('admin.rsvps')}
+                        value={formatNumber(stats.rsvps)}
+                        hint={t('admin.attending_count', {
+                            count: formatNumber(stats.attending),
+                        })}
+                    />
+                    <MiniStat
+                        icon={Newspaper}
+                        label={t('admin.blog_posts')}
+                        value={formatNumber(stats.posts)}
+                        hint={
+                            stats.drafts
+                                ? t('admin.drafts_count', {
+                                      count: stats.drafts,
+                                  })
+                                : undefined
+                        }
+                    />
+                    <MiniStat
+                        icon={Eye}
+                        label={t('admin.post_views')}
+                        value={formatNumber(stats.post_views)}
                     />
                 </div>
 
@@ -315,6 +437,100 @@ export default function AdminDashboard({
                         ))}
                     </ul>
                 </section>
+
+                <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-2">
+                    <section className="rounded-2xl border bg-background p-5">
+                        <div className="mb-3 flex items-center justify-between gap-3">
+                            <h2 className="text-lg font-semibold">
+                                {t('admin.recent_users')}
+                            </h2>
+                            <Link
+                                href={admin.users.index()}
+                                className="text-sm text-primary hover:underline"
+                            >
+                                {t('admin.view_all')}
+                            </Link>
+                        </div>
+                        {recentUsers.length === 0 ? (
+                            <p className="text-sm text-muted-foreground">
+                                {t('admin.no_users')}
+                            </p>
+                        ) : (
+                            <ul className="divide-y">
+                                {recentUsers.map((user) => (
+                                    <li key={user.id}>
+                                        <Link
+                                            href={admin.users.show(user.id)}
+                                            className="flex items-center gap-3 py-2.5 hover:text-primary"
+                                        >
+                                            <div className="min-w-0 flex-1">
+                                                <p className="truncate font-medium">
+                                                    {user.name}
+                                                </p>
+                                                <p className="truncate text-xs text-muted-foreground">
+                                                    {user.email}
+                                                </p>
+                                            </div>
+                                            <span className="text-xs text-muted-foreground">
+                                                {formatDateTime(
+                                                    user.created_at,
+                                                    locale,
+                                                )}
+                                            </span>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </section>
+
+                    <section className="rounded-2xl border bg-background p-5">
+                        <div className="mb-3 flex items-center justify-between gap-3">
+                            <h2 className="text-lg font-semibold">
+                                {t('admin.top_posts')}
+                            </h2>
+                            <Link
+                                href={admin.posts.index()}
+                                className="text-sm text-primary hover:underline"
+                            >
+                                {t('admin.view_all')}
+                            </Link>
+                        </div>
+                        {topPosts.length === 0 ? (
+                            <div className="rounded-xl bg-muted/60 p-6 text-center text-sm text-muted-foreground">
+                                <p>{t('admin.no_posts_yet')}</p>
+                                <Link
+                                    href={admin.posts.create()}
+                                    className="mt-2 inline-block font-medium text-primary hover:underline"
+                                >
+                                    {t('posts.new')}
+                                </Link>
+                            </div>
+                        ) : (
+                            <ol className="divide-y">
+                                {topPosts.map((post, index) => (
+                                    <li key={post.id}>
+                                        <Link
+                                            href={admin.posts.edit(post.id)}
+                                            className="flex items-center gap-3 py-2.5 hover:text-primary"
+                                        >
+                                            <span className="w-5 text-sm font-semibold text-muted-foreground">
+                                                {index + 1}
+                                            </span>
+                                            <p className="min-w-0 flex-1 truncate font-medium">
+                                                {post.title}
+                                            </p>
+                                            <span className="flex items-center gap-1 text-sm text-muted-foreground tabular-nums">
+                                                <Eye className="size-4" />
+                                                {formatNumber(post.views)}
+                                            </span>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ol>
+                        )}
+                    </section>
+                </div>
             </AdminPage>
         </>
     );

@@ -4,9 +4,10 @@ import { LanguageSwitcher } from '@/components/language-switcher';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/lib/i18n';
 import { dashboard, home, login, pricing, register } from '@/routes';
+import blog from '@/routes/blog';
 
 /**
- * The header of the public pages (home and pricing).
+ * The header of the public pages (home, pricing and blog).
  */
 export function PublicHeader() {
     const { auth } = usePage().props;
@@ -22,6 +23,12 @@ export function PublicHeader() {
                 className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:block"
             >
                 {t('nav.pricing')}
+            </Link>
+            <Link
+                href={blog.index()}
+                className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:block"
+            >
+                {t('nav.blog')}
             </Link>
             <div className="ml-auto flex items-center gap-2">
                 <LanguageSwitcher />

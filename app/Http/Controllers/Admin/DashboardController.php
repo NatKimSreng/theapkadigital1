@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\Guest;
+use App\Models\Invitation;
 use App\Models\Order;
 use App\Models\Package;
+use App\Models\Post;
+use App\Models\Rsvp;
 use App\Models\User;
 use Carbon\CarbonInterface;
 use Inertia\Inertia;
@@ -50,7 +54,25 @@ class DashboardController extends Controller
                 'users' => User::count(),
                 'events' => Event::count(),
                 'paid_events' => Event::query()->whereNotNull('package_id')->count(),
+                'users_week' => User::query()->where('created_at', '>=', now()->subDays(7))->count(),
+                'guests' => Guest::count(),
+                'invitations' => Invitation::count(),
+                'rsvps' => Rsvp::count(),
+                'attending' => Rsvp::query()->where('attending', true)->count(),
+                'posts' => Post::query()->published()->count(),
+                'drafts' => Post::query()->whereNull('published_at')->count(),
+                'post_views' => (int) Post::query()->sum('views'),
             ],
+            'recentUsers' => User::query()
+                ->withCount('events')
+                ->latest()
+                ->limit(5)
+                ->get(['id', 'name', 'email', 'created_at']),
+            'topPosts' => Post::query()
+                ->published()
+                ->orderByDesc('views')
+                ->limit(5)
+                ->get(['id', 'title', 'slug', 'views', 'published_at']),
             'months' => $months,
             'packages' => Package::query()
                 ->ordered()
