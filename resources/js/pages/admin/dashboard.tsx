@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import {
     CalendarHeart,
+    ChartLine,
     Clock,
     DollarSign,
     Eye,
@@ -53,6 +54,8 @@ type Props = {
         posts: number;
         drafts: number;
         post_views: number;
+        views_today: number;
+        views_week: number;
     };
     recentUsers: {
         id: number;
@@ -225,7 +228,17 @@ export default function AdminDashboard({
                     />
                 </div>
 
-                <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-5">
+                <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-6">
+                    <Link href={admin.analytics()} className="contents">
+                        <MiniStat
+                            icon={ChartLine}
+                            label={t('analytics.today')}
+                            value={formatNumber(stats.views_today)}
+                            hint={t('analytics.week', {
+                                count: formatNumber(stats.views_week),
+                            })}
+                        />
+                    </Link>
                     <MiniStat
                         icon={UserPlus}
                         label={t('admin.new_this_week')}

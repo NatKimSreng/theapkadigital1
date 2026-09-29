@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import {
     ArrowLeft,
     CalendarHeart,
+    ChartLine,
     LayoutDashboard,
     Newspaper,
     Package as PackageIcon,
@@ -36,6 +37,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             href: admin.dashboard.url(),
             icon: LayoutDashboard,
             exact: true,
+        },
+        {
+            label: 'admin.analytics',
+            href: admin.analytics.url(),
+            icon: ChartLine,
         },
         {
             label: 'admin.orders',

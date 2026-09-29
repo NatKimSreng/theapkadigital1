@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', Admin\DashboardController::class)->name('dashboard');
+    Route::get('analytics', Admin\AnalyticsController::class)->name('analytics');
     Route::get('orders', [Admin\OrderController::class, 'index'])->name('orders.index');
     Route::get('orders/{order}/receipt', [Admin\OrderController::class, 'receipt'])->name('orders.receipt');
     Route::patch('orders/{order}', [Admin\OrderController::class, 'update'])->name('orders.update');

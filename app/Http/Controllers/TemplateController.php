@@ -37,6 +37,10 @@ class TemplateController extends Controller
             title: __(':name — invitation template', ['name' => $name]),
             description: __('See the :name design with sample photos, countdown, agenda, map, gallery and RSVP, then make it yours on Theapka.', ['name' => $name]),
             image: asset('images/demo/couple-1.webp'),
+            schema: [Seo::breadcrumbs([
+                __('Invitation templates') => route('templates.index'),
+                $name => route('templates.show', $template),
+            ])],
         ));
     }
 }

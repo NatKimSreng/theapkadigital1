@@ -8,6 +8,7 @@ use App\Models\Guest;
 use App\Models\Invitation;
 use App\Models\Order;
 use App\Models\Package;
+use App\Models\PageView;
 use App\Models\Post;
 use App\Models\Rsvp;
 use App\Models\User;
@@ -62,6 +63,8 @@ class DashboardController extends Controller
                 'posts' => Post::query()->published()->count(),
                 'drafts' => Post::query()->whereNull('published_at')->count(),
                 'post_views' => (int) Post::query()->sum('views'),
+                'views_today' => PageView::query()->where('created_at', '>=', now()->startOfDay())->count(),
+                'views_week' => PageView::query()->where('created_at', '>=', now()->subDays(7))->count(),
             ],
             'recentUsers' => User::query()
                 ->withCount('events')

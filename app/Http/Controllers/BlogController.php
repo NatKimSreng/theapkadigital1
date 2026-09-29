@@ -67,6 +67,9 @@ class BlogController extends Controller
                     'name' => Seo::siteName(),
                     'logo' => ['@type' => 'ImageObject', 'url' => asset('images/logo.png')],
                 ],
+            ]), Seo::breadcrumbs([
+                __('Blog') => route('blog.index'),
+                $post->title => route('blog.show', $post->slug),
             ])],
         );
 

@@ -85,6 +85,28 @@ final class Seo
     }
 
     /**
+     * The trail Google shows above a result, e.g. Theapka › Blog › Post.
+     *
+     * @param  array<string, string>  $crumbs  name => URL, in order
+     * @return array<string, mixed>
+     */
+    public static function breadcrumbs(array $crumbs): array
+    {
+        $items = [];
+        $position = 1;
+
+        foreach (['Theapka' => url('/'), ...$crumbs] as $name => $url) {
+            $items[] = ['@type' => 'ListItem', 'position' => $position++, 'name' => $name, 'item' => $url];
+        }
+
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => $items,
+        ];
+    }
+
+    /**
      * The organisation and website, for the home page.
      *
      * @return list<array<string, mixed>>
