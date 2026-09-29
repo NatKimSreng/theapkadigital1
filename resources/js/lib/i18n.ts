@@ -748,6 +748,29 @@ const en = {
         'Guests see the invitation in :lang only, without a language switch.',
     'design.countdown_needs_date':
         'Add the event date in the event details to show the countdown.',
+    'toast.posts_imported': 'Import done: :created new, :updated updated',
+    'import.button': 'Import CSV',
+    'import.submit': 'Import',
+    'import.title': 'Import posts from CSV',
+    'import.template': 'Download template',
+    'import.step1':
+        'Download the template and open it in Excel or Google Sheets.',
+    'import.step2': 'One row per post. Keep the column names in the first row.',
+    'import.step3': 'Save as "CSV UTF-8" and upload it here.',
+    'import.choose': 'Choose a CSV file',
+    'import.columns': 'What each column means',
+    'import.col_title': 'Post title.',
+    'import.col_body':
+        'Post content. Markdown works: ## heading, **bold**, - list.',
+    'import.col_slug':
+        'Link (optional). If it matches an existing post, that post is updated.',
+    'import.col_excerpt': 'Short summary for the blog list.',
+    'import.col_locale': 'km or en (default km).',
+    'import.col_published': 'yes to publish, no or empty for a draft.',
+    'import.col_published_at':
+        'Publish date, e.g. 2026-10-15 09:00. A future date schedules it.',
+    'import.col_meta_title': 'Title shown on Google (optional).',
+    'import.col_meta_description': 'Description shown on Google (optional).',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -1458,6 +1481,26 @@ const km: Record<TranslationKey, string> = {
     'design.single_language': 'ភ្ញៀវឃើញធៀបជា:lang តែប៉ុណ្ណោះ ដោយគ្មានប៊ូតុងប្តូរភាសា។',
     'design.countdown_needs_date':
         'សូមបញ្ចូលថ្ងៃកម្មវិធីក្នុងព័ត៌មានកម្មវិធី ដើម្បីបង្ហាញការរាប់ថយក្រោយ។',
+    'toast.posts_imported': 'នាំចូលរួចរាល់៖ ថ្មី :created កែប្រែ :updated',
+    'import.button': 'នាំចូល CSV',
+    'import.submit': 'នាំចូល',
+    'import.title': 'នាំចូលអត្ថបទពី CSV',
+    'import.template': 'ទាញយកគំរូ',
+    'import.step1': 'ទាញយកគំរូ ហើយបើកក្នុង Excel ឬ Google Sheets។',
+    'import.step2': 'មួយជួរដេកសម្រាប់មួយអត្ថបទ។ រក្សាឈ្មោះជួរឈរនៅជួរទីមួយ។',
+    'import.step3': 'រក្សាទុកជា "CSV UTF-8" ហើយផ្ទុកឡើងនៅទីនេះ។',
+    'import.choose': 'ជ្រើសរើសឯកសារ CSV',
+    'import.columns': 'អត្ថន័យនៃជួរឈរនីមួយៗ',
+    'import.col_title': 'ចំណងជើងអត្ថបទ។',
+    'import.col_body': 'ខ្លឹមសារ។ អាចប្រើ Markdown៖ ## ចំណងជើង, **ដិត**, - បញ្ជី។',
+    'import.col_slug': 'តំណ (ស្រេចចិត្ត)។ បើដូចតំណអត្ថបទដែលមានស្រាប់ អត្ថបទនោះនឹងត្រូវកែប្រែ។',
+    'import.col_excerpt': 'សេចក្តីសង្ខេបខ្លីសម្រាប់បញ្ជីអត្ថបទ។',
+    'import.col_locale': 'km ឬ en (លំនាំដើម km)។',
+    'import.col_published': 'yes ដើម្បីផ្សាយ, no ឬទុកទទេសម្រាប់ព្រាង។',
+    'import.col_published_at':
+        'ថ្ងៃផ្សាយ ឧ. 2026-10-15 09:00។ ថ្ងៃខាងមុខ = កំណត់ពេលផ្សាយ។',
+    'import.col_meta_title': 'ចំណងជើងលើ Google (ស្រេចចិត្ត)។',
+    'import.col_meta_description': 'ការពិពណ៌នាលើ Google (ស្រេចចិត្ត)។',
 };
 
 export type Locale = 'km' | 'en';
