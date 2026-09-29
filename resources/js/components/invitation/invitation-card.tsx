@@ -14,7 +14,7 @@ import {
     Reveal,
     Rise,
 } from './animations';
-import { GardenCover } from './garden';
+import { COVERS } from './covers';
 import { HeroPhoto, photoFocus } from './heroes';
 import { SectionMotif } from './motifs';
 import { Ornament } from './ornaments';
@@ -178,6 +178,7 @@ function ClassicLayout({
             : 'text-[17px] leading-[1.8] break-words';
 
     const hero = theme.hero ?? 'framed';
+    const CustomCover = COVERS[hero];
     const cinematic = hero === 'cinematic';
     const fullbleed = hero === 'fullbleed' || cinematic;
     const split = hero === 'split';
@@ -249,9 +250,10 @@ function ClassicLayout({
                 <MusicButton src={media.music} autoStart={autoStartMusic} />
             )}
 
-            {hero === 'garden' ? (
-                <GardenCover
+            {CustomCover ? (
+                <CustomCover
                     data={data}
+                    media={media}
                     guestName={guestName}
                     motion={motion}
                     onScrollDown={

@@ -5,6 +5,9 @@ import { cn } from '@/lib/utils';
  */
 export type Motif =
     | 'bloom'
+    | 'kbach'
+    | 'sprig'
+    | 'rule'
     | 'diamond'
     | 'spires'
     | 'lotus'
@@ -37,6 +40,73 @@ function Rule({ color, x1, x2 }: { color: string; x1: number; x2: number }) {
 export function SectionMotif({ motif, primary, secondary, className }: Props) {
     const art = (() => {
         switch (motif) {
+            case 'kbach':
+                // A Kbach fleuron: three hooked flame leaves on a lotus base.
+                return (
+                    <>
+                        <Rule color={secondary} x1={8} x2={70} />
+                        <Rule color={secondary} x1={130} x2={192} />
+                        <g fill={primary} transform="translate(100 34)">
+                            <path d="M0 0C-8-8-7-21 2-31C3-25 8-23 11-27C10-16 7-6 0 0Z" />
+                            <path
+                                d="M0 0C-8-8-7-21 2-31C3-25 8-23 11-27C10-16 7-6 0 0Z"
+                                transform="rotate(-50) scale(0.7)"
+                            />
+                            <path
+                                d="M0 0C-8-8-7-21 2-31C3-25 8-23 11-27C10-16 7-6 0 0Z"
+                                transform="scale(-1 1) rotate(-50) scale(0.7)"
+                            />
+                        </g>
+                        <circle cx="76" cy="20" r="2" fill={primary} />
+                        <circle cx="124" cy="20" r="2" fill={primary} />
+                    </>
+                );
+            case 'sprig':
+                return (
+                    <>
+                        <Rule color={secondary} x1={10} x2={80} />
+                        <Rule color={secondary} x1={120} x2={190} />
+                        <path
+                            d="M84 30C92 20 108 20 116 10"
+                            fill="none"
+                            stroke={primary}
+                            strokeWidth="1.4"
+                        />
+                        {[
+                            [90, 24, 30],
+                            [100, 19, 45],
+                            [110, 14, 60],
+                        ].map(([x, y, a]) => (
+                            <g
+                                key={x}
+                                transform={`translate(${x} ${y}) rotate(${a})`}
+                            >
+                                <ellipse
+                                    cy="-5"
+                                    rx="2.4"
+                                    ry="5.5"
+                                    fill={primary}
+                                />
+                                <ellipse
+                                    cy="5"
+                                    rx="2.4"
+                                    ry="5.5"
+                                    fill={primary}
+                                    opacity="0.75"
+                                />
+                            </g>
+                        ))}
+                    </>
+                );
+            case 'rule':
+                // Editorial: just a hairline with a small dot.
+                return (
+                    <>
+                        <Rule color={secondary} x1={60} x2={94} />
+                        <circle cx="100" cy="20" r="2.2" fill={primary} />
+                        <Rule color={secondary} x1={106} x2={140} />
+                    </>
+                );
             case 'bloom':
                 return (
                     <>

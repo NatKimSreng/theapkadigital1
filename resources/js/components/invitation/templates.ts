@@ -17,6 +17,9 @@ export type Ornament = 'frame' | 'rings' | 'balloons' | 'house' | 'hearts';
  */
 export type HeroStyle =
     | 'garden'
+    | 'kbach'
+    | 'velvet'
+    | 'editorial'
     | 'fullbleed'
     | 'cinematic'
     | 'split'
@@ -48,7 +51,11 @@ export type TemplateDefinition = {
         motif?: Motif;
         /** Gold-foil headings unless the couple turns them off. */
         gold?: boolean;
-        opening: 'doors' | 'envelope' | 'curtain' | 'fade';
+        /** Wax seal colour (seal opening and seal-bearing covers). */
+        seal?: string;
+        /** Envelope paper colour for the seal opening. */
+        envelope?: string;
+        opening: 'doors' | 'envelope' | 'curtain' | 'fade' | 'seal';
         effect: 'none' | 'petals' | 'sparkles' | 'hearts';
     };
 };
@@ -207,6 +214,76 @@ export const TEMPLATES: TemplateDefinition[] = [
         },
     },
     {
+        key: 'kbach-royal',
+        category: 'wedding',
+        name: 'template.kbach-royal',
+        free: true,
+        demoPhoto: 1,
+        theme: {
+            primary: '#e9c46a',
+            secondary: '#f6dfa0',
+            background:
+                'radial-gradient(ellipse at 50% 28%, #a3192d 0%, #6e0f1d 52%, #3d0710 100%)',
+            text: '#fbe9d0',
+            panel: 'rgba(0, 0, 0, 0.24)',
+            ornament: 'frame',
+            hero: 'kbach',
+            texture: 'velvet',
+            motif: 'kbach',
+            gold: true,
+            seal: '#caa04a',
+            envelope: '#7c1323',
+            opening: 'seal',
+            effect: 'sparkles',
+        },
+    },
+    {
+        key: 'emerald-velvet',
+        category: 'wedding',
+        name: 'template.emerald-velvet',
+        free: false,
+        demoPhoto: 3,
+        theme: {
+            primary: '#d9b45a',
+            secondary: '#f1dfa6',
+            background:
+                'radial-gradient(ellipse at 50% 25%, #127056 0%, #0b4536 50%, #062a20 100%)',
+            text: '#eef3ee',
+            panel: 'rgba(255, 255, 255, 0.07)',
+            ornament: 'rings',
+            hero: 'velvet',
+            texture: 'velvet',
+            motif: 'sprig',
+            gold: true,
+            seal: '#c9a24a',
+            envelope: '#0d4a38',
+            opening: 'seal',
+            effect: 'sparkles',
+        },
+    },
+    {
+        key: 'mocha-editorial',
+        category: 'wedding',
+        name: 'template.mocha-editorial',
+        free: false,
+        demoPhoto: 0,
+        theme: {
+            primary: '#7d5541',
+            secondary: '#b5613f',
+            background: 'linear-gradient(180deg, #f8f3ec 0%, #f2eadf 100%)',
+            text: '#4a3a30',
+            panel: 'rgba(255, 255, 255, 0.6)',
+            ornament: 'rings',
+            hero: 'editorial',
+            texture: 'linen',
+            motif: 'rule',
+            seal: '#b5573a',
+            envelope: '#e8dac6',
+            opening: 'seal',
+            effect: 'none',
+        },
+    },
+    {
         key: 'angkor-cinematic',
         category: 'wedding',
         name: 'template.angkor-cinematic',
@@ -276,6 +353,7 @@ type Copy = {
     scrollDown: string;
     dear: string;
     openInvitation: string;
+    tapSeal: string;
     weddingOf: string;
     saveDate: string;
     reminder: string;
@@ -344,6 +422,7 @@ export const COPY: Record<InvitationLang, Copy> = {
         scrollDown: 'សូមអូសចុះក្រោម',
         dear: 'សូមគោរពអញ្ជើញ',
         openInvitation: 'បើកលិខិត',
+        tapSeal: 'ចុចលើត្រាដើម្បីបើកលិខិត',
         weddingOf: 'សិរីមង្គលអាពាហ៍ពិពាហ៍',
         saveDate: 'ដែលនឹងប្រព្រឹត្តទៅនៅ',
         reminder: 'កត់ទុកក្នុងប្រតិទិន',
@@ -410,6 +489,7 @@ export const COPY: Record<InvitationLang, Copy> = {
         scrollDown: 'Scroll down',
         dear: 'Dear',
         openInvitation: 'Open invitation',
+        tapSeal: 'Tap the seal to open',
         weddingOf: 'The wedding of',
         saveDate: 'Save the date',
         reminder: 'Set a reminder',

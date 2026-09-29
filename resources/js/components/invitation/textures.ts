@@ -3,6 +3,7 @@
  * colour so no template sits on a flat fill.
  */
 export type Texture =
+    | 'velvet'
     | 'damask'
     | 'grain'
     | 'watercolor'
@@ -18,6 +19,12 @@ const svg = (markup: string, size: number) =>
 
 export function textureLayer(texture: Texture, color: string): string {
     switch (texture) {
+        case 'velvet':
+            // A soft sheen across the pile, plus fine fibre noise.
+            return `radial-gradient(ellipse 90% 45% at 25% 12%, rgba(255,255,255,0.13), transparent 60%), radial-gradient(ellipse 70% 40% at 85% 70%, rgba(255,255,255,0.06), transparent 65%), ${svg(
+                `<filter id="v"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.18 0"/></filter><rect width="100%" height="100%" filter="url(#v)"/>`,
+                120,
+            )}`;
         case 'damask':
             // A repeating royal flourish in faint gold.
             return svg(

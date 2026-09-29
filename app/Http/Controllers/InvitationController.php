@@ -141,7 +141,7 @@ class InvitationController extends Controller
             'settings.languages' => ['nullable', Rule::in(['both', ...self::LANGUAGES])],
             'settings.event_time' => ['nullable', 'date_format:H:i'],
             'settings.show_countdown' => ['nullable', 'boolean'],
-            'settings.opening' => ['nullable', Rule::in(['doors', 'envelope', 'curtain', 'fade'])],
+            'settings.opening' => ['nullable', Rule::in(['doors', 'envelope', 'curtain', 'fade', 'seal'])],
             'settings.effect' => ['nullable', Rule::in(['none', 'petals', 'sparkles', 'hearts'])],
             'settings.gift' => ['nullable', 'array'],
         ];

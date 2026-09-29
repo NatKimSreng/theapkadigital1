@@ -820,6 +820,10 @@ const en = {
     'analytics.seo_post_descriptions':
         'Every post has a summary (:count missing)',
     'template.blush-garden': 'Blush Garden',
+    'template.kbach-royal': 'Kbach Royal',
+    'template.emerald-velvet': 'Emerald Velvet',
+    'template.mocha-editorial': 'Mocha Editorial',
+    'design.opening_seal': 'Wax seal',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -1596,6 +1600,10 @@ const km: Record<TranslationKey, string> = {
     'analytics.seo_post_covers': 'គ្រប់អត្ថបទមានរូបគម្រប (ខ្វះ :count)',
     'analytics.seo_post_descriptions': 'គ្រប់អត្ថបទមានសេចក្តីសង្ខេប (ខ្វះ :count)',
     'template.blush-garden': 'សួនផ្កាពណ៌ផ្កាឈូក',
+    'template.kbach-royal': 'ក្បាច់រាជ',
+    'template.emerald-velvet': 'វល្លិមរកត',
+    'template.mocha-editorial': 'ម៉ូកា ទំនើប',
+    'design.opening_seal': 'ត្រាក្រមួន',
 };
 
 export type Locale = 'km' | 'en';

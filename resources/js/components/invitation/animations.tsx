@@ -4,15 +4,17 @@ import type { CSSProperties, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import type { InvitationMedia } from '@/types';
 import { BaroqueCorner } from './baroque';
+import { WaxSeal } from './covers/shared';
 import type { ResolvedInvitation } from './resolve';
 import { TITLE_FONT, backgroundStyle, headlineStyle } from './resolve';
 
-export type OpeningStyle = 'doors' | 'envelope' | 'curtain' | 'fade';
+export type OpeningStyle = 'doors' | 'envelope' | 'curtain' | 'fade' | 'seal';
 export type FallingEffect = 'none' | 'petals' | 'sparkles' | 'hearts';
 
 export const OPENING_STYLES: OpeningStyle[] = [
     'doors',
     'envelope',
+    'seal',
     'curtain',
     'fade',
 ];
@@ -124,6 +126,8 @@ export function OpeningOverlay({
     switch (style) {
         case 'envelope':
             return <EnvelopeOpening {...props} />;
+        case 'seal':
+            return <SealOpening {...props} />;
         case 'curtain':
             return <CurtainOpening {...props} />;
         case 'fade':
@@ -396,6 +400,199 @@ function EnvelopeOpening({
                 style={{ color: data.primary, opacity: opening ? 0 : 1 }}
             >
                 {data.copy.openInvitation}
+            </p>
+        </div>
+    );
+}
+
+/**
+ * A closed envelope sealed with wax: tapping the seal breaks it, the flap
+ * lifts and the card rises out before the envelope fades away.
+ */
+function SealOpening({
+    data,
+    media,
+    guestName,
+    opening,
+    onOpen,
+}: OverlayProps) {
+    const envelope = data.theme.envelope ?? '#efe6d6';
+    const seal = data.theme.seal ?? data.primary;
+    const half = (side: 'left' | 'right'): CSSProperties => ({
+        // The halves overlap a little so no seam shows before the seal breaks.
+        clipPath: side === 'left' ? 'inset(0 49% 0 0)' : 'inset(0 0 0 50%)',
+        transform: opening
+            ? `translate(${side === 'left' ? '-60%' : '60%'}, 30%) rotate(${side === 'left' ? -35 : 35}deg)`
+            : 'none',
+        opacity: opening ? 0 : 1,
+        transition: `transform 0.55s ${EASE}, opacity 0.45s ease 0.15s`,
+    });
+
+    return (
+        <div
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center overflow-hidden px-6"
+            style={{
+                ...backgroundStyle(data, media),
+                color: data.theme.text,
+                opacity: opening ? 0 : 1,
+                transition: `opacity 0.6s ease ${opening ? '1.25s' : '0s'}`,
+            }}
+        >
+            <p
+                className="text-[15px] leading-[1.9] transition-opacity duration-500"
+                style={{ color: data.secondary, opacity: opening ? 0 : 1 }}
+            >
+                {data.copy.dear}
+            </p>
+            <p
+                className="mb-8 max-w-full truncate text-[22px] leading-[1.9] transition-opacity duration-500"
+                style={{
+                    ...headlineStyle(data, data.primary),
+                    fontFamily: TITLE_FONT,
+                    opacity: opening ? 0 : 1,
+                }}
+            >
+                {guestName}
+            </p>
+
+            <div
+                className="relative aspect-[1.45] w-full max-w-[330px]"
+                style={{ perspective: '1100px' }}
+            >
+                {/* back of the envelope, with a patterned liner */}
+                <div
+                    className="absolute inset-0 rounded-md shadow-2xl"
+                    style={{
+                        background: `repeating-linear-gradient(45deg, ${data.secondary}33 0 6px, transparent 6px 12px), ${envelope}`,
+                        filter: 'brightness(0.86)',
+                    }}
+                />
+
+                {/* the card inside */}
+                <div
+                    className="absolute inset-x-[7%] top-[6%] bottom-[8%] flex flex-col items-center justify-center rounded-sm px-4 text-center shadow-md"
+                    style={{
+                        background: '#fffdf8',
+                        transform: opening ? 'translateY(-62%)' : 'none',
+                        transition: `transform 0.75s ${EASE} 0.7s`,
+                        zIndex: 1,
+                    }}
+                >
+                    <p
+                        className="text-[15px] leading-[1.8]"
+                        style={{ color: data.primary, fontFamily: TITLE_FONT }}
+                    >
+                        {data.title}
+                    </p>
+                    <p
+                        className="mt-1 text-xs"
+                        style={{ color: data.secondary }}
+                    >
+                        {data.dateText}
+                    </p>
+                </div>
+
+                {/* front pocket */}
+                <div
+                    className="absolute inset-0 rounded-md"
+                    style={{
+                        background: `linear-gradient(160deg, ${envelope}, ${envelope}), ${envelope}`,
+                        clipPath:
+                            'polygon(0 0, 50% 64%, 100% 0, 100% 100%, 0 100%)',
+                        boxShadow: 'inset 0 -24px 40px rgba(0,0,0,0.12)',
+                        zIndex: 2,
+                    }}
+                />
+                <div
+                    aria-hidden
+                    className="absolute inset-0 rounded-md"
+                    style={{
+                        background:
+                            'linear-gradient(115deg, rgba(0,0,0,0.08) 0%, transparent 40%), linear-gradient(245deg, rgba(0,0,0,0.08) 0%, transparent 40%)',
+                        clipPath:
+                            'polygon(0 0, 50% 64%, 100% 0, 100% 100%, 0 100%)',
+                        zIndex: 2,
+                    }}
+                />
+
+                {/* the flap */}
+                <div
+                    className="absolute inset-x-0 top-0 h-[64%]"
+                    style={{
+                        background: `linear-gradient(180deg, ${envelope}, ${envelope})`,
+                        filter: 'brightness(1.04)',
+                        clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
+                        transformOrigin: 'top center',
+                        transform: opening
+                            ? 'rotateX(180deg)'
+                            : 'rotateX(0deg)',
+                        transition: `transform 0.6s ${EASE} 0.3s`,
+                        boxShadow: 'inset 0 10px 30px rgba(0,0,0,0.06)',
+                        zIndex: opening ? 0 : 3,
+                    }}
+                />
+
+                {/* a fine trim along the edges and the flap */}
+                <svg
+                    aria-hidden
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                    className="pointer-events-none absolute inset-0 z-[4] size-full transition-opacity duration-300"
+                    style={{ opacity: opening ? 0 : 1 }}
+                >
+                    <rect
+                        x="0.5"
+                        y="0.5"
+                        width="99"
+                        height="99"
+                        rx="1.5"
+                        fill="none"
+                        stroke={data.primary}
+                        strokeOpacity="0.55"
+                        vectorEffect="non-scaling-stroke"
+                    />
+                    <path
+                        d="M0.5 0.5L50 64L99.5 0.5"
+                        fill="none"
+                        stroke={data.primary}
+                        strokeOpacity="0.7"
+                        vectorEffect="non-scaling-stroke"
+                    />
+                </svg>
+
+                {/* the wax seal, which breaks in two when tapped */}
+                <button
+                    type="button"
+                    onClick={onOpen}
+                    disabled={opening}
+                    aria-label={data.copy.openInvitation}
+                    className={cn(
+                        'absolute top-[64%] left-1/2 z-[5] size-20 -translate-x-1/2 -translate-y-1/2 rounded-full',
+                        !opening && 'inv-pulse',
+                    )}
+                >
+                    <span className="absolute inset-0" style={half('left')}>
+                        <WaxSeal
+                            color={seal}
+                            letters={data.monogram}
+                            className="size-20"
+                        />
+                    </span>
+                    <span className="absolute inset-0" style={half('right')}>
+                        <WaxSeal
+                            color={seal}
+                            letters={data.monogram}
+                            className="size-20"
+                        />
+                    </span>
+                </button>
+            </div>
+
+            <p
+                className="mt-10 text-sm font-semibold tracking-wide transition-opacity duration-500"
+                style={{ color: data.primary, opacity: opening ? 0 : 1 }}
+            >
+                {data.copy.tapSeal}
             </p>
         </div>
     );

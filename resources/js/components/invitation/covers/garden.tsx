@@ -1,43 +1,15 @@
-import { ChevronsDown } from 'lucide-react';
-import type { CSSProperties, ReactNode } from 'react';
-import { useId } from 'react';
-import type { Motion } from './animations';
-import { Rise } from './animations';
-import { DaysToGo } from './parts';
-import type { ResolvedInvitation } from './resolve';
-import { SCRIPT_FONT, TITLE_FONT } from './resolve';
+import type { ReactNode } from 'react';
+import { Rise } from '../animations';
+import { DaysToGo } from '../parts';
+import { SCRIPT_FONT, TITLE_FONT } from '../resolve';
+import type { CoverProps } from './index';
+import { GOLD_TEXT, GoldGradient, ScrollButton, useIds } from './shared';
 
 /**
  * Blush Garden: a painted-style cover with a pink sky, white marble
  * columns under an arch, roses and hanging wisteria, a gold monogram
  * crest and a gold name plaque. All artwork is drawn here in SVG.
  */
-
-export const GOLD_TEXT: CSSProperties = {
-    backgroundImage:
-        'linear-gradient(180deg, #f6e1a0 0%, #d7a948 38%, #a8781f 70%, #e2bd66 100%)',
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    color: 'transparent',
-    filter: 'drop-shadow(0 1px 0 rgba(255,255,255,0.6))',
-};
-
-function useIds(...names: string[]) {
-    const base = useId().replace(/[^a-zA-Z0-9]/g, '');
-
-    return Object.fromEntries(names.map((name) => [name, `${base}-${name}`]));
-}
-
-function GoldDefs({ id }: { id: string }) {
-    return (
-        <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#f8e6a8" />
-            <stop offset="0.4" stopColor="#d4a445" />
-            <stop offset="0.7" stopColor="#a67520" />
-            <stop offset="1" stopColor="#e6c173" />
-        </linearGradient>
-    );
-}
 
 /** A marble column with capital and base, filling its box. */
 function Column({ side }: { side: 'left' | 'right' }) {
@@ -376,7 +348,7 @@ export function MonogramCrest({ letters }: { letters: string }) {
             className="h-32 w-28 drop-shadow-md"
         >
             <defs>
-                <GoldDefs id={ids.gold} />
+                <GoldGradient id={ids.gold} />
                 <radialGradient id={ids.cream} cx="0.5" cy="0.4" r="0.7">
                     <stop offset="0" stopColor="#ffffff" />
                     <stop offset="1" stopColor="#f6ede2" />
@@ -434,7 +406,7 @@ function NamePlaque({ children }: { children: ReactNode }) {
                 className="w-full drop-shadow-md"
             >
                 <defs>
-                    <GoldDefs id={ids.gold} />
+                    <GoldGradient id={ids.gold} />
                 </defs>
                 <path
                     d="M30 6h240l14 12c6 5 10 10 14 17c-4 7-8 12-14 17l-14 12H30L16 52C10 47 6 42 2 35c4-7 8-12 14-17z"
@@ -456,42 +428,12 @@ function NamePlaque({ children }: { children: ReactNode }) {
     );
 }
 
-/** A gold round button to continue, like the "open" button on printed-style invitations. */
-function ScrollButton({
-    label,
-    onClick,
-}: {
-    label: string;
-    onClick: () => void;
-}) {
-    return (
-        <button
-            type="button"
-            onClick={onClick}
-            className="group mt-5 flex flex-col items-center gap-1"
-        >
-            <span className="flex size-14 items-center justify-center rounded-full border-[3px] border-[#d4a445] bg-white/85 shadow-lg shadow-[#b8862b]/30 transition-transform group-hover:scale-105">
-                <ChevronsDown className="size-6 animate-bounce text-[#b8862b]" />
-            </span>
-            <span className="text-[13px] font-semibold" style={GOLD_TEXT}>
-                {label}
-            </span>
-        </button>
-    );
-}
-
 export function GardenCover({
     data,
     guestName,
     motion,
     onScrollDown,
-}: {
-    data: ResolvedInvitation;
-    guestName: string;
-    motion: Motion;
-    /** Absent in previews, where there is nothing below to scroll to. */
-    onScrollDown?: () => void;
-}) {
+}: CoverProps) {
     const english = data.lang === 'en';
 
     return (
