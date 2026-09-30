@@ -18,6 +18,7 @@ declare module '@inertiajs/core' {
             name: string;
             auth: Auth;
             adminPending: number | null;
+            telegram: string | null;
             [key: string]: unknown;
         };
     }

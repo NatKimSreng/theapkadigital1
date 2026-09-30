@@ -1,4 +1,4 @@
-import { Link, router } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { Check, Eye, Lock, Phone, Plus, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import InvitationController from '@/actions/App/Http/Controllers/InvitationController';
@@ -35,6 +35,7 @@ export default function Templates({
     premiumUnlocked: boolean;
 }) {
     const { t } = useTranslation();
+    const { telegram } = usePage().props;
     const [previewing, setPreviewing] = useState<TemplateDefinition | null>(
         null,
     );
@@ -227,7 +228,9 @@ export default function Templates({
                                     className="mt-auto w-fit rounded-full"
                                 >
                                     <a
-                                        href="https://t.me/"
+                                        href={
+                                            telegram ?? 'https://t.me/Kimsreng5'
+                                        }
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >

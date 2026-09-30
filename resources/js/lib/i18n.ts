@@ -824,6 +824,7 @@ const en = {
     'template.emerald-velvet': 'Emerald Velvet',
     'template.mocha-editorial': 'Mocha Editorial',
     'design.opening_seal': 'Wax seal',
+    'footer.telegram': 'Contact us on Telegram',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -1604,6 +1605,7 @@ const km: Record<TranslationKey, string> = {
     'template.emerald-velvet': 'វល្លិមរកត',
     'template.mocha-editorial': 'ម៉ូកា ទំនើប',
     'design.opening_seal': 'ត្រាក្រមួន',
+    'footer.telegram': 'ទាក់ទងតាម Telegram',
 };
 
 export type Locale = 'km' | 'en';

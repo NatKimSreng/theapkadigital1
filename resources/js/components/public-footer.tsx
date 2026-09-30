@@ -1,4 +1,5 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
+import { Send } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { useTranslation } from '@/lib/i18n';
 import { home, pricing } from '@/routes';
@@ -10,6 +11,7 @@ import { index as templatesIndex } from '@/routes/templates';
  */
 export function PublicFooter() {
     const { t } = useTranslation();
+    const { telegram } = usePage().props;
 
     const links = [
         { href: home.url(), label: t('nav.home') },
@@ -35,7 +37,18 @@ export function PublicFooter() {
                         </Link>
                     ))}
                 </nav>
-                <p className="sm:ml-auto">
+                {telegram && (
+                    <a
+                        href={telegram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 rounded-full bg-[#229ED9] px-4 py-1.5 font-medium text-white transition-opacity hover:opacity-90 sm:ml-auto"
+                    >
+                        <Send className="size-4" />
+                        {t('footer.telegram')}
+                    </a>
+                )}
+                <p>
                     © {new Date().getFullYear()} Theapka. {t('welcome.rights')}
                 </p>
             </div>

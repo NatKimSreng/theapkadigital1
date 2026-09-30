@@ -33,7 +33,7 @@ return [
         'bank_details' => env('PAYMENT_BANK_DETAILS'),
         // Path under public/ to a KHQR image, e.g. "images/khqr.png".
         'khqr_image' => env('PAYMENT_KHQR_IMAGE'),
-        'telegram' => env('SUPPORT_TELEGRAM'),
+        'telegram' => env('SUPPORT_TELEGRAM', 'Kimsreng5'),
     ],
 
 ];

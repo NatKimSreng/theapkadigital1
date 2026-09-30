@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react';
 import { MessageCircle, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,6 +12,7 @@ import { useTranslation } from '@/lib/i18n';
 
 export function HelpButton() {
     const { t } = useTranslation();
+    const { telegram } = usePage().props;
 
     return (
         <Dialog>
@@ -27,7 +29,7 @@ export function HelpButton() {
                 </DialogDescription>
                 <Button asChild variant="outline" className="w-fit">
                     <a
-                        href="https://t.me/"
+                        href={telegram ?? 'https://t.me/Kimsreng5'}
                         target="_blank"
                         rel="noopener noreferrer"
                     >

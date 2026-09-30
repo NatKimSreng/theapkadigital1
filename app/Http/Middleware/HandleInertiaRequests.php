@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Order;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -42,6 +43,10 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            // Where visitors contact us (Admin > Site settings, or the default).
+            'telegram' => fn () => ($handle = Setting::payment()['telegram'])
+                ? 'https://t.me/'.ltrim($handle, '@')
+                : null,
             // Shown as a badge on the admin menu.
             'adminPending' => fn () => $request->user()?->is_admin
                 ? Order::query()->where('status', Order::PENDING)->count()
