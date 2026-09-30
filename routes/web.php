@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ExpenseController;
@@ -19,6 +20,10 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('pricing', [OrderController::class, 'pricing'])->name('pricing');
 Route::get('templates', [TemplateController::class, 'index'])->name('templates.index');
 Route::get('templates/{template}', [TemplateController::class, 'show'])->name('templates.show');
+Route::middleware('guest')->group(function () {
+    Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.redirect');
+    Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+});
 Route::get('blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');

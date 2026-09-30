@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\Auth\GoogleController;
 use App\Models\Order;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -43,6 +44,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'googleSignIn' => GoogleController::enabled(),
             // Where visitors contact us (Admin > Site settings, or the default).
             'telegram' => fn () => ($handle = Setting::payment()['telegram'])
                 ? 'https://t.me/'.ltrim($handle, '@')

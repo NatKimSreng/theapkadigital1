@@ -1,4 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
+import { GoogleButton } from '@/components/google-button';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
@@ -22,6 +23,7 @@ export default function Register({ passwordRules }: Props) {
             <Head title={t('auth.register')} />
 
             <div className="rounded-3xl border bg-card p-6 shadow-sm">
+                <GoogleButton />
                 <Form
                     {...store.form()}
                     resetOnSuccess={['password', 'password_confirmation']}

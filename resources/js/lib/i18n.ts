@@ -835,6 +835,8 @@ const en = {
     'pricing.all_templates':
         'Every template, premium included, as many as you like',
     'pricing.free_template_limit': ':max free templates',
+    'auth.google': 'Continue with Google',
+    'auth.or': 'or',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -1624,6 +1626,8 @@ const km: Record<TranslationKey, string> = {
     'contact.body': 'ផ្ញើសារមកយើងតាម Telegram យើងឆ្លើយតបរហ័ស។',
     'pricing.all_templates': 'គ្រប់គំរូ រួមទាំងគំរូពិសេស ប្រើបានច្រើនតាមចិត្ត',
     'pricing.free_template_limit': 'គំរូឥតគិតថ្លៃ :max',
+    'auth.google': 'បន្តជាមួយ Google',
+    'auth.or': 'ឬ',
 };
 
 export type Locale = 'km' | 'en';

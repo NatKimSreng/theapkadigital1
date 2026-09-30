@@ -19,6 +19,7 @@ declare module '@inertiajs/core' {
             auth: Auth;
             adminPending: number | null;
             telegram: string | null;
+            googleSignIn: boolean;
             [key: string]: unknown;
         };
     }

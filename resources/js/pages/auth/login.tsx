@@ -1,4 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
+import { GoogleButton } from '@/components/google-button';
 import InputError from '@/components/input-error';
 import PasskeyVerify from '@/components/passkey-verify';
 import PasswordInput from '@/components/password-input';
@@ -32,6 +33,7 @@ export default function Login({ status, canResetPassword }: Props) {
             )}
 
             <div className="rounded-3xl border bg-card p-6 shadow-sm">
+                <GoogleButton />
                 <PasskeyVerify />
 
                 <Form
