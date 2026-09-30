@@ -36,4 +36,30 @@ class RegistrationTest extends TestCase
         $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
     }
+
+    public function test_a_simple_six_character_password_is_enough_in_production()
+    {
+        $this->app['env'] = 'production';
+
+        $this->post(route('register.store'), [
+            'name' => 'Dara',
+            'email' => 'dara@example.com',
+            'password' => 'abc123',
+            'password_confirmation' => 'abc123',
+        ])->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('users', ['email' => 'dara@example.com']);
+    }
+
+    public function test_passwords_shorter_than_six_characters_are_rejected()
+    {
+        $this->post(route('register.store'), [
+            'name' => 'Dara',
+            'email' => 'dara@example.com',
+            'password' => 'abc12',
+            'password_confirmation' => 'abc12',
+        ])->assertSessionHasErrors('password');
+
+        $this->assertGuest();
+    }
 }
