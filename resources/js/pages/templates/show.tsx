@@ -99,7 +99,7 @@ export default function TemplateDemo({
                     <Button
                         asChild
                         size="sm"
-                        className="shrink-0 rounded-full bg-[oklch(0.78_0.11_82)] text-[oklch(0.2_0.02_60)] hover:bg-[oklch(0.84_0.1_85)]"
+                        className="shrink-0 rounded-full bg-gold text-gold-foreground hover:bg-gold-soft"
                     >
                         <Link href={auth.user ? dashboard() : register()}>
                             {t('showcase.use')}

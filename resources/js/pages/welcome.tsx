@@ -49,8 +49,8 @@ const steps: { title: TranslationKey; body: TranslationKey }[] = [
 
 function Eyebrow({ children }: { children: ReactNode }) {
     return (
-        <p className="flex items-center gap-3 text-xs font-semibold tracking-[0.2em] text-primary uppercase">
-            <span className="h-px w-8 bg-primary/60" />
+        <p className="flex items-center gap-3 text-xs font-semibold tracking-[0.2em] text-gold uppercase">
+            <span className="h-px w-8 bg-gold/60" />
             {children}
         </p>
     );
@@ -146,7 +146,7 @@ export default function Welcome({ posts }: { posts: PostSummary[] }) {
                             <div className="flex justify-center lg:justify-start">
                                 <Eyebrow>{t('welcome.tagline')}</Eyebrow>
                             </div>
-                            <h1 className="mt-6 font-serif text-5xl leading-[1.05] font-semibold tracking-tight sm:text-6xl lg:text-7xl">
+                            <h1 className="text-navy-enamel mt-6 font-serif text-5xl leading-[1.05] font-semibold tracking-tight sm:text-6xl lg:text-7xl">
                                 {t('welcome.title')}
                             </h1>
                             <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground lg:mx-0">
@@ -331,22 +331,22 @@ export default function Welcome({ posts }: { posts: PostSummary[] }) {
                 )}
 
                 <section className="px-4 pb-24 sm:px-6">
-                    <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-[oklch(0.22_0.012_60)] px-6 py-16 text-center text-[oklch(0.96_0.01_85)] sm:px-12">
+                    <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-navy-deep px-6 py-16 text-center text-navy-deep-foreground sm:px-12">
                         <div
                             aria-hidden
-                            className="absolute inset-3 rounded-[1.5rem] border border-[oklch(0.76_0.11_80_/_0.35)]"
+                            className="absolute inset-3 rounded-[1.5rem] border border-gold/40"
                         />
-                        <CalendarHeart className="relative mx-auto size-10 text-[oklch(0.8_0.11_82)]" />
+                        <CalendarHeart className="relative mx-auto size-10 text-gold-soft" />
                         <h2 className="relative mt-5 font-serif text-4xl font-semibold sm:text-5xl">
                             {t('welcome.cta_title')}
                         </h2>
-                        <p className="relative mt-4 text-[oklch(0.8_0.02_80)]">
+                        <p className="relative mt-4 text-navy-deep-foreground/75">
                             {t('welcome.cta_sub')}
                         </p>
                         <Button
                             asChild
                             size="lg"
-                            className="relative mt-8 h-12 rounded-full bg-[oklch(0.78_0.11_82)] px-8 text-[oklch(0.2_0.02_60)] hover:bg-[oklch(0.84_0.1_85)]"
+                            className="relative mt-8 h-12 rounded-full bg-gold px-8 text-gold-foreground hover:bg-gold-soft"
                         >
                             <Link href={startHref}>
                                 {startLabel}

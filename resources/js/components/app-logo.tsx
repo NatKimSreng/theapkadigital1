@@ -6,9 +6,12 @@ import { cn } from '@/lib/utils';
 export default function AppLogo({
     className,
     size = 'md',
+    onDark = false,
 }: {
     className?: string;
     size?: 'md' | 'lg';
+    /** On a navy panel: the navy part of the wordmark turns ivory. */
+    onDark?: boolean;
 }) {
     return (
         <div className={cn('flex items-center gap-2 py-1 pr-2', className)}>
@@ -29,9 +32,18 @@ export default function AppLogo({
                         size === 'lg' ? 'text-2xl' : 'text-xl',
                     )}
                 >
-                    TheapKa
+                    <span
+                        className={
+                            onDark
+                                ? 'text-navy-deep-foreground'
+                                : 'text-navy-enamel'
+                        }
+                    >
+                        Theap
+                    </span>
+                    <span className="text-gold-foil">Ka</span>
                 </span>
-                <span className="mt-0.5 text-[9px] font-semibold tracking-[0.35em] text-primary">
+                <span className="mt-0.5 text-[9px] font-semibold tracking-[0.35em] text-gold">
                     DIGITAL
                 </span>
             </span>

@@ -156,16 +156,16 @@ export default function BlogShow({
                         </div>
                     </article>
 
-                    <section className="mx-auto mt-16 max-w-3xl overflow-hidden rounded-3xl bg-[oklch(0.22_0.012_60)] p-8 text-center text-[oklch(0.96_0.01_85)]">
+                    <section className="mx-auto mt-16 max-w-3xl overflow-hidden rounded-3xl bg-navy-deep p-8 text-center text-navy-deep-foreground">
                         <h2 className="font-serif text-3xl font-semibold">
                             {t('welcome.cta_title')}
                         </h2>
-                        <p className="mt-3 text-[oklch(0.8_0.02_80)]">
+                        <p className="mt-3 text-navy-deep-foreground/75">
                             {t('welcome.cta_sub')}
                         </p>
                         <Button
                             asChild
-                            className="mt-6 rounded-full bg-[oklch(0.78_0.11_82)] px-6 text-[oklch(0.2_0.02_60)] hover:bg-[oklch(0.84_0.1_85)]"
+                            className="mt-6 rounded-full bg-gold px-6 text-gold-foreground hover:bg-gold-soft"
                         >
                             <Link href={register()}>
                                 {t('welcome.start')}

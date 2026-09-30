@@ -153,7 +153,7 @@ export default function EventDashboard({
             <section className="rounded-3xl bg-gradient-to-br from-accent via-accent/50 to-background p-6 ring-1 ring-primary/20 sm:p-8">
                 <div className="flex flex-wrap items-center justify-between gap-6">
                     <div>
-                        <p className="text-xs font-semibold tracking-[0.2em] text-primary uppercase">
+                        <p className="text-xs font-semibold tracking-[0.2em] text-gold uppercase">
                             {t(`type.${event.type}` as TranslationKey)}
                         </p>
                         <h2 className="mt-2 font-serif text-3xl font-semibold sm:text-4xl">

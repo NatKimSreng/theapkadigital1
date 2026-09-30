@@ -60,7 +60,7 @@ export default function Pricing({
 
                 <main className="relative mx-auto max-w-6xl px-4 pt-10 pb-24 sm:px-6">
                     <div className="mx-auto max-w-2xl text-center">
-                        <p className="text-xs font-semibold tracking-[0.2em] text-primary uppercase">
+                        <p className="text-xs font-semibold tracking-[0.2em] text-gold uppercase">
                             {t('pricing.eyebrow')}
                         </p>
                         <h1 className="mt-4 font-serif text-4xl font-semibold sm:text-5xl">

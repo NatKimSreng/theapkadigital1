@@ -28,25 +28,22 @@ export default function AuthLayout({
 
     return (
         <div className="grid min-h-svh bg-background lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
-            <aside className="relative hidden overflow-hidden bg-[oklch(0.2_0.012_60)] p-12 text-[oklch(0.96_0.01_85)] lg:flex lg:flex-col">
+            <aside className="relative hidden overflow-hidden bg-navy-deep p-12 text-navy-deep-foreground lg:flex lg:flex-col">
                 <div
                     aria-hidden
-                    className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,oklch(0.76_0.11_80/0.28),transparent_55%),radial-gradient(circle_at_90%_90%,oklch(0.76_0.11_80/0.18),transparent_50%)]"
+                    className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,oklch(0.79_0.1_80/0.22),transparent_55%),radial-gradient(circle_at_90%_90%,oklch(0.5_0.15_264/0.35),transparent_50%)]"
                 />
                 <div
                     aria-hidden
-                    className="absolute inset-5 rounded-[2rem] border border-[oklch(0.76_0.11_80/0.3)]"
+                    className="absolute inset-5 rounded-[2rem] border border-gold/35"
                 />
 
                 <Link href={home()} className="relative w-fit">
-                    <AppLogo
-                        size="lg"
-                        className="[&_.text-primary]:text-[oklch(0.8_0.11_82)]"
-                    />
+                    <AppLogo size="lg" onDark />
                 </Link>
 
                 <div className="relative my-auto max-w-md">
-                    <p className="text-xs font-semibold tracking-[0.25em] text-[oklch(0.8_0.11_82)] uppercase">
+                    <p className="text-xs font-semibold tracking-[0.25em] text-gold-soft uppercase">
                         {t('welcome.tagline')}
                     </p>
                     <h2 className="mt-5 font-serif text-5xl leading-[1.1] font-semibold">
@@ -55,10 +52,10 @@ export default function AuthLayout({
                     <ul className="mt-10 space-y-4">
                         {highlights.map((key) => (
                             <li key={key} className="flex items-center gap-3">
-                                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[oklch(0.76_0.11_80/0.2)] text-[oklch(0.82_0.11_85)]">
+                                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-gold/20 text-gold-soft">
                                     <Check className="size-4" />
                                 </span>
-                                <span className="text-[oklch(0.86_0.02_80)]">
+                                <span className="text-navy-deep-foreground/85">
                                     {t(key)}
                                 </span>
                             </li>
@@ -66,7 +63,7 @@ export default function AuthLayout({
                     </ul>
                 </div>
 
-                <p className="relative text-sm text-[oklch(0.7_0.02_80)]">
+                <p className="relative text-sm text-navy-deep-foreground/60">
                     © {new Date().getFullYear()} Theapka
                 </p>
             </aside>

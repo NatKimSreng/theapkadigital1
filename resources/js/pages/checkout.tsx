@@ -296,7 +296,7 @@ export default function Checkout({
 
                 <aside className="lg:sticky lg:top-20 lg:self-start">
                     <div className="rounded-3xl border bg-gradient-to-br from-accent to-card p-6 shadow-sm">
-                        <p className="text-xs font-semibold tracking-[0.2em] text-primary uppercase">
+                        <p className="text-xs font-semibold tracking-[0.2em] text-gold uppercase">
                             {t('checkout.summary')}
                         </p>
                         <div className="mt-4 flex items-center gap-3">
