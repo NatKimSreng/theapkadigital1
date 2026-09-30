@@ -1,5 +1,5 @@
 import { Link, router, usePage } from '@inertiajs/react';
-import { Check, Eye, Lock, Phone, Plus, Sparkles } from 'lucide-react';
+import { Check, Eye, Lock, Phone, Plus, Send, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import InvitationController from '@/actions/App/Http/Controllers/InvitationController';
 import { EventShell } from '@/components/event/event-shell';
@@ -31,7 +31,8 @@ export default function Templates({
 }: {
     event: PlannerEvent;
     added: Record<string, number>;
-    max: number;
+    /** null: no limit (paid plan). */
+    max: number | null;
     premiumUnlocked: boolean;
 }) {
     const { t } = useTranslation();
@@ -42,7 +43,8 @@ export default function Templates({
     const [adding, setAdding] = useState<string | null>(null);
 
     const addedCount = Object.keys(added).length;
-    const full = addedCount >= max;
+    const full = max !== null && addedCount >= max;
+    const contact = telegram ?? 'https://t.me/Kimsreng5';
     const free = TEMPLATES.filter((template) => template.free);
     const premium = TEMPLATES.filter(
         (template) => !template.free && template.theme,
@@ -168,15 +170,51 @@ export default function Templates({
             <div className="flex items-baseline gap-3">
                 <h2 className="text-lg font-bold">{t('templates.title')}</h2>
                 <span className="text-sm text-muted-foreground tabular-nums">
-                    {addedCount}/{max}
+                    {max === null ? addedCount : `${addedCount}/${max}`}
                 </span>
             </div>
 
-            {full && (
-                <p className="mt-3 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-200">
-                    {t('templates.limit', { max })}
+            {max === null ? (
+                <p className="mt-3 flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
+                    <Sparkles className="size-4 shrink-0" />
+                    {t('templates.all_unlocked')}
                 </p>
+            ) : (
+                <div
+                    className={`mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl px-4 py-3 text-sm ${full ? 'bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200' : 'bg-muted text-muted-foreground'}`}
+                >
+                    <span className="flex-1">
+                        {full
+                            ? t('templates.limit', { max })
+                            : t('templates.free_limit', { max })}
+                    </span>
+                    <Link
+                        href={pricing({ query: { event: event.id } })}
+                        className="font-semibold text-primary hover:underline"
+                    >
+                        {t('templates.see_plans')}
+                    </Link>
+                </div>
             )}
+
+            <a
+                href={contact}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 flex items-center gap-3 rounded-xl border border-[#229ED9]/30 bg-[#229ED9]/8 px-4 py-3 text-sm transition-colors hover:bg-[#229ED9]/15"
+            >
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#229ED9] text-white">
+                    <Send className="size-4" />
+                </span>
+                <span className="flex-1">
+                    <span className="block font-semibold">
+                        {t('contact.title')}
+                    </span>
+                    <span className="text-muted-foreground">
+                        {t('contact.body')}
+                    </span>
+                </span>
+            </a>
 
             <section className="mt-6">
                 <h3 className="flex items-center gap-2 font-bold">

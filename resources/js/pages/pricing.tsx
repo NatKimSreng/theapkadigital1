@@ -1,5 +1,5 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Check, Minus, Sparkles } from 'lucide-react';
+import { Check, Minus, Send, Sparkles } from 'lucide-react';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 import { Button } from '@/components/ui/button';
@@ -35,7 +35,7 @@ export default function Pricing({
     packages: Package[];
     eventId: number | null;
 }) {
-    const { auth } = usePage().props;
+    const { auth, telegram } = usePage().props;
     const { t, locale } = useTranslation();
 
     const ctaHref = (pkg: Package) => {
@@ -127,12 +127,17 @@ export default function Pricing({
                                             : t('pricing.unlimited_guests')}
                                     </Feature>
                                     <Feature on>{t('pricing.basics')}</Feature>
-                                    <Feature on>
-                                        {t('pricing.free_templates')}
-                                    </Feature>
-                                    <Feature on={pkg.premium_templates}>
-                                        {t('pricing.premium_templates')}
-                                    </Feature>
+                                    {pkg.price > 0 ? (
+                                        <Feature on>
+                                            {t('pricing.all_templates')}
+                                        </Feature>
+                                    ) : (
+                                        <Feature on>
+                                            {t('pricing.free_template_limit', {
+                                                max: 2,
+                                            })}
+                                        </Feature>
+                                    )}
                                     <Feature on={pkg.remove_branding}>
                                         {pkg.remove_branding
                                             ? t('pricing.remove_branding')
@@ -208,6 +213,26 @@ export default function Pricing({
                             ))}
                         </ol>
                     </section>
+                    {telegram && (
+                        <a
+                            href={telegram}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mx-auto mt-12 flex max-w-xl items-center gap-4 rounded-2xl border border-[#229ED9]/30 bg-[#229ED9]/8 p-5 transition-colors hover:bg-[#229ED9]/15"
+                        >
+                            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#229ED9] text-white">
+                                <Send className="size-5" />
+                            </span>
+                            <span>
+                                <span className="block font-semibold">
+                                    {t('contact.title')}
+                                </span>
+                                <span className="text-sm text-muted-foreground">
+                                    {t('contact.body')}
+                                </span>
+                            </span>
+                        </a>
+                    )}
                 </main>
                 <PublicFooter />
             </div>

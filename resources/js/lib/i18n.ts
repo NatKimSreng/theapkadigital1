@@ -825,6 +825,16 @@ const en = {
     'template.mocha-editorial': 'Mocha Editorial',
     'design.opening_seal': 'Wax seal',
     'footer.telegram': 'Contact us on Telegram',
+    'templates.all_unlocked':
+        'Your plan includes every template, premium too. Add as many as you like.',
+    'templates.free_limit':
+        'The free plan can use :max templates. Paid plans unlock every template.',
+    'templates.see_plans': 'See plans',
+    'contact.title': 'Need help or a custom design?',
+    'contact.body': 'Message us on Telegram, we reply quickly.',
+    'pricing.all_templates':
+        'Every template, premium included, as many as you like',
+    'pricing.free_template_limit': ':max free templates',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -1606,6 +1616,14 @@ const km: Record<TranslationKey, string> = {
     'template.mocha-editorial': 'ម៉ូកា ទំនើប',
     'design.opening_seal': 'ត្រាក្រមួន',
     'footer.telegram': 'ទាក់ទងតាម Telegram',
+    'templates.all_unlocked':
+        'កញ្ចប់របស់អ្នកអាចប្រើគ្រប់គំរូ រួមទាំងគំរូពិសេស។ បន្ថែមបានច្រើនតាមចិត្ត។',
+    'templates.free_limit': 'កញ្ចប់ឥតគិតថ្លៃប្រើបាន :max គំរូ។ កញ្ចប់បង់ប្រាក់អាចប្រើគ្រប់គំរូ។',
+    'templates.see_plans': 'មើលកញ្ចប់',
+    'contact.title': 'ត្រូវការជំនួយ ឬម៉ូដផ្ទាល់ខ្លួន?',
+    'contact.body': 'ផ្ញើសារមកយើងតាម Telegram យើងឆ្លើយតបរហ័ស។',
+    'pricing.all_templates': 'គ្រប់គំរូ រួមទាំងគំរូពិសេស ប្រើបានច្រើនតាមចិត្ត',
+    'pricing.free_template_limit': 'គំរូឥតគិតថ្លៃ :max',
 };
 
 export type Locale = 'km' | 'en';

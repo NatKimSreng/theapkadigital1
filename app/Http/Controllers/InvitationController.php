@@ -75,8 +75,8 @@ class InvitationController extends Controller
         return Inertia::render('events/templates', [
             'event' => $event,
             'added' => $event->invitations()->pluck('id', 'template'),
-            'max' => Invitation::MAX_PER_EVENT,
-            'premiumUnlocked' => $event->plan()->premium_templates,
+            'max' => $event->plan()->templateLimit(),
+            'premiumUnlocked' => $event->plan()->unlocksPremiumTemplates(),
         ]);
     }
 
@@ -92,15 +92,16 @@ class InvitationController extends Controller
             ],
         ]);
 
-        if (in_array($validated['template'], Invitation::PREMIUM_TEMPLATES, true) && ! $event->plan()->premium_templates) {
+        if (in_array($validated['template'], Invitation::PREMIUM_TEMPLATES, true) && ! $event->plan()->unlocksPremiumTemplates()) {
             Inertia::flash('toast', ['type' => 'error', 'message' => 'toast.premium_required']);
 
             return back();
         }
 
         $count = $event->invitations()->count();
+        $limit = $event->plan()->templateLimit();
 
-        if ($count >= Invitation::MAX_PER_EVENT) {
+        if ($limit !== null && $count >= $limit) {
             Inertia::flash('toast', ['type' => 'error', 'message' => 'toast.template_limit']);
 
             return back();

@@ -62,6 +62,27 @@ class Package extends Model
         ]);
     }
 
+    public function isPaid(): bool
+    {
+        return (float) $this->price > 0;
+    }
+
+    /**
+     * Paid plans unlock every design, premium included.
+     */
+    public function unlocksPremiumTemplates(): bool
+    {
+        return $this->isPaid() || $this->premium_templates;
+    }
+
+    /**
+     * How many templates an event may add; null means no limit (paid plans).
+     */
+    public function templateLimit(): ?int
+    {
+        return $this->isPaid() ? null : Invitation::MAX_PER_EVENT;
+    }
+
     /**
      * @param  Builder<self>  $query
      */

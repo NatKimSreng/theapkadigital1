@@ -94,6 +94,38 @@ class PackageTest extends TestCase
         $this->assertSame(1, $event->invitations()->count());
     }
 
+    public function test_any_paid_plan_unlocks_every_template_without_a_limit()
+    {
+        $user = User::factory()->create();
+        $event = $this->eventFor($user);
+        $cheapest = Package::query()->where('price', '>', 0)->orderBy('price')->firstOrFail();
+        $cheapest->update(['premium_templates' => false]);
+        $event->forceFill(['package_id' => $cheapest->id])->save();
+
+        foreach (['royal-wedding', 'paper-frame', 'golden-engagement', 'emerald-velvet'] as $template) {
+            $this->actingAs($user)->post(route('events.invitations.store', $event), ['template' => $template]);
+        }
+
+        $this->assertSame(4, $event->invitations()->count());
+
+        $this->get(route('events.templates', $event))
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('max', null)
+                ->where('premiumUnlocked', true));
+    }
+
+    public function test_free_plan_keeps_the_two_template_limit()
+    {
+        $user = User::factory()->create();
+        $event = $this->eventFor($user);
+
+        foreach (['paper-frame', 'golden-engagement', 'blossom-birthday'] as $template) {
+            $this->actingAs($user)->post(route('events.invitations.store', $event), ['template' => $template]);
+        }
+
+        $this->assertSame(2, $event->invitations()->count());
+    }
+
     public function test_customer_can_order_a_package_with_a_receipt()
     {
         Storage::fake('local');
