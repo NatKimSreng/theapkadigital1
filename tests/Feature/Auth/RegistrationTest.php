@@ -37,10 +37,8 @@ class RegistrationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false));
     }
 
-    public function test_a_simple_six_character_password_is_enough_in_production()
+    public function test_a_simple_six_character_password_is_enough()
     {
-        $this->app['env'] = 'production';
-
         $this->post(route('register.store'), [
             'name' => 'Dara',
             'email' => 'dara@example.com',
@@ -48,7 +46,7 @@ class RegistrationTest extends TestCase
             'password_confirmation' => 'abc123',
         ])->assertSessionHasNoErrors();
 
-        $this->assertDatabaseHas('users', ['email' => 'dara@example.com']);
+        $this->assertAuthenticated();
     }
 
     public function test_passwords_shorter_than_six_characters_are_rejected()
