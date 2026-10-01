@@ -28,8 +28,10 @@ import {
     Gallery,
     GiftSection,
     MapButton,
+    MonthCalendar,
     MusicButton,
     ParentsBlock,
+    QrCode,
     ScrollHint,
     TextPanel,
 } from './parts';
@@ -426,38 +428,60 @@ function ClassicLayout({
                     ref={details}
                     className="relative space-y-10 px-6 pt-4 pb-14 text-center"
                 >
-                    <Section motion={motion}>
-                        {heading(data.messageTitle)}
-                        <ParentsBlock data={data} />
-                        <TextPanel background={theme.panel}>
-                            {data.message}
-                        </TextPanel>
-                        {data.dateText && (
-                            <DetailRow
-                                icon={<CalendarDays className="size-5" />}
-                                color={primary}
-                                panel={theme.panel}
-                                text={
-                                    data.eventTime
-                                        ? `${data.dateText} · ${data.timeText}`
-                                        : data.dateText
-                                }
-                            />
-                        )}
-                        {data.venueText && (
-                            <DetailRow
-                                icon={<MapPin className="size-5" />}
-                                color={primary}
-                                panel={theme.panel}
-                                text={data.venueText}
-                            />
-                        )}
-                    </Section>
+                    {/* A formal cover already carries the invitation itself. */}
+                    {hero !== 'heritage' && (
+                        <Section motion={motion}>
+                            {heading(data.messageTitle)}
+                            <ParentsBlock data={data} />
+                            <TextPanel background={theme.panel}>
+                                {data.message}
+                            </TextPanel>
+                            {data.dateText && (
+                                <DetailRow
+                                    icon={<CalendarDays className="size-5" />}
+                                    color={primary}
+                                    panel={theme.panel}
+                                    text={
+                                        <>
+                                            {data.lunarDate && (
+                                                <span className="block">
+                                                    {data.lunarDate}
+                                                </span>
+                                            )}
+                                            {data.lunarDate &&
+                                                `${copy.lunarMatches} `}
+                                            {data.eventTime
+                                                ? `${data.dateText} · ${data.timeText}`
+                                                : data.dateText}
+                                        </>
+                                    }
+                                />
+                            )}
+                            {data.venueText && (
+                                <DetailRow
+                                    icon={<MapPin className="size-5" />}
+                                    color={primary}
+                                    panel={theme.panel}
+                                    text={
+                                        <>
+                                            {data.venueText}
+                                            {data.address && (
+                                                <span className="block text-sm opacity-80">
+                                                    {data.address}
+                                                </span>
+                                            )}
+                                        </>
+                                    }
+                                />
+                            )}
+                        </Section>
+                    )}
 
                     {data.showCountdown && (
                         <Section motion={motion}>
                             {heading(copy.countdown)}
                             <Countdown data={data} />
+                            <MonthCalendar data={data} />
                             {calendar && (
                                 <a
                                     href={calendar}
@@ -502,6 +526,25 @@ function ClassicLayout({
                                 )
                             )}
                             {data.mapHref && <MapButton data={data} />}
+                            {data.mapQr && (
+                                <div className="mx-auto w-40 space-y-2">
+                                    <QrCode
+                                        qr={data.mapQr}
+                                        color={primary}
+                                        className="w-full rounded-xl shadow-sm"
+                                    />
+                                    <p className="text-xs">{copy.mapQr}</p>
+                                </div>
+                            )}
+                        </Section>
+                    )}
+
+                    {data.procession && (
+                        <Section motion={motion}>
+                            {heading(copy.procession)}
+                            <TextPanel background={theme.panel}>
+                                {data.procession}
+                            </TextPanel>
                         </Section>
                     )}
 

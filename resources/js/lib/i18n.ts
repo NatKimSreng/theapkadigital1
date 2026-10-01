@@ -834,6 +834,10 @@ const en = {
     'design.opening_fold': 'Folded card',
     'design.opening_glow': 'Golden envelope',
     'template.naga-gold': 'Naga Gold',
+    'template.khmer-heritage': 'Khmer Heritage',
+    'design.lunar_date': 'Khmer lunar date (optional)',
+    'design.address': 'Address (optional)',
+    'design.procession': 'Procession invitation (optional)',
     'template.golden-prasat': 'Golden Prasat',
     'footer.telegram': 'Contact us on Telegram',
     'templates.all_unlocked':
@@ -1638,6 +1642,10 @@ const km: Record<TranslationKey, string> = {
     'design.opening_fold': 'កាតបត់',
     'design.opening_glow': 'ស្រោមសំបុត្រមាស',
     'template.naga-gold': 'នាគមាស',
+    'template.khmer-heritage': 'បេតិកភណ្ឌខ្មែរ',
+    'design.lunar_date': 'ថ្ងៃខែតាមចន្ទគតិ (អាចរំលង)',
+    'design.address': 'អាសយដ្ឋាន (អាចរំលង)',
+    'design.procession': 'លិខិតអញ្ជើញហែជំនូន (អាចរំលង)',
     'template.golden-prasat': 'ប្រាសាទមាស',
     'footer.telegram': 'ទាក់ទងតាម Telegram',
     'templates.all_unlocked':

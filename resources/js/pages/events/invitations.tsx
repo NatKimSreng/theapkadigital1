@@ -736,10 +736,18 @@ function Editor({
                             defaults.dateText,
                         )}
                         {textField(
+                            'lunar_date',
+                            'design.lunar_date',
+                            lang === 'km'
+                                ? 'ថ្ងៃសៅរ៍ ៤រោច ខែកត្តិក ឆ្នាំម្សាញ់ សប្តស័ក ពុទ្ធសករាជ ២៥៧០'
+                                : 'Saturday, 4th waning day of Kattik, BE 2570',
+                        )}
+                        {textField(
                             'venue_text',
                             'design.venue_text',
                             defaults.venueText,
                         )}
+                        {textField('address', 'design.address', '')}
                         <div className="grid gap-1.5">
                             <Label htmlFor="event_time">
                                 {t('design.event_time')}
@@ -802,6 +810,7 @@ function Editor({
                             defaults.message,
                             true,
                         )}
+                        {textField('procession', 'design.procession', '', true)}
                     </Panel>
 
                     <details className="group rounded-3xl bg-background shadow-sm">

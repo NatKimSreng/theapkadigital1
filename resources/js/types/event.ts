@@ -153,13 +153,16 @@ export const INVITATION_TEXT_KEYS = [
     'invite_line',
     'guest_name',
     'date_text',
+    'lunar_date',
     'venue_text',
+    'address',
     'message_title',
     'message',
     'thanks_title',
     'thanks',
     'groom_parents',
     'bride_parents',
+    'procession',
 ] as const;
 
 export type InvitationTextKey = (typeof INVITATION_TEXT_KEYS)[number];
@@ -192,6 +195,8 @@ export type InvitationSettings = {
     gold_text?: boolean;
     map_url?: string | null;
     map_place?: MapPlace | null;
+    /** The map link as a QR code: `size` modules a side, row by row. */
+    map_qr?: { size: number; bits: string } | null;
     language?: InvitationLang;
     /** Which languages guests see; one language hides the switcher. */
     languages?: InvitationLanguages;

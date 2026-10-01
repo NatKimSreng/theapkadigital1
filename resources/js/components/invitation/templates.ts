@@ -22,6 +22,7 @@ export type HeroStyle =
     | 'editorial'
     | 'prasat'
     | 'foil'
+    | 'heritage'
     | 'fullbleed'
     | 'cinematic'
     | 'split'
@@ -342,6 +343,28 @@ export const TEMPLATES: TemplateDefinition[] = [
         },
     },
     {
+        key: 'khmer-heritage',
+        category: 'wedding',
+        name: 'template.khmer-heritage',
+        free: false,
+        demoPhoto: 2,
+        theme: {
+            primary: '#8b1e24',
+            secondary: '#b8862b',
+            background: 'linear-gradient(180deg, #fdf8ee 0%, #f7eedc 100%)',
+            text: '#3d2a1e',
+            panel: 'rgba(255, 255, 255, 0.72)',
+            ornament: 'frame',
+            hero: 'heritage',
+            texture: 'linen',
+            motif: 'kbach',
+            seal: '#c9a24a',
+            envelope: '#7c1d24',
+            opening: 'glow',
+            effect: 'petals',
+        },
+    },
+    {
         key: 'angkor-cinematic',
         category: 'wedding',
         name: 'template.angkor-cinematic',
@@ -413,6 +436,12 @@ type Copy = {
     openInvitation: string;
     tapSeal: string;
     tapCard: string;
+    lunarMatches: string;
+    procession: string;
+    mapQr: string;
+    enlarge: string;
+    downloadQr: string;
+    closing: string;
     weddingOf: string;
     saveDate: string;
     reminder: string;
@@ -483,6 +512,12 @@ export const COPY: Record<InvitationLang, Copy> = {
         openInvitation: 'បើកលិខិត',
         tapSeal: 'ចុចលើត្រាដើម្បីបើកលិខិត',
         tapCard: 'ចុចដើម្បីបើកកាត',
+        lunarMatches: 'ត្រូវនឹង',
+        procession: 'ពិធីហែជំនូន',
+        mapQr: 'ស្កែន QR ដើម្បីបើកផែនទី',
+        enlarge: 'ពង្រីក',
+        downloadQr: 'ទាញយក QR',
+        closing: 'ដោយមេត្រីភាព! សូមអរគុណ។',
         weddingOf: 'សិរីមង្គលអាពាហ៍ពិពាហ៍',
         saveDate: 'ដែលនឹងប្រព្រឹត្តទៅនៅ',
         reminder: 'កត់ទុកក្នុងប្រតិទិន',
@@ -551,6 +586,12 @@ export const COPY: Record<InvitationLang, Copy> = {
         openInvitation: 'Open invitation',
         tapSeal: 'Tap the seal to open',
         tapCard: 'Tap to open the card',
+        lunarMatches: 'Which falls on',
+        procession: 'Wedding procession',
+        mapQr: 'Scan to open the map',
+        enlarge: 'Enlarge',
+        downloadQr: 'Download QR',
+        closing: 'With gratitude, thank you!',
         weddingOf: 'The wedding of',
         saveDate: 'Save the date',
         reminder: 'Set a reminder',

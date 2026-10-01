@@ -1,5 +1,7 @@
 import {
     Clock,
+    Download,
+    Expand,
     Hand,
     Hourglass,
     Music,
@@ -11,7 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { InvitationMedia } from '@/types';
 import type { ResolvedInvitation } from './resolve';
-import { eventStart, khmerDigits } from './resolve';
+import { KM_MONTHS, eventStart, khmerDigits } from './resolve';
 
 export function MusicButton({
     src,
@@ -94,7 +96,7 @@ export function DetailRow({
     icon: ReactNode;
     color: string;
     panel: string;
-    text: string;
+    text: ReactNode;
 }) {
     return (
         <div
@@ -394,6 +396,7 @@ export function GiftSection({
     const [selected, setSelected] = useState<'usd' | 'khr'>(
         options[0]?.[0] ?? 'usd',
     );
+    const [zoomed, setZoomed] = useState(false);
 
     if (options.length === 0) {
         return null;
@@ -433,7 +436,43 @@ export function GiftSection({
             )}
             <div className="mx-auto max-w-64 space-y-3 rounded-3xl bg-white p-4 text-neutral-800 shadow-md">
                 {qr && (
-                    <img src={qr} alt="KHQR" className="w-full rounded-xl" />
+                    <>
+                        <button
+                            type="button"
+                            onClick={() => setZoomed(true)}
+                            className="block w-full"
+                            aria-label={data.copy.enlarge}
+                        >
+                            <img
+                                src={qr}
+                                alt="KHQR"
+                                className="w-full rounded-xl"
+                            />
+                        </button>
+                        <div className="flex justify-center gap-2">
+                            <button
+                                type="button"
+                                onClick={() => setZoomed(true)}
+                                className="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-semibold"
+                                style={{
+                                    borderColor: data.primary,
+                                    color: data.primary,
+                                }}
+                            >
+                                <Expand className="size-3.5" />
+                                {data.copy.enlarge}
+                            </button>
+                            <a
+                                href={qr}
+                                download={`khqr-${key}.png`}
+                                className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold text-white"
+                                style={{ background: data.primary }}
+                            >
+                                <Download className="size-3.5" />
+                                {data.copy.downloadQr}
+                            </a>
+                        </div>
+                    </>
                 )}
                 {account.name && (
                     <p className="text-sm">
@@ -466,7 +505,128 @@ export function GiftSection({
                     {data.copy.sendGift}
                 </a>
             )}
+            {zoomed && qr && (
+                <button
+                    type="button"
+                    onClick={() => setZoomed(false)}
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
+                >
+                    <img
+                        src={qr}
+                        alt="KHQR"
+                        className="max-h-full w-full max-w-sm rounded-2xl bg-white p-3"
+                    />
+                </button>
+            )}
         </div>
+    );
+}
+
+/**
+ * The wedding's month as a little calendar, its day ringed in the
+ * design's colour.
+ */
+export function MonthCalendar({ data }: { data: ResolvedInvitation }) {
+    if (!data.eventDate) {
+        return null;
+    }
+
+    const date = new Date(`${data.eventDate.slice(0, 10)}T00:00:00`);
+
+    if (Number.isNaN(date.getTime())) {
+        return null;
+    }
+
+    const km = data.lang === 'km';
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const lead = new Date(year, month, 1).getDay();
+    const days = new Date(year, month + 1, 0).getDate();
+    const cells = [
+        ...Array.from({ length: lead }, () => null),
+        ...Array.from({ length: days }, (_, i) => i + 1),
+    ];
+    const weekdays = km
+        ? ['អា', 'ច', 'អ', 'ពុ', 'ព្រ', 'សុ', 'ស']
+        : ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    const title = km
+        ? `ខែ${KM_MONTHS[month]} ឆ្នាំ${khmerDigits(String(year))}`
+        : date.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+
+    return (
+        <div
+            className="mx-auto w-full max-w-xs rounded-2xl border p-4 shadow-sm"
+            style={{
+                borderColor: `${data.primary}55`,
+                background: data.theme.panel,
+            }}
+        >
+            <p
+                className="mb-3 text-[15px] font-bold"
+                style={{ color: data.primary }}
+            >
+                {title}
+            </p>
+            <div className="grid grid-cols-7 gap-y-1.5 text-center text-[13px]">
+                {weekdays.map((day, index) => (
+                    <span
+                        key={index}
+                        className="pb-1 text-[11px] font-semibold opacity-70"
+                    >
+                        {day}
+                    </span>
+                ))}
+                {cells.map((day, index) =>
+                    day === null ? (
+                        <span key={`blank-${index}`} />
+                    ) : day === date.getDate() ? (
+                        <span key={day} className="flex justify-center">
+                            <span
+                                className="inv-pulse flex size-8 items-center justify-center rounded-full font-bold text-white shadow"
+                                style={{ background: data.primary }}
+                            >
+                                {km ? khmerDigits(String(day)) : day}
+                            </span>
+                        </span>
+                    ) : (
+                        <span key={day} className="leading-8">
+                            {km ? khmerDigits(String(day)) : day}
+                        </span>
+                    ),
+                )}
+            </div>
+        </div>
+    );
+}
+
+/** A QR code drawn module by module, in the design's colour on white. */
+export function QrCode({
+    qr,
+    color,
+    className,
+}: {
+    qr: { size: number; bits: string };
+    color: string;
+    className?: string;
+}) {
+    const quiet = 2;
+    const path = Array.from(qr.bits, (bit, index) =>
+        bit === '1'
+            ? `M${(index % qr.size) + quiet} ${Math.floor(index / qr.size) + quiet}h1v1h-1z`
+            : '',
+    ).join('');
+    const side = qr.size + quiet * 2;
+
+    return (
+        <svg
+            viewBox={`0 0 ${side} ${side}`}
+            shapeRendering="crispEdges"
+            className={className}
+        >
+            <rect width={side} height={side} fill="#fff" />
+            {/* Darkened so even a light gold scans reliably. */}
+            <path d={path} fill={`color-mix(in srgb, ${color} 55%, #000)`} />
+        </svg>
     );
 }
 

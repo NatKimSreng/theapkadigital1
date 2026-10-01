@@ -81,8 +81,11 @@ export function demoSettings(template: TemplateDefinition): InvitationSettings {
                 host_left: hosts.km.left,
                 host_right: hosts.km.right,
                 venue_text: 'សណ្ឋាគារ សុខា សៀមរាប, ខេត្តសៀមរាប',
+                address: 'ផ្លូវជាតិលេខ៦, ក្រុងសៀមរាប',
                 ...(couple
                     ? {
+                          procession:
+                              'សូមគោរពអញ្ជើញ ញាតិមិត្ត និងភ្ញៀវកិត្តិយសទាំងអស់ ចូលរួមដង្ហែជំនូនរបស់កូនប្រុស ចាប់ពីវេលាម៉ោង ៧:០០ ព្រឹក។',
                           groom_parents: 'លោក សុខ ចន្ទ្រា\nលោកស្រី ម៉ៅ សុភាព',
                           bride_parents: 'លោក ចាន់ វណ្ណា\nលោកស្រី លឹម ស្រីមុំ',
                       }
@@ -92,8 +95,11 @@ export function demoSettings(template: TemplateDefinition): InvitationSettings {
                 host_left: hosts.en.left,
                 host_right: hosts.en.right,
                 venue_text: 'Sokha Siem Reap Resort, Siem Reap',
+                address: 'National Road 6, Siem Reap',
                 ...(couple
                     ? {
+                          procession:
+                              'Family and friends are warmly invited to walk with us in the dowry procession, setting off at 7:00 in the morning.',
                           groom_parents: 'Mr. Sok Chantrea\nMrs. Mao Sopheap',
                           bride_parents: 'Mr. Chan Vanna\nMrs. Lim Sreymom',
                       }

@@ -261,6 +261,9 @@ Mrs. Srun']],
             ['lat' => 13.3632, 'lng' => 103.8601, 'name' => 'Sokha Siem Reap Resort'],
             $invitation->refresh()->settings['map_place'],
         );
+        $qr = $invitation->settings['map_qr'];
+        $this->assertGreaterThanOrEqual(21, $qr['size']);
+        $this->assertSame($qr['size'] ** 2, strlen($qr['bits']));
 
         // Saving other settings doesn't fetch the link again.
         $this->actingAs($user)
@@ -275,6 +278,7 @@ Mrs. Srun']],
                 'settings' => json_encode(['map_url' => null]),
             ]);
         $this->assertNull($invitation->refresh()->settings['map_place']);
+        $this->assertNull($invitation->settings['map_qr']);
     }
 
     public function test_map_links_are_only_followed_through_google()

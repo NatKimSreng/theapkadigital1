@@ -6,6 +6,7 @@ import type { HeroStyle } from '../templates';
 import { EditorialCover } from './editorial';
 import { FoilCover } from './foil';
 import { GardenCover } from './garden';
+import { HeritageCover } from './heritage';
 import { KbachCover } from './kbach';
 import { PrasatCover } from './prasat';
 import { VelvetCover } from './velvet';
@@ -29,4 +30,5 @@ export const COVERS: Partial<Record<HeroStyle, ComponentType<CoverProps>>> = {
     editorial: EditorialCover,
     prasat: PrasatCover,
     foil: FoilCover,
+    heritage: HeritageCover,
 };

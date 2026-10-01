@@ -32,7 +32,7 @@ export function emptyMedia(): InvitationMedia {
 
 // Browsers without full Khmer locale data fall back to English, so Khmer
 // dates are built by hand.
-const KM_MONTHS = [
+export const KM_MONTHS = [
     'មករា',
     'កុម្ភៈ',
     'មីនា',
@@ -46,7 +46,15 @@ const KM_MONTHS = [
     'វិច្ឆិកា',
     'ធ្នូ',
 ];
-const KM_WEEKDAYS = ['អាទិត្យ', 'ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស្បតិ៍', 'សុក្រ', 'សៅរ៍'];
+export const KM_WEEKDAYS = [
+    'អាទិត្យ',
+    'ច័ន្ទ',
+    'អង្គារ',
+    'ពុធ',
+    'ព្រហស្បតិ៍',
+    'សុក្រ',
+    'សៅរ៍',
+];
 
 export function khmerDigits(value: string): string {
     return value.replace(/[0-9]/g, (digit) => '០១២៣៤៥៦៧៨៩'[Number(digit)]);
@@ -182,6 +190,9 @@ export function resolveInvitation(
         inviteLine: texts.invite_line || copy.inviteLine,
         guestName: texts.guest_name || copy.guestName,
         dateText: texts.date_text || longDate(event.event_date, lang),
+        lunarDate: texts.lunar_date || '',
+        address: texts.address || '',
+        procession: texts.procession || '',
         dateParts: dateParts(event.event_date, lang),
         eventDate: event.event_date,
         eventTime,
@@ -209,6 +220,7 @@ export function resolveInvitation(
         opening: settings.opening ?? theme.opening,
         effect: settings.effect ?? theme.effect,
         mapPlace: settings.map_place ?? null,
+        mapQr: settings.map_qr ?? null,
         mapHref:
             settings.map_url ||
             (texts.venue_text || event.venue

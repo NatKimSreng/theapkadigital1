@@ -30,13 +30,16 @@ class InvitationController extends Controller
         'invite_line' => 120,
         'guest_name' => 120,
         'date_text' => 200,
+        'lunar_date' => 200,
         'venue_text' => 255,
+        'address' => 255,
         'message_title' => 200,
         'message' => 2000,
         'thanks_title' => 200,
         'thanks' => 2000,
         'groom_parents' => 300,
         'bride_parents' => 300,
+        'procession' => 1000,
     ];
 
     private const LANGUAGES = ['km', 'en'];
@@ -197,13 +200,14 @@ class InvitationController extends Controller
         }
 
         // The pin is read from the map link here, never taken from the client.
-        unset($incoming['map_place']);
+        unset($incoming['map_place'], $incoming['map_qr']);
         $previous = $invitation->settings ?? [];
         $settings = array_merge($previous, $incoming);
         $mapUrl = $settings['map_url'] ?? null;
 
         if ($mapUrl !== ($previous['map_url'] ?? null) || ($mapUrl && ! array_key_exists('map_place', $previous))) {
             $settings['map_place'] = $mapUrl ? MapLink::place($mapUrl) : null;
+            $settings['map_qr'] = $mapUrl ? MapLink::qr($mapUrl) : null;
         }
 
         foreach (Invitation::MEDIA as $key) {

@@ -2,6 +2,8 @@
 
 namespace App\Support;
 
+use BaconQrCode\Common\ErrorCorrectionLevel;
+use BaconQrCode\Encoder\Encoder;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
@@ -49,6 +51,27 @@ class MapLink
         }
 
         return null;
+    }
+
+    /**
+     * The link as a QR code: the module grid row by row, so each design can
+     * draw it in its own colours.
+     *
+     * @return array{size: int, bits: string}
+     */
+    public static function qr(string $url): array
+    {
+        $matrix = Encoder::encode($url, ErrorCorrectionLevel::M(), Encoder::DEFAULT_BYTE_MODE_ENCODING)->getMatrix();
+        $size = $matrix->getWidth();
+        $bits = '';
+
+        for ($y = 0; $y < $size; $y++) {
+            for ($x = 0; $x < $size; $x++) {
+                $bits .= $matrix->get($x, $y) === 1 ? '1' : '0';
+            }
+        }
+
+        return ['size' => $size, 'bits' => $bits];
     }
 
     private static function isGoogle(string $url): bool
