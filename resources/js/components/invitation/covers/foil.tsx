@@ -2,15 +2,14 @@ import { Pop, Rise } from '../animations';
 import { DaysToGo } from '../parts';
 import { SCRIPT_FONT, SERIF_FONT, TITLE_FONT } from '../resolve';
 import type { CoverProps } from './index';
-import { KbachCorner } from './kbach';
-import { FoilSeal, KbachCrest, NagaPillar } from './naga';
+import { AngkorFacade, FoilSeal, KhmerDoorway, NagaBalustrade } from './naga';
 import { GOLD_TEXT, ScrollButton } from './shared';
 
 /**
- * Naga Gold: a traditional Khmer card in chocolate stock and gold foil,
- * laid out as the unfolded card. Naga pillars stand on the side flaps, a
- * Kbach crest frames the couple's photo, the guest's name sits in a foil
- * bar, and a seal closes the foot.
+ * Naga Gold: a traditional Khmer card in chocolate stock and gold foil.
+ * Angkor Wat rises over the title, the couple's photo stands in a Banteay
+ * Srei doorway, the guest's name sits in a foil bar, and the causeway's
+ * naga balustrade runs along the foot.
  */
 export function FoilCover({
     data,
@@ -33,7 +32,7 @@ export function FoilCover({
         : 'text-[19px] leading-[1.9] break-words';
 
     return (
-        <section className="relative flex min-h-[760px] flex-col items-center overflow-hidden px-16 pt-9 pb-28 text-center">
+        <section className="relative flex min-h-[760px] flex-col items-center overflow-hidden px-9 pt-8 pb-32 text-center">
             <div
                 aria-hidden
                 className="pointer-events-none absolute inset-3 rounded-sm border-2 border-[#d4a445]/60"
@@ -42,12 +41,18 @@ export function FoilCover({
                 aria-hidden
                 className="pointer-events-none absolute inset-[18px] rounded-sm border border-[#d4a445]/30"
             />
-            <NagaPillar className="pointer-events-none absolute top-10 left-3 w-[54px]" />
-            <NagaPillar className="pointer-events-none absolute top-10 right-3 w-[54px] -scale-x-100" />
-            <KbachCorner className="pointer-events-none absolute bottom-1 left-1 w-24 -scale-y-100" />
-            <KbachCorner className="pointer-events-none absolute right-1 bottom-1 w-24 -scale-100" />
+            <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-5 bottom-4"
+            >
+                <NagaBalustrade className="w-full" />
+            </div>
 
-            <Rise motion={motion} step={0}>
+            <Rise motion={motion} step={0} className="w-full">
+                <AngkorFacade className="w-full" />
+            </Rise>
+
+            <Rise motion={motion} step={0} className="mt-2">
                 <h1
                     className={
                         english
@@ -61,10 +66,10 @@ export function FoilCover({
             </Rise>
 
             <Rise motion={motion} step={1} className="mt-2">
-                <KbachCrest
+                <KhmerDoorway
                     src={media.cover}
                     letters={data.monogram}
-                    className="w-48 drop-shadow-xl"
+                    className="w-52 drop-shadow-xl"
                 />
             </Rise>
 

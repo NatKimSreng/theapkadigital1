@@ -5,7 +5,12 @@ import { cn } from '@/lib/utils';
 import type { InvitationMedia } from '@/types';
 import { BaroqueCorner } from './baroque';
 import { DEEP_GOLD_TEXT, GOLD_TEXT, WaxSeal } from './covers/shared';
-import { FoilSeal, KbachCrest, NagaPillar } from './covers/naga';
+import {
+    AngkorFacade,
+    FoilSeal,
+    KhmerDoorway,
+    NagaPillar,
+} from './covers/naga';
 import { TempleTowers } from './covers/temple';
 import type { ResolvedInvitation } from './resolve';
 import {
@@ -1053,14 +1058,11 @@ function FoldOpening({
             ? [data.hostLeft, data.hostRight].filter(Boolean)
             : [];
 
-    // The closed front: a crest drawn across both side flaps.
+    // The closed front: Angkor Wat drawn across both side flaps.
     const front = (
         <div className="relative size-full">
             <Stock color={stock} radius="2px" />
-            <KbachCrest
-                letters={data.monogram}
-                className="absolute top-[34%] left-1/2 w-24 -translate-x-1/2"
-            />
+            <AngkorFacade className="absolute top-[38%] left-1/2 w-[84%] -translate-x-1/2" />
         </div>
     );
 
@@ -1170,9 +1172,9 @@ function FoldOpening({
                                 {data.title}
                             </p>
                             <div {...pop(1.6)}>
-                                <KbachCrest
+                                <KhmerDoorway
                                     letters={data.monogram}
-                                    className="w-24"
+                                    className="w-20"
                                 />
                             </div>
                             <p
