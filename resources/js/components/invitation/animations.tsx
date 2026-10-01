@@ -28,7 +28,8 @@ export type OpeningStyle =
     | 'fade'
     | 'seal'
     | 'card'
-    | 'fold';
+    | 'fold'
+    | 'glow';
 export type FallingEffect = 'none' | 'petals' | 'sparkles' | 'hearts';
 
 export const OPENING_STYLES: OpeningStyle[] = [
@@ -37,6 +38,7 @@ export const OPENING_STYLES: OpeningStyle[] = [
     'seal',
     'card',
     'fold',
+    'glow',
     'curtain',
     'fade',
 ];
@@ -60,6 +62,10 @@ export function openingDuration(style: OpeningStyle): number {
     // Cards hold open while the names pop, so they run longer.
     if (style === 'card') {
         return 3500;
+    }
+
+    if (style === 'glow') {
+        return 4000;
     }
 
     return style === 'fold' ? 3600 : OPENING_DURATION;
@@ -196,6 +202,8 @@ export function OpeningOverlay({
             return <CardOpening {...props} />;
         case 'fold':
             return <FoldOpening {...props} />;
+        case 'glow':
+            return <GlowOpening {...props} />;
         case 'curtain':
             return <CurtainOpening {...props} />;
         case 'fade':
@@ -1314,6 +1322,418 @@ function FoldOpening({
                 style={{ color: data.primary, opacity: opening ? 0 : 1 }}
             >
                 {data.copy.tapSeal}
+            </p>
+        </div>
+    );
+}
+
+// Gold dust drifting in the dark, at fixed pseudo-random spots.
+const DUST = Array.from({ length: 26 }, (_, i) => {
+    const r = (n: number) => {
+        const x = Math.sin(i * 91.17 + n * 47.31) * 24634.6345;
+
+        return Math.round((x - Math.floor(x)) * 1000) / 1000;
+    };
+
+    return {
+        left: r(1) * 100,
+        top: r(2) * 100,
+        size: 2 + Math.round(r(3) * 3),
+        opacity: 0.35 + r(4) * 0.5,
+        duration: 5 + r(5) * 6,
+        delay: -r(6) * 8,
+    };
+});
+
+// Sparkles on the ring that circles the card as it rises.
+const RING = Array.from({ length: 30 }, (_, i) => {
+    const angle = (i / 30) * Math.PI * 2;
+    const jitter = Math.sin(i * 7.3) * 2.5;
+
+    return {
+        cx: Math.round((50 + (46 + jitter) * Math.cos(angle)) * 10) / 10,
+        cy: Math.round((50 + (46 + jitter) * Math.sin(angle)) * 10) / 10,
+        r: 1.1 + (i % 3) * 0.6,
+    };
+});
+
+/**
+ * A chocolate envelope with Angkor Wat on its flap and a light running
+ * round its gold edge. Tapping it lifts the flap, golden light pours out,
+ * and an ivory card rises inside a ring of sparkles, the couple's names
+ * popping onto it, before the invitation takes over.
+ */
+function GlowOpening({ data, guestName, opening, onOpen }: OverlayProps) {
+    const english = data.lang === 'en';
+    const stock =
+        data.theme.envelope ??
+        `linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.42)), ${data.primary}`;
+    const gold: CSSProperties = {
+        ...GOLD_TEXT,
+        fontFamily: english ? SERIF_FONT : TITLE_FONT,
+    };
+    const deep: CSSProperties = {
+        ...DEEP_GOLD_TEXT,
+        fontFamily: english ? SERIF_FONT : TITLE_FONT,
+    };
+    const pop = (delay: number) => ({
+        className: opening ? 'inv-pop' : 'opacity-0',
+        style: opening ? { animationDelay: `${delay}s` } : undefined,
+    });
+    const names =
+        !data.hideHosts && data.hostLeft
+            ? [data.hostLeft, data.hostRight].filter(Boolean)
+            : [];
+    const hidden: CSSProperties = {
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
+    };
+    const pocket = 'polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%)';
+
+    return (
+        <div
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center overflow-hidden px-6"
+            style={{
+                background:
+                    'radial-gradient(ellipse at 50% 42%, #4d372c 0%, #2e211a 65%, #1d1410 100%)',
+                color: data.theme.text,
+                opacity: opening ? 0 : 1,
+                transition: `opacity 0.7s ease ${opening ? '3.3s' : '0s'}`,
+            }}
+        >
+            <div aria-hidden className="pointer-events-none absolute inset-0">
+                {DUST.map((dust, index) => (
+                    <span
+                        key={index}
+                        className="inv-float absolute rounded-full"
+                        style={{
+                            left: `${dust.left}%`,
+                            top: `${dust.top}%`,
+                            width: dust.size,
+                            height: dust.size,
+                            opacity: dust.opacity,
+                            background: '#f6dc9a',
+                            boxShadow: `0 0 ${dust.size * 3}px ${dust.size}px rgba(243,206,120,0.4)`,
+                            animationDuration: `${dust.duration}s`,
+                            animationDelay: `${dust.delay}s`,
+                        }}
+                    />
+                ))}
+            </div>
+
+            <div
+                className="relative z-10 flex flex-col items-center transition-opacity duration-500"
+                style={{ opacity: opening ? 0 : 1 }}
+            >
+                <p
+                    className="text-[15px] leading-[1.9]"
+                    style={{ color: data.secondary }}
+                >
+                    {data.copy.dear}
+                </p>
+                <p
+                    className="max-w-full truncate text-[22px] leading-[1.9]"
+                    style={{ ...GOLD_TEXT, fontFamily: TITLE_FONT }}
+                >
+                    {guestName}
+                </p>
+            </div>
+
+            <div
+                className="relative mt-24 mb-14 aspect-[1.45] w-full max-w-[330px]"
+                style={{
+                    perspective: '1100px',
+                    transform: opening ? 'translateY(26%)' : 'none',
+                    transition: `transform 1.3s ${EASE} 0.8s`,
+                }}
+            >
+                {/* back of the envelope */}
+                <div
+                    className="absolute inset-0 rounded-md shadow-2xl"
+                    style={{ background: stock, filter: 'brightness(0.78)' }}
+                />
+
+                {/* light rays from the open envelope */}
+                {opening && (
+                    <div
+                        aria-hidden
+                        className="inv-flash pointer-events-none absolute top-[20%] left-1/2 z-[1] size-[640px] -translate-x-1/2 -translate-y-1/2"
+                        style={{
+                            animationDelay: '0.4s',
+                            animationDuration: '3s',
+                            background:
+                                'repeating-conic-gradient(from 0deg at 50% 50%, rgba(255,230,160,0) 0deg 7deg, rgba(255,226,150,0.38) 9deg, rgba(255,230,160,0) 11deg 18deg)',
+                            maskImage:
+                                'radial-gradient(circle, #000 0%, rgba(0,0,0,0.6) 30%, transparent 62%)',
+                            WebkitMaskImage:
+                                'radial-gradient(circle, #000 0%, rgba(0,0,0,0.6) 30%, transparent 62%)',
+                        }}
+                    />
+                )}
+
+                {/* the ivory card */}
+                <div
+                    className="absolute inset-x-[7%] top-[5%] bottom-[5%] z-[1] flex flex-col items-center justify-center overflow-hidden rounded-sm px-4 text-center shadow-lg"
+                    style={{
+                        background:
+                            'radial-gradient(ellipse at 50% 40%, #fffaf0 0%, #f4e8cf 100%)',
+                        transform: opening ? 'translateY(-82%)' : 'none',
+                        transition: `transform 1.4s ${EASE} 0.75s`,
+                    }}
+                >
+                    <div className="absolute inset-1.5 border border-[#b8862b]/50" />
+                    {(
+                        [
+                            'top-left',
+                            'top-right',
+                            'bottom-left',
+                            'bottom-right',
+                        ] as const
+                    ).map((corner) => (
+                        <BaroqueCorner
+                            key={corner}
+                            corner={corner}
+                            color="#b8862b"
+                            className={cn(
+                                'absolute w-10',
+                                corner.startsWith('top') ? 'top-0' : 'bottom-0',
+                                corner.endsWith('left') ? 'left-0' : 'right-0',
+                            )}
+                        />
+                    ))}
+                    <p
+                        className={
+                            english
+                                ? 'text-[11px] font-semibold tracking-[0.22em] uppercase'
+                                : 'text-[13px] leading-[1.8]'
+                        }
+                        style={deep}
+                    >
+                        {data.title}
+                    </p>
+                    <AngkorFacade
+                        className="mt-0.5 w-[70%]"
+                        fill="rgba(184,134,43,0.1)"
+                    />
+                    <div className="mt-0.5 w-full">
+                        {names.map((name, index) => (
+                            <p
+                                key={index}
+                                className={cn(
+                                    'truncate',
+                                    english
+                                        ? 'text-[20px] leading-tight'
+                                        : 'text-[12px] leading-[1.8]',
+                                    pop(index === 0 ? 1.9 : 2.15).className,
+                                )}
+                                style={{
+                                    ...pop(index === 0 ? 1.9 : 2.15).style,
+                                    ...DEEP_GOLD_TEXT,
+                                    fontFamily: english
+                                        ? SCRIPT_FONT
+                                        : TITLE_FONT,
+                                }}
+                            >
+                                {name}
+                            </p>
+                        ))}
+                    </div>
+                </div>
+
+                {/* front pocket */}
+                <div
+                    className="absolute inset-0 z-[2] rounded-md"
+                    style={{
+                        background: stock,
+                        clipPath: pocket,
+                        boxShadow: 'inset 0 -24px 40px rgba(0,0,0,0.22)',
+                    }}
+                />
+                <div
+                    aria-hidden
+                    className="absolute inset-0 z-[2] rounded-md"
+                    style={{
+                        background:
+                            'linear-gradient(118deg, rgba(0,0,0,0.16) 0%, transparent 42%), linear-gradient(242deg, rgba(0,0,0,0.16) 0%, transparent 42%)',
+                        clipPath: pocket,
+                    }}
+                />
+
+                {/* the flap, with Angkor Wat in gold */}
+                <div
+                    className="absolute inset-x-0 top-0 h-[66%]"
+                    style={{
+                        transformStyle: 'preserve-3d',
+                        transformOrigin: 'top center',
+                        transform: opening ? 'rotateX(180deg)' : 'none',
+                        transition: `transform 0.7s ${EASE} 0.15s`,
+                        zIndex: opening ? 0 : 3,
+                    }}
+                >
+                    <div className="absolute inset-0" style={hidden}>
+                        <svg
+                            viewBox="0 0 100 66"
+                            preserveAspectRatio="none"
+                            className="absolute inset-0 size-full"
+                        >
+                            <path
+                                d="M0 0H100V6L58 58Q50 66 42 58L0 6Z"
+                                fill={data.theme.envelope ?? '#4a3429'}
+                            />
+                            <path
+                                d="M0 6L42 58Q50 66 58 58L100 6"
+                                fill="none"
+                                stroke="rgba(0,0,0,0.35)"
+                                strokeWidth="3"
+                                vectorEffect="non-scaling-stroke"
+                            />
+                            <path
+                                d="M3 2H97V6.5L56.5 54.5Q50 61 43.5 54.5L3 6.5Z"
+                                fill="none"
+                                stroke="#d4a445"
+                                strokeWidth="1.4"
+                                vectorEffect="non-scaling-stroke"
+                            />
+                        </svg>
+                        <div className="absolute inset-x-[24%] top-[9%] flex flex-col items-center">
+                            <p
+                                className={
+                                    english
+                                        ? 'text-[10px] font-semibold tracking-[0.2em] uppercase'
+                                        : 'text-[12px] leading-[1.8]'
+                                }
+                                style={gold}
+                            >
+                                {data.title}
+                            </p>
+                            <AngkorFacade className="w-full" />
+                        </div>
+                    </div>
+                    <div
+                        className="absolute inset-0"
+                        style={{ ...hidden, transform: 'rotateX(180deg)' }}
+                    >
+                        <svg
+                            viewBox="0 0 100 66"
+                            preserveAspectRatio="none"
+                            className="absolute inset-0 size-full"
+                        >
+                            <path
+                                d="M0 0H100V6L58 58Q50 66 42 58L0 6Z"
+                                fill="#3a2a22"
+                            />
+                        </svg>
+                    </div>
+                </div>
+
+                {/* a light running round the gold edge */}
+                <svg
+                    aria-hidden
+                    viewBox="0 0 145 100"
+                    preserveAspectRatio="none"
+                    className="pointer-events-none absolute -top-1.5 -left-1.5 z-[4] h-[calc(100%+12px)] w-[calc(100%+12px)] overflow-visible transition-opacity duration-300"
+                    style={{ opacity: opening ? 0 : 1 }}
+                >
+                    <rect
+                        x="0.5"
+                        y="0.5"
+                        width="144"
+                        height="99"
+                        rx="3.5"
+                        fill="none"
+                        stroke="#d4a445"
+                        strokeOpacity="0.35"
+                        strokeWidth="1"
+                        vectorEffect="non-scaling-stroke"
+                    />
+                    <rect
+                        x="0.5"
+                        y="0.5"
+                        width="144"
+                        height="99"
+                        rx="3.5"
+                        vectorEffect="non-scaling-stroke"
+                        pathLength="100"
+                        fill="none"
+                        stroke="#ffe3a0"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeDasharray="14 36"
+                        className="inv-trace"
+                        style={{
+                            filter: 'drop-shadow(0 0 4px #f3c867) drop-shadow(0 0 10px #e0a83a)',
+                        }}
+                    />
+                </svg>
+
+                {/* a ring of sparkles circling the rising card */}
+                {opening && (
+                    <div
+                        aria-hidden
+                        className="inv-flash pointer-events-none absolute top-[-78%] left-1/2 z-[5] aspect-square w-[128%] -translate-x-1/2"
+                        style={{
+                            animationDelay: '1s',
+                            animationDuration: '2.6s',
+                            transform: 'rotateX(74deg)',
+                        }}
+                    >
+                        <svg
+                            viewBox="0 0 100 100"
+                            className="inv-spin size-full"
+                            style={{
+                                filter: 'drop-shadow(0 0 1.5px #fff1c8) drop-shadow(0 0 4px #f3c867)',
+                            }}
+                        >
+                            <circle
+                                cx="50"
+                                cy="50"
+                                r="46"
+                                fill="none"
+                                stroke="#ffe0a0"
+                                strokeOpacity="0.8"
+                                strokeWidth="0.9"
+                            />
+                            {RING.map((dot, index) => (
+                                <circle
+                                    key={index}
+                                    cx={dot.cx}
+                                    cy={dot.cy}
+                                    r={dot.r}
+                                    fill={index % 2 ? '#fff1c8' : '#f3c867'}
+                                />
+                            ))}
+                        </svg>
+                    </div>
+                )}
+
+                <button
+                    type="button"
+                    onClick={onOpen}
+                    disabled={opening}
+                    aria-label={data.copy.openInvitation}
+                    className="absolute inset-0 z-[6] cursor-pointer rounded-md"
+                />
+            </div>
+
+            {/* golden light flooding the screen */}
+            {opening && (
+                <div
+                    aria-hidden
+                    className="inv-flash pointer-events-none absolute inset-0 z-20"
+                    style={{
+                        animationDelay: '0.45s',
+                        animationDuration: '2.2s',
+                        background:
+                            'radial-gradient(circle at 50% 52%, rgba(255,240,200,0.95) 0%, rgba(243,206,120,0.55) 28%, rgba(200,150,60,0) 68%)',
+                    }}
+                />
+            )}
+
+            <p
+                className="inv-pulse relative z-10 rounded-full border border-[#d4a445]/60 px-5 py-2 text-sm font-semibold transition-opacity duration-500"
+                style={{ color: '#e9c46a', opacity: opening ? 0 : 1 }}
+            >
+                {data.copy.openInvitation}
             </p>
         </div>
     );

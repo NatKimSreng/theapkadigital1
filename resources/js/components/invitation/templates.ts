@@ -64,7 +64,8 @@ export type TemplateDefinition = {
             | 'fade'
             | 'seal'
             | 'card'
-            | 'fold';
+            | 'fold'
+            | 'glow';
         effect: 'none' | 'petals' | 'sparkles' | 'hearts';
     };
 };
@@ -336,7 +337,7 @@ export const TEMPLATES: TemplateDefinition[] = [
             gold: true,
             seal: '#c9a24a',
             envelope: '#4a3429',
-            opening: 'fold',
+            opening: 'glow',
             effect: 'sparkles',
         },
     },

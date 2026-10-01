@@ -202,7 +202,8 @@ export type InvitationSettings = {
         | 'fade'
         | 'seal'
         | 'card'
-        | 'fold';
+        | 'fold'
+        | 'glow';
     effect?: 'none' | 'petals' | 'sparkles' | 'hearts';
 };
 

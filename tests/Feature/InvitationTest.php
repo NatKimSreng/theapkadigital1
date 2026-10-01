@@ -244,7 +244,7 @@ Mrs. Srun']],
         $event = $this->eventFor($user);
         $invitation = $event->invitations()->create(['template' => 'paper-frame']);
 
-        foreach (['card', 'fold'] as $opening) {
+        foreach (['card', 'fold', 'glow'] as $opening) {
             $this->actingAs($user)
                 ->put(route('events.invitations.update', [$event, $invitation]), [
                     'settings' => json_encode(['opening' => $opening]),

@@ -321,6 +321,43 @@
     animation: inv-burst 1.1s ease-out both;
 }
 
+/* A light runs round an envelope's edge; a flash swells and fades; a ring spins. */
+@keyframes inv-trace {
+    to {
+        stroke-dashoffset: -100;
+    }
+}
+
+@keyframes inv-flash {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes inv-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.inv-trace {
+    animation: inv-trace 3.2s linear infinite;
+}
+
+.inv-flash {
+    animation: inv-flash 2.4s ease-out both;
+}
+
+.inv-spin {
+    animation: inv-spin 2.2s linear infinite;
+}
+
 .inv-fall {
     animation: inv-fall linear infinite;
 }
@@ -373,6 +410,9 @@
     .inv-fall,
     .inv-twinkle,
     .inv-burst,
+    .inv-trace,
+    .inv-flash,
+    .inv-spin,
     .inv-float,
     .inv-pulse,
     .inv-tick {
@@ -381,7 +421,8 @@
 
     .inv-fall,
     .inv-twinkle,
-    .inv-burst {
+    .inv-burst,
+    .inv-flash {
         display: none;
     }
 
