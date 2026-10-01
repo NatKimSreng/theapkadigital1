@@ -53,4 +53,36 @@ class SeoController extends Controller
 
         return response(implode("\n", $lines)."\n")->header('Content-Type', 'text/plain; charset=UTF-8');
     }
+
+    public function llms(): Response
+    {
+        $templates = implode(', ', array_map(
+            fn (string $template) => str($template)->headline(),
+            Invitation::TEMPLATES
+        ));
+
+        $lines = [
+            '# '.config('app.name'),
+            '',
+            '> '.config('app.name').' is a Khmer/English wedding and event planning platform: guest list, gifts, '
+                .'expenses, checklist and digital invitations.',
+            '',
+            'Couples in Cambodia use '.config('app.name').' to plan a wedding, engagement, birthday or other event: '
+                .'track RSVPs, record cash gifts in USD and KHR, manage a budget, and share a digital '
+                .'invitation with guests who RSVP online.',
+            '',
+            '## Pages',
+            '',
+            '- [Home]('.route('home').'): Overview and sign up',
+            '- [Pricing]('.route('pricing').'): Paid plans and what they unlock',
+            '- [Invitation templates]('.route('templates.index')."): Available designs ({$templates})",
+            '- [Blog]('.route('blog.index').'): Wedding planning articles in Khmer and English',
+            '',
+            '## Optional',
+            '',
+            '- [Sitemap]('.route('sitemap').'): Full list of indexable URLs',
+        ];
+
+        return response(implode("\n", $lines)."\n")->header('Content-Type', 'text/plain; charset=UTF-8');
+    }
 }

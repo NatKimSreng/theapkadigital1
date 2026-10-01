@@ -83,6 +83,17 @@ class SeoTest extends TestCase
             ->assertSee('Sitemap: '.route('sitemap'));
     }
 
+    public function test_llms_txt_describes_the_site_for_ai_assistants()
+    {
+        $this->get(route('llms'))
+            ->assertOk()
+            ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
+            ->assertSee('# '.config('app.name'))
+            ->assertSee('[Pricing]('.route('pricing').')')
+            ->assertSee('Kbach Royal')
+            ->assertSee('[Sitemap]('.route('sitemap').')');
+    }
+
     public function test_invitation_link_has_a_preview_but_is_not_indexed()
     {
         $user = User::factory()->create();

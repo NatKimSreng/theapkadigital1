@@ -28,6 +28,7 @@ Route::get('blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
 Route::get('robots.txt', [SeoController::class, 'robots'])->name('robots');
+Route::get('llms.txt', [SeoController::class, 'llms'])->name('llms');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [EventController::class, 'dashboard'])->name('dashboard');
