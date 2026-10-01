@@ -824,6 +824,8 @@ const en = {
     'template.emerald-velvet': 'Emerald Velvet',
     'template.mocha-editorial': 'Mocha Editorial',
     'design.opening_seal': 'Wax seal',
+    'design.opening_card': 'Opening card',
+    'template.golden-prasat': 'Golden Prasat',
     'footer.telegram': 'Contact us on Telegram',
     'templates.all_unlocked':
         'Your plan includes every template, premium too. Add as many as you like.',
@@ -1617,6 +1619,8 @@ const km: Record<TranslationKey, string> = {
     'template.emerald-velvet': 'វល្លិមរកត',
     'template.mocha-editorial': 'ម៉ូកា ទំនើប',
     'design.opening_seal': 'ត្រាក្រមួន',
+    'design.opening_card': 'កាតបើក',
+    'template.golden-prasat': 'ប្រាសាទមាស',
     'footer.telegram': 'ទាក់ទងតាម Telegram',
     'templates.all_unlocked':
         'កញ្ចប់របស់អ្នកអាចប្រើគ្រប់គំរូ រួមទាំងគំរូពិសេស។ បន្ថែមបានច្រើនតាមចិត្ត។',

@@ -4,7 +4,7 @@ import { useId } from 'react';
 
 /**
  * Pieces shared by the illustrated covers (Blush Garden, Kbach Royal,
- * Emerald Velvet, Mocha Editorial).
+ * Emerald Velvet, Mocha Editorial, Golden Prasat).
  */
 
 export const GOLD_TEXT: CSSProperties = {
@@ -14,6 +14,15 @@ export const GOLD_TEXT: CSSProperties = {
     backgroundClip: 'text',
     color: 'transparent',
     filter: 'drop-shadow(0 1px 0 rgba(255,255,255,0.35))',
+};
+
+/** Darker gold foil that stays legible on ivory and sandstone. */
+export const DEEP_GOLD_TEXT: CSSProperties = {
+    backgroundImage:
+        'linear-gradient(180deg, #d4a650 0%, #a8781f 45%, #6e4a10 100%)',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    color: 'transparent',
 };
 
 /** Unique SVG ids per instance, so several covers can share a page. */

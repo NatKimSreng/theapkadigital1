@@ -9,8 +9,8 @@ import type {
 import type { Motion } from './animations';
 import {
     FallingLayer,
-    OPENING_DURATION,
     OpeningOverlay,
+    openingDuration,
     Reveal,
     Rise,
 } from './animations';
@@ -95,11 +95,11 @@ export function InvitationCard({
 
         const timer = window.setTimeout(
             () => setPhase('open'),
-            OPENING_DURATION,
+            openingDuration(data.opening),
         );
 
         return () => window.clearTimeout(timer);
-    }, [phase]);
+    }, [phase, data.opening]);
 
     const motion: Motion = compact
         ? 'static'

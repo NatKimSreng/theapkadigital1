@@ -20,6 +20,7 @@ export type HeroStyle =
     | 'kbach'
     | 'velvet'
     | 'editorial'
+    | 'prasat'
     | 'fullbleed'
     | 'cinematic'
     | 'split'
@@ -55,7 +56,7 @@ export type TemplateDefinition = {
         seal?: string;
         /** Envelope paper colour for the seal opening. */
         envelope?: string;
-        opening: 'doors' | 'envelope' | 'curtain' | 'fade' | 'seal';
+        opening: 'doors' | 'envelope' | 'curtain' | 'fade' | 'seal' | 'card';
         effect: 'none' | 'petals' | 'sparkles' | 'hearts';
     };
 };
@@ -284,6 +285,30 @@ export const TEMPLATES: TemplateDefinition[] = [
         },
     },
     {
+        key: 'golden-prasat',
+        category: 'wedding',
+        name: 'template.golden-prasat',
+        free: false,
+        demoPhoto: 1,
+        theme: {
+            primary: '#9a6b1f',
+            secondary: '#b5562e',
+            background:
+                'radial-gradient(ellipse at 50% 18%, #fff6e2 0%, #f4e4c2 45%, #e8cf9f 100%)',
+            text: '#4e3420',
+            panel: 'rgba(255, 250, 240, 0.7)',
+            ornament: 'frame',
+            hero: 'prasat',
+            texture: 'linen',
+            motif: 'spires',
+            gold: true,
+            seal: '#c9a24a',
+            envelope: '#7a2e1c',
+            opening: 'card',
+            effect: 'petals',
+        },
+    },
+    {
         key: 'angkor-cinematic',
         category: 'wedding',
         name: 'template.angkor-cinematic',
@@ -354,6 +379,7 @@ type Copy = {
     dear: string;
     openInvitation: string;
     tapSeal: string;
+    tapCard: string;
     weddingOf: string;
     saveDate: string;
     reminder: string;
@@ -423,6 +449,7 @@ export const COPY: Record<InvitationLang, Copy> = {
         dear: 'សូមគោរពអញ្ជើញ',
         openInvitation: 'បើកលិខិត',
         tapSeal: 'ចុចលើត្រាដើម្បីបើកលិខិត',
+        tapCard: 'ចុចដើម្បីបើកកាត',
         weddingOf: 'សិរីមង្គលអាពាហ៍ពិពាហ៍',
         saveDate: 'ដែលនឹងប្រព្រឹត្តទៅនៅ',
         reminder: 'កត់ទុកក្នុងប្រតិទិន',
@@ -490,6 +517,7 @@ export const COPY: Record<InvitationLang, Copy> = {
         dear: 'Dear',
         openInvitation: 'Open invitation',
         tapSeal: 'Tap the seal to open',
+        tapCard: 'Tap to open the card',
         weddingOf: 'The wedding of',
         saveDate: 'Save the date',
         reminder: 'Set a reminder',

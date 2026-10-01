@@ -4,17 +4,31 @@ import type { CSSProperties, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import type { InvitationMedia } from '@/types';
 import { BaroqueCorner } from './baroque';
-import { WaxSeal } from './covers/shared';
+import { DEEP_GOLD_TEXT, GOLD_TEXT, WaxSeal } from './covers/shared';
+import { TempleTowers } from './covers/temple';
 import type { ResolvedInvitation } from './resolve';
-import { TITLE_FONT, backgroundStyle, headlineStyle } from './resolve';
+import {
+    SCRIPT_FONT,
+    SERIF_FONT,
+    TITLE_FONT,
+    backgroundStyle,
+    headlineStyle,
+} from './resolve';
 
-export type OpeningStyle = 'doors' | 'envelope' | 'curtain' | 'fade' | 'seal';
+export type OpeningStyle =
+    | 'doors'
+    | 'envelope'
+    | 'curtain'
+    | 'fade'
+    | 'seal'
+    | 'card';
 export type FallingEffect = 'none' | 'petals' | 'sparkles' | 'hearts';
 
 export const OPENING_STYLES: OpeningStyle[] = [
     'doors',
     'envelope',
     'seal',
+    'card',
     'curtain',
     'fade',
 ];
@@ -31,7 +45,13 @@ export const FALLING_EFFECTS: FallingEffect[] = [
  */
 export type Motion = 'static' | 'waiting' | 'play';
 
-export const OPENING_DURATION = 1900;
+const OPENING_DURATION = 1900;
+
+/** How long the opening plays before the invitation takes over, in ms. */
+export function openingDuration(style: OpeningStyle): number {
+    // The card holds open while the names pop, so it runs longer.
+    return style === 'card' ? 3500 : OPENING_DURATION;
+}
 
 /**
  * Fades and lifts its content into place, staggered by `step`.
@@ -57,6 +77,38 @@ export function Rise({
             style={
                 motion === 'play'
                     ? { animationDelay: `${0.2 + step * 0.14}s` }
+                    : undefined
+            }
+        >
+            {children}
+        </div>
+    );
+}
+
+/**
+ * Pops its content in with a little bounce, staggered by `step`.
+ */
+export function Pop({
+    motion,
+    step,
+    className,
+    children,
+}: {
+    motion: Motion;
+    step: number;
+    className?: string;
+    children: ReactNode;
+}) {
+    return (
+        <div
+            className={cn(
+                motion === 'play' && 'inv-pop',
+                motion === 'waiting' && 'opacity-0',
+                className,
+            )}
+            style={
+                motion === 'play'
+                    ? { animationDelay: `${0.35 + step * 0.2}s` }
                     : undefined
             }
         >
@@ -128,6 +180,8 @@ export function OpeningOverlay({
             return <EnvelopeOpening {...props} />;
         case 'seal':
             return <SealOpening {...props} />;
+        case 'card':
+            return <CardOpening {...props} />;
         case 'curtain':
             return <CurtainOpening {...props} />;
         case 'fade':
@@ -593,6 +647,335 @@ function SealOpening({
                 style={{ color: data.primary, opacity: opening ? 0 : 1 }}
             >
                 {data.copy.tapSeal}
+            </p>
+        </div>
+    );
+}
+
+// Sparkles thrown out from behind the names as they pop.
+const BURST = Array.from({ length: 12 }, (_, i) => {
+    const angle = (i / 12) * Math.PI * 2;
+    const distance = 84 + (i % 3) * 18;
+
+    return {
+        dx: Math.round(Math.cos(angle) * distance),
+        dy: Math.round(Math.sin(angle) * distance * 0.75),
+        size: 11 + (i % 3) * 5,
+        delay: 1.6 + (i % 4) * 0.06,
+    };
+});
+
+/** The front of the folded card: Angkor's towers in gold on coloured stock. */
+function CardFront({ data }: { data: ResolvedInvitation }) {
+    const english = data.lang === 'en';
+
+    return (
+        <div className="relative size-full">
+            <div className="absolute inset-2 rounded-sm border border-[#e2bd66]/75" />
+            <div className="absolute inset-[13px] rounded-sm border border-[#e2bd66]/35" />
+            <TempleTowers
+                className="absolute inset-x-[12%] top-[16%] w-[76%]"
+                fill="rgba(0,0,0,0.16)"
+            />
+            <p
+                className={cn(
+                    'absolute inset-x-6 bottom-[15%] text-center',
+                    english
+                        ? 'text-[15px] font-semibold tracking-[0.25em] uppercase'
+                        : 'text-[15px] leading-[1.9]',
+                )}
+                style={{
+                    ...GOLD_TEXT,
+                    fontFamily: english ? SERIF_FONT : TITLE_FONT,
+                }}
+            >
+                {data.title}
+            </p>
+        </div>
+    );
+}
+
+/**
+ * A gate-fold card printed with a temple: tapping the clasp swings both
+ * panels open and the couple's names pop up inside, one after the other.
+ */
+function CardOpening({
+    data,
+    media,
+    guestName,
+    opening,
+    onOpen,
+}: OverlayProps) {
+    const english = data.lang === 'en';
+    // Darken the theme colour when a design has no card stock of its own,
+    // so the gold artwork always reads.
+    const stock =
+        data.theme.envelope ??
+        `linear-gradient(rgba(0,0,0,0.38), rgba(0,0,0,0.38)), ${data.primary}`;
+    const names =
+        !data.hideHosts && data.hostLeft
+            ? [data.hostLeft, data.hostRight].filter(Boolean)
+            : [];
+    const nameStyle: CSSProperties = {
+        ...DEEP_GOLD_TEXT,
+        fontFamily: english ? SCRIPT_FONT : TITLE_FONT,
+    };
+    const pop = (delay: number) => ({
+        className: opening ? 'inv-pop' : 'opacity-0',
+        style: opening ? { animationDelay: `${delay}s` } : undefined,
+    });
+
+    const panel = (side: 'left' | 'right') => {
+        const left = side === 'left';
+        const face: CSSProperties = {
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            borderRadius: left ? '6px 0 0 6px' : '0 6px 6px 0',
+        };
+
+        return (
+            <div
+                className={cn(
+                    'absolute inset-y-0 z-[2] w-1/2',
+                    left ? 'left-0' : 'right-0',
+                )}
+                style={{
+                    transformStyle: 'preserve-3d',
+                    transformOrigin: left ? 'left center' : 'right center',
+                    transform: opening
+                        ? `rotateY(${left ? -128 : 128}deg)`
+                        : 'none',
+                    transition: `transform 1.15s ${EASE} 0.25s`,
+                }}
+            >
+                <div
+                    className="absolute inset-0 overflow-hidden shadow-xl"
+                    style={{ ...face, background: stock }}
+                >
+                    <div
+                        className={cn(
+                            'absolute inset-y-0 w-[200%]',
+                            left ? 'left-0' : 'right-0',
+                        )}
+                    >
+                        <CardFront data={data} />
+                    </div>
+                    <div
+                        className={cn(
+                            'absolute inset-y-0 w-6',
+                            left
+                                ? 'right-0 bg-gradient-to-l'
+                                : 'left-0 bg-gradient-to-r',
+                            'from-black/25 to-transparent',
+                        )}
+                    />
+                </div>
+                {/* the inside of the cover */}
+                <div
+                    className="absolute inset-0"
+                    style={{
+                        ...face,
+                        transform: 'rotateY(180deg)',
+                        background: `repeating-linear-gradient(45deg, ${data.secondary}1f 0 6px, transparent 6px 12px), #f7ecd6`,
+                        boxShadow: 'inset 0 0 30px rgba(0,0,0,0.12)',
+                    }}
+                />
+            </div>
+        );
+    };
+
+    return (
+        <div
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center overflow-hidden px-6"
+            style={{
+                ...backgroundStyle(data, media),
+                color: data.theme.text,
+                opacity: opening ? 0 : 1,
+                transition: `opacity 0.6s ease ${opening ? '2.9s' : '0s'}`,
+            }}
+        >
+            <p
+                className="text-[15px] leading-[1.9] transition-opacity duration-500"
+                style={{ color: data.secondary, opacity: opening ? 0 : 1 }}
+            >
+                {data.copy.dear}
+            </p>
+            <p
+                className="mb-6 max-w-full truncate text-[22px] leading-[1.9] transition-opacity duration-500"
+                style={{
+                    ...headlineStyle(data, data.primary),
+                    fontFamily: TITLE_FONT,
+                    opacity: opening ? 0 : 1,
+                }}
+            >
+                {guestName}
+            </p>
+
+            <div
+                className="relative aspect-[3/4] w-full max-w-[300px]"
+                style={{
+                    perspective: '1400px',
+                    transform: opening ? 'scale(0.84)' : 'none',
+                    transition: `transform 1s ${EASE} 0.25s`,
+                }}
+            >
+                {/* inside the card */}
+                <div
+                    className="absolute inset-0 flex flex-col items-center justify-center rounded-md px-5 text-center shadow-2xl"
+                    style={{
+                        background:
+                            'radial-gradient(ellipse at 50% 30%, #fffaf0 0%, #f6e8cc 100%)',
+                    }}
+                >
+                    <div className="absolute inset-2 rounded-sm border border-[#b8862b]/60" />
+                    <div className="absolute inset-[13px] rounded-sm border border-[#b8862b]/30" />
+
+                    <div {...pop(0.75)}>
+                        <TempleTowers className="w-40" fill="#f3e3c0" />
+                    </div>
+                    <p
+                        className={cn(
+                            english
+                                ? 'mt-2 text-[12px] font-semibold tracking-[0.25em] uppercase'
+                                : 'mt-2 text-[13px] leading-[1.9]',
+                            pop(0.95).className,
+                        )}
+                        style={{
+                            ...pop(0.95).style,
+                            color: data.secondary,
+                            fontFamily: english ? SERIF_FONT : TITLE_FONT,
+                        }}
+                    >
+                        {data.title}
+                    </p>
+
+                    <div className="relative mt-1 w-full">
+                        {names.length > 0 ? (
+                            names.map((name, index) => (
+                                <div key={index}>
+                                    {index > 0 && (
+                                        <p
+                                            className={cn(
+                                                'text-sm',
+                                                pop(1.35).className,
+                                            )}
+                                            style={{
+                                                ...pop(1.35).style,
+                                                color: data.secondary,
+                                            }}
+                                        >
+                                            {data.joiner}
+                                        </p>
+                                    )}
+                                    <p
+                                        className={cn(
+                                            english
+                                                ? 'text-[38px] leading-tight break-words'
+                                                : 'text-[22px] leading-[1.9] break-words',
+                                            pop(index === 0 ? 1.1 : 1.55)
+                                                .className,
+                                        )}
+                                        style={{
+                                            ...pop(index === 0 ? 1.1 : 1.55)
+                                                .style,
+                                            ...nameStyle,
+                                        }}
+                                    >
+                                        {name}
+                                    </p>
+                                </div>
+                            ))
+                        ) : (
+                            <p
+                                className={cn(
+                                    'text-[34px] leading-tight',
+                                    pop(1.1).className,
+                                )}
+                                style={{ ...pop(1.1).style, ...nameStyle }}
+                            >
+                                {data.monogram}
+                            </p>
+                        )}
+
+                        {opening &&
+                            BURST.map((spark, index) => (
+                                <svg
+                                    key={index}
+                                    viewBox="0 0 24 24"
+                                    aria-hidden
+                                    className="inv-burst pointer-events-none absolute top-1/2 left-1/2"
+                                    style={
+                                        {
+                                            width: spark.size,
+                                            height: spark.size,
+                                            marginLeft: -spark.size / 2,
+                                            marginTop: -spark.size / 2,
+                                            animationDelay: `${spark.delay}s`,
+                                            '--dx': `${spark.dx}px`,
+                                            '--dy': `${spark.dy}px`,
+                                        } as CSSProperties
+                                    }
+                                >
+                                    <path
+                                        d="M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z"
+                                        fill={index % 2 ? '#d9a441' : '#b5562e'}
+                                    />
+                                </svg>
+                            ))}
+                    </div>
+
+                    {data.dateText && (
+                        <p
+                            className={cn(
+                                'mt-4 text-xs font-semibold',
+                                pop(1.85).className,
+                            )}
+                            style={{
+                                ...pop(1.85).style,
+                                color: data.secondary,
+                            }}
+                        >
+                            {data.dateText}
+                        </p>
+                    )}
+                </div>
+
+                {panel('left')}
+                {panel('right')}
+
+                {/* the clasp across the fold */}
+                <button
+                    type="button"
+                    onClick={onOpen}
+                    disabled={opening}
+                    aria-label={data.copy.openInvitation}
+                    className={cn(
+                        'absolute top-1/2 left-1/2 z-[3] size-16 -translate-x-1/2 -translate-y-1/2 rounded-full',
+                        !opening && 'inv-pulse',
+                    )}
+                >
+                    <span
+                        className="absolute inset-0"
+                        style={{
+                            transform: opening ? 'scale(1.5)' : 'none',
+                            opacity: opening ? 0 : 1,
+                            transition: `transform 0.35s ${EASE}, opacity 0.3s ease`,
+                        }}
+                    >
+                        <WaxSeal
+                            color={data.theme.seal ?? '#c9a24a'}
+                            letters={data.monogram}
+                            className="size-16"
+                        />
+                    </span>
+                </button>
+            </div>
+
+            <p
+                className="mt-8 text-sm font-semibold transition-opacity duration-500"
+                style={{ color: data.primary, opacity: opening ? 0 : 1 }}
+            >
+                {data.copy.tapCard}
             </p>
         </div>
     );
