@@ -295,6 +295,12 @@ const en = {
     'design.location': 'Location',
     'design.map_url': 'Google Maps URL',
     'design.map_image': 'Map image (optional)',
+    'design.map_hint':
+        "Paste your venue's link from Share in Google Maps. The map and the venue name come from it.",
+    'design.map_pending': 'Save to show the map from this link.',
+    'design.map_found': 'Map found: :place',
+    'design.map_not_found':
+        'No location in this link. Open your venue in Google Maps, tap Share and copy that link.',
     'design.gallery': 'Gallery',
     'design.thanks_section': 'Thank-you message',
     'design.thanks_title': 'Thank-you heading',
@@ -1134,6 +1140,12 @@ const km: Record<TranslationKey, string> = {
     'design.location': 'ទីតាំង',
     'design.map_url': 'Google Maps URL',
     'design.map_image': 'រូបភាពផែនទី (អាចលុបបាន)',
+    'design.map_hint':
+        'បិទភ្ជាប់តំណទីតាំងពី Share ក្នុង Google Maps។ ផែនទី និងឈ្មោះទីតាំងនឹងបង្ហាញដោយស្វ័យប្រវត្តិ។',
+    'design.map_pending': 'រក្សាទុក ដើម្បីបង្ហាញផែនទីពីតំណនេះ។',
+    'design.map_found': 'រកឃើញទីតាំង៖ :place',
+    'design.map_not_found':
+        'រកមិនឃើញទីតាំងក្នុងតំណនេះទេ។ សូមបើកទីតាំងក្នុង Google Maps ចុច Share ហើយចម្លងតំណនោះ។',
     'design.gallery': 'វិចិត្រសាល',
     'design.thanks_section': 'សារអរគុណ',
     'design.thanks_title': 'ចំណងជើងសារអរគុណ',

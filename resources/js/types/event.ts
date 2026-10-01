@@ -180,6 +180,9 @@ export type GiftAccount = {
 
 export type InvitationLanguages = 'both' | InvitationLang;
 
+/** The pin read from the couple's map link on the server. */
+export type MapPlace = { lat: number; lng: number; name: string | null };
+
 export type InvitationSettings = {
     texts?: Partial<Record<InvitationLang, InvitationTexts>>;
     agenda?: AgendaItem[];
@@ -188,6 +191,7 @@ export type InvitationSettings = {
     secondary_color?: string | null;
     gold_text?: boolean;
     map_url?: string | null;
+    map_place?: MapPlace | null;
     language?: InvitationLang;
     /** Which languages guests see; one language hides the switcher. */
     languages?: InvitationLanguages;

@@ -187,7 +187,9 @@ export function resolveInvitation(
         eventTime,
         timeText:
             eventTime && lang === 'km' ? khmerDigits(eventTime) : eventTime,
-        venueText: texts.venue_text || event.venue || '',
+        // The place named in the map link beats the event's own venue field.
+        venueText:
+            texts.venue_text || settings.map_place?.name || event.venue || '',
         messageTitle: texts.message_title || copy.messageTitle,
         message: texts.message || copy.messages[template.category],
         thanksTitle: texts.thanks_title || copy.thanksTitle,
@@ -206,6 +208,7 @@ export function resolveInvitation(
         gift: settings.gift ?? {},
         opening: settings.opening ?? theme.opening,
         effect: settings.effect ?? theme.effect,
+        mapPlace: settings.map_place ?? null,
         mapHref:
             settings.map_url ||
             (texts.venue_text || event.venue

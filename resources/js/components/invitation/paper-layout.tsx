@@ -14,6 +14,7 @@ import {
     MusicButton,
     ParentsBlock,
 } from './parts';
+import { PlaceMap } from './place-map';
 import type { ResolvedInvitation } from './resolve';
 import { RsvpForm } from './rsvp';
 import {
@@ -242,12 +243,16 @@ export function PaperLayout({
                                 {data.venueText}
                             </p>
                         )}
-                        {media.map && (
+                        {media.map ? (
                             <img
                                 src={media.map}
                                 alt={copy.location}
                                 className="mx-auto w-full max-w-72 rounded-lg"
                             />
+                        ) : (
+                            data.mapPlace && (
+                                <PlaceMap data={data} place={data.mapPlace} />
+                            )
                         )}
                         {data.mapHref && (
                             <PillLink href={data.mapHref} color={primary}>

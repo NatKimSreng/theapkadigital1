@@ -18,6 +18,7 @@ import { COVERS } from './covers';
 import { HeroPhoto, photoFocus } from './heroes';
 import { SectionMotif } from './motifs';
 import { Ornament } from './ornaments';
+import { PlaceMap } from './place-map';
 import { PaperLayout } from './paper-layout';
 import {
     AgendaList,
@@ -486,12 +487,19 @@ function ClassicLayout({
                     {(media.map || data.mapHref) && (
                         <Section motion={motion}>
                             {heading(copy.location)}
-                            {media.map && (
+                            {media.map ? (
                                 <img
                                     src={media.map}
                                     alt={copy.location}
                                     className="w-full rounded-2xl shadow-sm"
                                 />
+                            ) : (
+                                data.mapPlace && (
+                                    <PlaceMap
+                                        data={data}
+                                        place={data.mapPlace}
+                                    />
+                                )
                             )}
                             {data.mapHref && <MapButton data={data} />}
                         </Section>

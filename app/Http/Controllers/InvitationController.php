@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Guest;
 use App\Models\Invitation;
+use App\Support\MapLink;
 use App\Support\Seo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -195,7 +196,15 @@ class InvitationController extends Controller
             }
         }
 
-        $settings = array_merge($invitation->settings ?? [], $incoming);
+        // The pin is read from the map link here, never taken from the client.
+        unset($incoming['map_place']);
+        $previous = $invitation->settings ?? [];
+        $settings = array_merge($previous, $incoming);
+        $mapUrl = $settings['map_url'] ?? null;
+
+        if ($mapUrl !== ($previous['map_url'] ?? null) || ($mapUrl && ! array_key_exists('map_place', $previous))) {
+            $settings['map_place'] = $mapUrl ? MapLink::place($mapUrl) : null;
+        }
 
         foreach (Invitation::MEDIA as $key) {
             if ($request->hasFile($key) || $request->boolean("remove_{$key}")) {

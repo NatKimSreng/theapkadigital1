@@ -7,6 +7,7 @@ use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -236,6 +237,67 @@ Mrs. Srun']],
                 'settings' => ['opening' => 'explode', 'effect' => 'fireworks'],
             ])
             ->assertSessionHasErrors(['settings.opening', 'settings.effect']);
+    }
+
+    public function test_a_map_link_gives_the_pin_and_place_name()
+    {
+        Http::preventStrayRequests();
+        Http::fake([
+            'maps.app.goo.gl/*' => Http::response('', 302, [
+                'Location' => 'https://www.google.com/maps/place/Sokha+Siem+Reap+Resort/@13.36,103.85,17z/data=!3m1!4b1!4m6!3m5!1s0x0:0x0!8m2!3d13.3632!4d103.8601',
+            ]),
+        ]);
+        $user = User::factory()->create();
+        $event = $this->eventFor($user);
+        $invitation = $event->invitations()->create(['template' => 'paper-frame']);
+
+        $this->actingAs($user)
+            ->put(route('events.invitations.update', [$event, $invitation]), [
+                'settings' => json_encode(['map_url' => 'https://maps.app.goo.gl/abc123']),
+            ])
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame(
+            ['lat' => 13.3632, 'lng' => 103.8601, 'name' => 'Sokha Siem Reap Resort'],
+            $invitation->refresh()->settings['map_place'],
+        );
+
+        // Saving other settings doesn't fetch the link again.
+        $this->actingAs($user)
+            ->put(route('events.invitations.update', [$event, $invitation]), [
+                'settings' => json_encode(['effect' => 'hearts']),
+            ]);
+        Http::assertSentCount(1);
+
+        // Clearing the link clears the pin.
+        $this->actingAs($user)
+            ->put(route('events.invitations.update', [$event, $invitation]), [
+                'settings' => json_encode(['map_url' => null]),
+            ]);
+        $this->assertNull($invitation->refresh()->settings['map_place']);
+    }
+
+    public function test_map_links_are_only_followed_through_google()
+    {
+        Http::preventStrayRequests();
+        Http::fake([
+            'maps.app.goo.gl/*' => Http::response('', 302, ['Location' => 'https://evil.example/maps/place/X/@1.5,2.5']),
+        ]);
+        $user = User::factory()->create();
+        $event = $this->eventFor($user);
+        $invitation = $event->invitations()->create(['template' => 'paper-frame']);
+
+        $this->actingAs($user)
+            ->put(route('events.invitations.update', [$event, $invitation]), [
+                'settings' => json_encode([
+                    'map_url' => 'https://maps.app.goo.gl/abc123',
+                    'map_place' => ['lat' => 1, 'lng' => 2, 'name' => 'Injected'],
+                ]),
+            ])
+            ->assertSessionHasNoErrors();
+
+        $this->assertNull($invitation->refresh()->settings['map_place']);
+        Http::assertSentCount(1);
     }
 
     public function test_the_card_openings_can_be_chosen()

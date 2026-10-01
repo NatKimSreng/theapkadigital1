@@ -313,7 +313,19 @@ function Editor({
     };
     const galleryCount = existingGallery.length + galleryFiles.length;
 
-    const defaults = resolveInvitation(template, {}, event, lang);
+    // The server reads the pin from the saved map link, so only trust it
+    // while the link in the form is still the saved one.
+    const savedPlace =
+        settings.map_url && settings.map_url === invitation.settings?.map_url
+            ? (invitation.settings?.map_place ?? null)
+            : null;
+    const preview = { ...settings, map_place: savedPlace };
+    const defaults = resolveInvitation(
+        template,
+        { map_place: savedPlace },
+        event,
+        lang,
+    );
     const texts = settings.texts?.[lang] ?? {};
     const agenda = settings.agenda ?? [];
     const dirty =
@@ -885,6 +897,30 @@ function Editor({
                                 onChange={(e) => set('map_url', e.target.value)}
                                 className="bg-background"
                             />
+                            <p
+                                className={cn(
+                                    'text-xs',
+                                    settings.map_url &&
+                                        settings.map_url ===
+                                            invitation.settings?.map_url &&
+                                        !savedPlace
+                                        ? 'text-destructive'
+                                        : 'text-muted-foreground',
+                                )}
+                            >
+                                {!settings.map_url
+                                    ? t('design.map_hint')
+                                    : settings.map_url !==
+                                        invitation.settings?.map_url
+                                      ? t('design.map_pending')
+                                      : savedPlace
+                                        ? t('design.map_found', {
+                                              place:
+                                                  savedPlace.name ??
+                                                  `${savedPlace.lat}, ${savedPlace.lng}`,
+                                          })
+                                        : t('design.map_not_found')}
+                            </p>
                         </div>
                         <div className="w-1/2 pr-1.5">
                             {image('map', t('design.map_image'))}
@@ -1103,7 +1139,7 @@ function Editor({
                     <div className="mx-auto max-w-[420px] shadow-xl">
                         <InvitationCard
                             template={template}
-                            settings={settings}
+                            settings={preview}
                             media={previewMedia}
                             event={event}
                             lang={lang}
