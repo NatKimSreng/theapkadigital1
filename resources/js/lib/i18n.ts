@@ -825,6 +825,8 @@ const en = {
     'template.mocha-editorial': 'Mocha Editorial',
     'design.opening_seal': 'Wax seal',
     'design.opening_card': 'Opening card',
+    'design.opening_fold': 'Folded card',
+    'template.naga-gold': 'Naga Gold',
     'template.golden-prasat': 'Golden Prasat',
     'footer.telegram': 'Contact us on Telegram',
     'templates.all_unlocked':
@@ -1620,6 +1622,8 @@ const km: Record<TranslationKey, string> = {
     'template.mocha-editorial': 'ម៉ូកា ទំនើប',
     'design.opening_seal': 'ត្រាក្រមួន',
     'design.opening_card': 'កាតបើក',
+    'design.opening_fold': 'កាតបត់',
+    'template.naga-gold': 'នាគមាស',
     'template.golden-prasat': 'ប្រាសាទមាស',
     'footer.telegram': 'ទាក់ទងតាម Telegram',
     'templates.all_unlocked':

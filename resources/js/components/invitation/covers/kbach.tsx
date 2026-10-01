@@ -4,7 +4,7 @@ import { Ornament } from '../ornaments';
 import { DaysToGo } from '../parts';
 import { SERIF_FONT, TITLE_FONT } from '../resolve';
 import type { CoverProps } from './index';
-import { GOLD_TEXT, GoldGradient, ScrollButton, useIds } from './shared';
+import { Flame, GOLD_TEXT, GoldGradient, ScrollButton, useIds } from './shared';
 
 /**
  * Kbach Royal: traditional Khmer. Crimson velvet, gold Kbach flame scrolls,
@@ -12,36 +12,8 @@ import { GOLD_TEXT, GoldGradient, ScrollButton, useIds } from './shared';
  * Angkor Wat over lotus buds.
  */
 
-/** A Kbach flame leaf pointing up from (0,0), its tip hooked back. */
-const FLAME = 'M0 0C-8-8-7-21 2-31C3-25 8-23 11-27C10-16 7-6 0 0Z';
-
-function Flame({
-    x,
-    y,
-    angle,
-    size = 1,
-    fill,
-}: {
-    x: number;
-    y: number;
-    angle: number;
-    size?: number;
-    fill: string;
-}) {
-    return (
-        <path
-            d={FLAME}
-            fill={fill}
-            stroke="#6b4a0e"
-            strokeOpacity="0.55"
-            strokeWidth="0.6"
-            transform={`translate(${x} ${y}) rotate(${angle}) scale(${size})`}
-        />
-    );
-}
-
 /** A Kbach corner: a curling stem with flame leaves, for the top-left corner. */
-function KbachCorner({ className }: { className?: string }) {
+export function KbachCorner({ className }: { className?: string }) {
     const ids = useIds('gold');
     const gold = `url(#${ids.gold})`;
 

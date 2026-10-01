@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import type { InvitationMedia } from '@/types';
 import { BaroqueCorner } from './baroque';
 import { DEEP_GOLD_TEXT, GOLD_TEXT, WaxSeal } from './covers/shared';
+import { FoilSeal, KbachCrest, NagaPillar } from './covers/naga';
 import { TempleTowers } from './covers/temple';
 import type { ResolvedInvitation } from './resolve';
 import {
@@ -21,7 +22,8 @@ export type OpeningStyle =
     | 'curtain'
     | 'fade'
     | 'seal'
-    | 'card';
+    | 'card'
+    | 'fold';
 export type FallingEffect = 'none' | 'petals' | 'sparkles' | 'hearts';
 
 export const OPENING_STYLES: OpeningStyle[] = [
@@ -29,6 +31,7 @@ export const OPENING_STYLES: OpeningStyle[] = [
     'envelope',
     'seal',
     'card',
+    'fold',
     'curtain',
     'fade',
 ];
@@ -49,8 +52,12 @@ const OPENING_DURATION = 1900;
 
 /** How long the opening plays before the invitation takes over, in ms. */
 export function openingDuration(style: OpeningStyle): number {
-    // The card holds open while the names pop, so it runs longer.
-    return style === 'card' ? 3500 : OPENING_DURATION;
+    // Cards hold open while the names pop, so they run longer.
+    if (style === 'card') {
+        return 3500;
+    }
+
+    return style === 'fold' ? 3600 : OPENING_DURATION;
 }
 
 /**
@@ -182,6 +189,8 @@ export function OpeningOverlay({
             return <SealOpening {...props} />;
         case 'card':
             return <CardOpening {...props} />;
+        case 'fold':
+            return <FoldOpening {...props} />;
         case 'curtain':
             return <CurtainOpening {...props} />;
         case 'fade':
@@ -976,6 +985,333 @@ function CardOpening({
                 style={{ color: data.primary, opacity: opening ? 0 : 1 }}
             >
                 {data.copy.tapCard}
+            </p>
+        </div>
+    );
+}
+
+/** Card stock with a fine double gold border, shaped by `radius`. */
+function Stock({
+    color,
+    radius,
+    children,
+}: {
+    color: string;
+    radius: string;
+    children?: ReactNode;
+}) {
+    return (
+        <>
+            <div
+                className="absolute inset-0"
+                style={{ background: color, borderRadius: radius }}
+            />
+            <div
+                className="absolute inset-1.5 border border-[#d4a445]/70"
+                style={{ borderRadius: radius }}
+            />
+            <div
+                className="absolute inset-[10px] border border-[#d4a445]/30"
+                style={{ borderRadius: radius }}
+            />
+            {children}
+        </>
+    );
+}
+
+/**
+ * A die-cut card folded shut: side flaps meet over the centre panel and a
+ * domed top flap folds down over them, held by a gold seal. Tapping the
+ * seal lifts the top flap, where the couple's names pop in, then swings
+ * the side flaps out to show their naga pillars.
+ */
+function FoldOpening({
+    data,
+    media,
+    guestName,
+    opening,
+    onOpen,
+}: OverlayProps) {
+    const english = data.lang === 'en';
+    const stock =
+        data.theme.envelope ??
+        `linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.42)), ${data.primary}`;
+    const gold: CSSProperties = {
+        ...GOLD_TEXT,
+        fontFamily: english ? SERIF_FONT : TITLE_FONT,
+    };
+    const pop = (delay: number) => ({
+        className: opening ? 'inv-pop' : 'opacity-0',
+        style: opening ? { animationDelay: `${delay}s` } : undefined,
+    });
+    const hidden: CSSProperties = {
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
+    };
+    const names =
+        !data.hideHosts && data.hostLeft
+            ? [data.hostLeft, data.hostRight].filter(Boolean)
+            : [];
+
+    // The closed front: a crest drawn across both side flaps.
+    const front = (
+        <div className="relative size-full">
+            <Stock color={stock} radius="2px" />
+            <KbachCrest
+                letters={data.monogram}
+                className="absolute top-[34%] left-1/2 w-24 -translate-x-1/2"
+            />
+        </div>
+    );
+
+    const side = (left: boolean) => (
+        <div
+            className={cn(
+                'absolute inset-y-0 z-[2] w-1/2',
+                left ? 'right-full' : 'left-full',
+            )}
+            style={{
+                transformStyle: 'preserve-3d',
+                transformOrigin: left ? 'right center' : 'left center',
+                transform: opening
+                    ? 'none'
+                    : `rotateY(${left ? 180 : -180}deg)`,
+                transition: `transform 0.9s ${EASE} 0.75s`,
+            }}
+        >
+            {/* inside: a naga pillar */}
+            <div className="absolute inset-0 overflow-hidden" style={hidden}>
+                <Stock color={stock} radius="2px">
+                    <NagaPillar
+                        className={cn(
+                            'absolute top-1/2 left-1/2 w-[56%] -translate-x-1/2 -translate-y-1/2',
+                            !left && '-scale-x-100',
+                        )}
+                    />
+                </Stock>
+            </div>
+            {/* outside: half of the closed front */}
+            <div
+                className="absolute inset-0 overflow-hidden shadow-xl"
+                style={{ ...hidden, transform: 'rotateY(180deg)' }}
+            >
+                <div
+                    className={cn(
+                        'absolute inset-y-0 w-[200%]',
+                        left ? 'left-0' : 'right-0',
+                    )}
+                >
+                    {front}
+                </div>
+                <div
+                    className={cn(
+                        'absolute inset-y-0 w-5 from-black/30 to-transparent',
+                        left
+                            ? 'right-0 bg-gradient-to-l'
+                            : 'left-0 bg-gradient-to-r',
+                    )}
+                />
+            </div>
+        </div>
+    );
+
+    return (
+        <div
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center overflow-hidden px-6"
+            style={{
+                ...backgroundStyle(data, media),
+                color: data.theme.text,
+                opacity: opening ? 0 : 1,
+                transition: `opacity 0.6s ease ${opening ? '3s' : '0s'}`,
+            }}
+        >
+            <div
+                className="flex flex-col items-center transition-opacity duration-500"
+                style={{ opacity: opening ? 0 : 1 }}
+            >
+                <p
+                    className="text-[15px] leading-[1.9]"
+                    style={{ color: data.secondary }}
+                >
+                    {data.copy.dear}
+                </p>
+                <p
+                    className="max-w-full truncate text-[22px] leading-[1.9]"
+                    style={{
+                        ...headlineStyle(data, data.primary),
+                        fontFamily: TITLE_FONT,
+                    }}
+                >
+                    {guestName}
+                </p>
+            </div>
+
+            <div
+                className="relative my-16 h-[290px] w-[200px] shrink-0"
+                style={{
+                    perspective: '1600px',
+                    transform: opening ? 'scale(0.85)' : 'scale(1.18)',
+                    transition: `transform 1s ${EASE} 0.6s`,
+                }}
+            >
+                {/* the centre panel */}
+                <div className="absolute inset-0 shadow-2xl">
+                    <Stock color={stock} radius="2px">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 px-4 text-center">
+                            <p
+                                className={cn(
+                                    english
+                                        ? 'text-[11px] font-semibold tracking-[0.2em] uppercase'
+                                        : 'text-[13px] leading-[1.8]',
+                                    pop(1.45).className,
+                                )}
+                                style={{ ...pop(1.45).style, ...gold }}
+                            >
+                                {data.title}
+                            </p>
+                            <div {...pop(1.6)}>
+                                <KbachCrest
+                                    letters={data.monogram}
+                                    className="w-24"
+                                />
+                            </div>
+                            <p
+                                className={cn(
+                                    'text-[11px] leading-[1.8]',
+                                    pop(1.8).className,
+                                )}
+                                style={{ ...pop(1.8).style, ...gold }}
+                            >
+                                {data.inviteLine}
+                            </p>
+                            <div
+                                className={cn(
+                                    'w-full max-w-full rounded-sm border border-[#d4a445] bg-black/15 px-2',
+                                    pop(1.95).className,
+                                )}
+                                style={pop(1.95).style}
+                            >
+                                <p
+                                    className="truncate text-[12px] leading-[1.9]"
+                                    style={gold}
+                                >
+                                    {guestName}
+                                </p>
+                            </div>
+                            {data.dateText && (
+                                <p
+                                    className={cn(
+                                        'text-[10px] font-semibold',
+                                        pop(2.1).className,
+                                    )}
+                                    style={{
+                                        ...pop(2.1).style,
+                                        color: data.secondary,
+                                    }}
+                                >
+                                    {data.dateText}
+                                </p>
+                            )}
+                        </div>
+                    </Stock>
+                </div>
+
+                {side(true)}
+                {side(false)}
+
+                {/* the domed top flap */}
+                <div
+                    className="absolute inset-x-0 bottom-full z-[3] h-[92px]"
+                    style={{
+                        transformStyle: 'preserve-3d',
+                        transformOrigin: 'center bottom',
+                        transform: opening ? 'none' : 'rotateX(-180deg)',
+                        transition: `transform 0.7s ${EASE} 0.15s`,
+                    }}
+                >
+                    {/* inside: the couple's names */}
+                    <div className="absolute inset-0" style={hidden}>
+                        <Stock color={stock} radius="50% 50% 0 0 / 46% 46% 0 0">
+                            <div className="absolute inset-x-4 bottom-2 flex flex-col items-center justify-end">
+                                {names.length > 0 ? (
+                                    names.map((name, index) => (
+                                        <p
+                                            key={index}
+                                            className={cn(
+                                                english
+                                                    ? 'max-w-full truncate text-[22px] leading-tight'
+                                                    : 'max-w-full truncate text-[12px] leading-[1.8]',
+                                                pop(index === 0 ? 0.95 : 1.15)
+                                                    .className,
+                                            )}
+                                            style={{
+                                                ...pop(
+                                                    index === 0 ? 0.95 : 1.15,
+                                                ).style,
+                                                ...GOLD_TEXT,
+                                                fontFamily: english
+                                                    ? SCRIPT_FONT
+                                                    : TITLE_FONT,
+                                            }}
+                                        >
+                                            {name}
+                                        </p>
+                                    ))
+                                ) : (
+                                    <p
+                                        className={cn(
+                                            'text-[22px]',
+                                            pop(0.95).className,
+                                        )}
+                                        style={{
+                                            ...pop(0.95).style,
+                                            ...GOLD_TEXT,
+                                            fontFamily: SERIF_FONT,
+                                        }}
+                                    >
+                                        {data.monogram}
+                                    </p>
+                                )}
+                            </div>
+                        </Stock>
+                    </div>
+                    {/* outside: a Kbach fleuron */}
+                    <div
+                        className="absolute inset-0 drop-shadow-lg"
+                        style={{ ...hidden, transform: 'rotateX(180deg)' }}
+                    >
+                        <Stock color={stock} radius="0 0 50% 50% / 0 0 46% 46%">
+                            <FoilSeal className="absolute top-3 left-1/2 w-7 -translate-x-1/2 opacity-80" />
+                        </Stock>
+                    </div>
+                </div>
+
+                {/* the seal that holds it shut */}
+                <button
+                    type="button"
+                    onClick={onOpen}
+                    disabled={opening}
+                    aria-label={data.copy.openInvitation}
+                    className={cn(
+                        'absolute bottom-3 left-1/2 z-[4] flex size-14 -translate-x-1/2 items-center justify-center rounded-full',
+                        !opening && 'inv-pulse',
+                    )}
+                    style={{
+                        background: `radial-gradient(circle at 35% 30%, #5a4134, ${data.theme.envelope ?? '#3a2a22'})`,
+                        opacity: opening ? 0 : 1,
+                        transform: opening ? 'scale(1.4)' : 'none',
+                        transition: `transform 0.35s ${EASE}, opacity 0.3s ease`,
+                    }}
+                >
+                    <FoilSeal className="w-10" />
+                </button>
+            </div>
+
+            <p
+                className="text-sm font-semibold transition-opacity duration-500"
+                style={{ color: data.primary, opacity: opening ? 0 : 1 }}
+            >
+                {data.copy.tapSeal}
             </p>
         </div>
     );

@@ -38,12 +38,13 @@ class Invitation extends Model
         'emerald-velvet',
         'mocha-editorial',
         'golden-prasat',
+        'naga-gold',
     ];
 
     /**
      * Templates that need a package with premium templates.
      */
-    public const PREMIUM_TEMPLATES = ['royal-wedding', 'classic-anniversary', 'angkor-cinematic', 'lotus-garden', 'blush-garden', 'emerald-velvet', 'mocha-editorial', 'golden-prasat'];
+    public const PREMIUM_TEMPLATES = ['royal-wedding', 'classic-anniversary', 'angkor-cinematic', 'lotus-garden', 'blush-garden', 'emerald-velvet', 'mocha-editorial', 'golden-prasat', 'naga-gold'];
 
     public const MAX_PER_EVENT = 2;
 

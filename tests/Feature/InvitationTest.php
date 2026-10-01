@@ -238,19 +238,21 @@ Mrs. Srun']],
             ->assertSessionHasErrors(['settings.opening', 'settings.effect']);
     }
 
-    public function test_the_opening_card_can_be_chosen()
+    public function test_the_card_openings_can_be_chosen()
     {
         $user = User::factory()->create();
         $event = $this->eventFor($user);
         $invitation = $event->invitations()->create(['template' => 'paper-frame']);
 
-        $this->actingAs($user)
-            ->put(route('events.invitations.update', [$event, $invitation]), [
-                'settings' => json_encode(['opening' => 'card']),
-            ])
-            ->assertSessionHasNoErrors();
+        foreach (['card', 'fold'] as $opening) {
+            $this->actingAs($user)
+                ->put(route('events.invitations.update', [$event, $invitation]), [
+                    'settings' => json_encode(['opening' => $opening]),
+                ])
+                ->assertSessionHasNoErrors();
 
-        $this->assertSame('card', $invitation->refresh()->settings['opening']);
+            $this->assertSame($opening, $invitation->refresh()->settings['opening']);
+        }
     }
 
     public function test_music_upload_accepts_common_audio_files()

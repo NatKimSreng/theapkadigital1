@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react';
 import { useId } from 'react';
 
 /**
- * Pieces shared by the illustrated covers (Blush Garden, Kbach Royal,
+ * Pieces shared by the illustrated covers (Blush Garden, Kbach Royal, Naga Gold,
  * Emerald Velvet, Mocha Editorial, Golden Prasat).
  */
 
@@ -42,6 +42,34 @@ export function GoldGradient({ id }: { id: string }) {
             <stop offset="0.7" stopColor="#a67520" />
             <stop offset="1" stopColor="#e6c173" />
         </linearGradient>
+    );
+}
+
+/** A Kbach flame leaf pointing up from (0,0), its tip hooked back. */
+const FLAME = 'M0 0C-8-8-7-21 2-31C3-25 8-23 11-27C10-16 7-6 0 0Z';
+
+export function Flame({
+    x,
+    y,
+    angle,
+    size = 1,
+    fill,
+}: {
+    x: number;
+    y: number;
+    angle: number;
+    size?: number;
+    fill: string;
+}) {
+    return (
+        <path
+            d={FLAME}
+            fill={fill}
+            stroke="#6b4a0e"
+            strokeOpacity="0.55"
+            strokeWidth="0.6"
+            transform={`translate(${x} ${y}) rotate(${angle}) scale(${size})`}
+        />
     );
 }
 

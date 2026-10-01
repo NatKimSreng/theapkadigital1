@@ -195,7 +195,14 @@ export type InvitationSettings = {
     show_countdown?: boolean;
     gift?: { usd?: GiftAccount; khr?: GiftAccount };
     gallery_paths?: string[];
-    opening?: 'doors' | 'envelope' | 'curtain' | 'fade' | 'seal' | 'card';
+    opening?:
+        | 'doors'
+        | 'envelope'
+        | 'curtain'
+        | 'fade'
+        | 'seal'
+        | 'card'
+        | 'fold';
     effect?: 'none' | 'petals' | 'sparkles' | 'hearts';
 };
 

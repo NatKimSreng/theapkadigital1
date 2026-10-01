@@ -21,6 +21,7 @@ export type HeroStyle =
     | 'velvet'
     | 'editorial'
     | 'prasat'
+    | 'foil'
     | 'fullbleed'
     | 'cinematic'
     | 'split'
@@ -56,7 +57,14 @@ export type TemplateDefinition = {
         seal?: string;
         /** Envelope paper colour for the seal opening. */
         envelope?: string;
-        opening: 'doors' | 'envelope' | 'curtain' | 'fade' | 'seal' | 'card';
+        opening:
+            | 'doors'
+            | 'envelope'
+            | 'curtain'
+            | 'fade'
+            | 'seal'
+            | 'card'
+            | 'fold';
         effect: 'none' | 'petals' | 'sparkles' | 'hearts';
     };
 };
@@ -306,6 +314,30 @@ export const TEMPLATES: TemplateDefinition[] = [
             envelope: '#7a2e1c',
             opening: 'card',
             effect: 'petals',
+        },
+    },
+    {
+        key: 'naga-gold',
+        category: 'wedding',
+        name: 'template.naga-gold',
+        free: false,
+        demoPhoto: 3,
+        theme: {
+            primary: '#d9b25c',
+            secondary: '#f0d999',
+            background:
+                'radial-gradient(ellipse at 50% 28%, #5c4337 0%, #45312a 55%, #33241e 100%)',
+            text: '#f3e6cf',
+            panel: 'rgba(0, 0, 0, 0.2)',
+            ornament: 'frame',
+            hero: 'foil',
+            texture: 'damask',
+            motif: 'kbach',
+            gold: true,
+            seal: '#c9a24a',
+            envelope: '#4a3429',
+            opening: 'fold',
+            effect: 'sparkles',
         },
     },
     {

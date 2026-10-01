@@ -4,6 +4,7 @@ import type { Motion } from '../animations';
 import type { ResolvedInvitation } from '../resolve';
 import type { HeroStyle } from '../templates';
 import { EditorialCover } from './editorial';
+import { FoilCover } from './foil';
 import { GardenCover } from './garden';
 import { KbachCover } from './kbach';
 import { PrasatCover } from './prasat';
@@ -27,4 +28,5 @@ export const COVERS: Partial<Record<HeroStyle, ComponentType<CoverProps>>> = {
     velvet: VelvetCover,
     editorial: EditorialCover,
     prasat: PrasatCover,
+    foil: FoilCover,
 };
