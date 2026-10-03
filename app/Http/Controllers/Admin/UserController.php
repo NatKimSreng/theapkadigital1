@@ -8,6 +8,8 @@ use App\Models\Package;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -71,6 +73,39 @@ class UserController extends Controller
         $user->save();
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'toast.saved']);
+
+        return back();
+    }
+
+    /**
+     * Message a Telegram user through the login bot. Telegram only lets the
+     * bot write to people who allowed it when they logged in.
+     */
+    public function telegram(Request $request, User $user): RedirectResponse
+    {
+        $validated = $request->validate(['message' => ['required', 'string', 'max:2000']]);
+        $token = config('services.telegram.bot_token');
+
+        if ($user->telegram_id === null || blank($token)) {
+            Inertia::flash('toast', ['type' => 'error', 'message' => 'toast.telegram_unavailable']);
+
+            return back();
+        }
+
+        $response = Http::timeout(10)
+            ->post("https://api.telegram.org/bot{$token}/sendMessage", [
+                'chat_id' => $user->telegram_id,
+                'text' => $validated['message'],
+            ]);
+
+        if (! $response->successful()) {
+            Log::warning('Telegram message failed', ['user' => $user->id, 'error' => $response->json('description')]);
+            Inertia::flash('toast', ['type' => 'error', 'message' => 'toast.telegram_not_sent']);
+
+            return back();
+        }
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'toast.telegram_sent']);
 
         return back();
     }

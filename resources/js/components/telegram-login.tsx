@@ -21,6 +21,8 @@ export function TelegramLogin({ bot }: { bot: string }) {
         script.dataset.size = 'large';
         script.dataset.radius = '20';
         script.dataset.userpic = 'false';
+        // Lets the bot message them, so the admin can reach them on Telegram.
+        script.dataset.requestAccess = 'write';
         script.dataset.authUrl = new URL(
             '/auth/telegram/callback',
             window.location.origin,

@@ -1,5 +1,5 @@
 import { Form, Head, Link } from '@inertiajs/react';
-import { Search, ShieldCheck } from 'lucide-react';
+import { Search, Send, ShieldCheck } from 'lucide-react';
 import UserController from '@/actions/App/Http/Controllers/Admin/UserController';
 import { Pagination } from '@/components/pagination';
 import { Input } from '@/components/ui/input';
@@ -61,8 +61,16 @@ export default function AdminUsers({
                                                 </span>
                                             )}
                                         </p>
-                                        <p className="text-sm text-muted-foreground">
+                                        <p className="flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
                                             {user.email}
+                                            {user.telegram_id && (
+                                                <span className="inline-flex items-center gap-1 rounded-full bg-sky-100 px-2 text-xs text-sky-700 dark:bg-sky-950 dark:text-sky-300">
+                                                    <Send className="size-3" />
+                                                    {user.telegram_username
+                                                        ? `@${user.telegram_username}`
+                                                        : 'Telegram'}
+                                                </span>
+                                            )}
                                         </p>
                                     </div>
                                     <span className="text-sm text-muted-foreground">

@@ -67,6 +67,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::patch('orders/{order}', [Admin\OrderController::class, 'update'])->name('orders.update');
     Route::resource('packages', Admin\PackageController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('users', Admin\UserController::class)->only(['index', 'show', 'update']);
+    Route::post('users/{user}/telegram', [Admin\UserController::class, 'telegram'])->name('users.telegram');
     Route::patch('events/{event}/package', [Admin\UserController::class, 'updateEventPackage'])->name('events.package');
     Route::get('events', [Admin\EventController::class, 'index'])->name('events.index');
     Route::post('posts/images', [Admin\PostController::class, 'image'])->name('posts.image');

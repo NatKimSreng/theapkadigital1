@@ -21,6 +21,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string|null $email
  * @property string|null $google_id
  * @property int|null $telegram_id
+ * @property string|null $telegram_username
  * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $two_factor_secret

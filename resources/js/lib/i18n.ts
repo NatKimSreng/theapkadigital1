@@ -317,6 +317,18 @@ const en = {
     'toast.template_limit': 'Template limit reached',
 
     'toast.saved': 'Saved',
+    'toast.telegram_sent': 'Message sent on Telegram',
+    'toast.telegram_not_sent':
+        'Telegram did not deliver it. They may not have allowed messages from the bot, or blocked it.',
+    'toast.telegram_unavailable':
+        'This user has no Telegram, or the Telegram bot is not set up.',
+    'admin.telegram_open_chat': 'Open chat',
+    'admin.telegram_no_username':
+        'No Telegram username. You can still message them through the bot below.',
+    'admin.telegram_message': 'Write a message to send through your bot…',
+    'admin.telegram_send': 'Send via bot',
+    'admin.telegram_hint':
+        'Arrives from your bot. Works if they allowed messages when logging in.',
     'toast.deleted': 'Deleted',
     'toast.event_created': 'Event created',
 
@@ -1172,6 +1184,17 @@ const km: Record<TranslationKey, string> = {
     'toast.template_limit': 'បានដល់ចំនួនគំរូអតិបរមា',
 
     'toast.saved': 'បានរក្សាទុក',
+    'toast.telegram_sent': 'បានផ្ញើសារតាម Telegram',
+    'toast.telegram_not_sent':
+        'Telegram មិនបានផ្ញើទេ។ ប្រហែលពួកគេមិនបានអនុញ្ញាតឲ្យ bot ផ្ញើសារ ឬបានបិទ bot។',
+    'toast.telegram_unavailable':
+        'អ្នកប្រើនេះមិនមាន Telegram ឬ bot Telegram មិនទាន់បានរៀបចំ។',
+    'admin.telegram_open_chat': 'បើកការជជែក',
+    'admin.telegram_no_username':
+        'គ្មានឈ្មោះអ្នកប្រើ Telegram។ អ្នកនៅតែអាចផ្ញើសារតាម bot ខាងក្រោម។',
+    'admin.telegram_message': 'សរសេរសារដើម្បីផ្ញើតាម bot របស់អ្នក…',
+    'admin.telegram_send': 'ផ្ញើតាម bot',
+    'admin.telegram_hint': 'សារនឹងទៅពី bot របស់អ្នក។ ដំណើរការបើពួកគេបានអនុញ្ញាតពេលចូលគណនី។',
     'toast.deleted': 'បានលុប',
     'toast.event_created': 'បានបង្កើតកម្មវិធី',
 

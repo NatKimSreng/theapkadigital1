@@ -37,6 +37,9 @@ class TelegramController extends Controller
         }
 
         $telegramId = (int) $profile['id'];
+        // Kept fresh on every sign-in, since people change usernames; it is
+        // how the admin reaches them on Telegram.
+        $username = preg_match('/^[A-Za-z0-9_]{4,64}$/', $profile['username'] ?? '') ? $profile['username'] : null;
         $owner = User::query()->where('telegram_id', $telegramId)->first();
 
         // Signed in already: this connects Telegram to their account.
@@ -45,7 +48,7 @@ class TelegramController extends Controller
                 return $this->toProfile('error', __('This Telegram account is already connected to another account.'));
             }
 
-            $current->forceFill(['telegram_id' => $telegramId])->save();
+            $current->forceFill(['telegram_id' => $telegramId, 'telegram_username' => $username])->save();
 
             return $this->toProfile('success', __('Telegram connected.'));
         }
@@ -54,9 +57,14 @@ class TelegramController extends Controller
             'name' => Str::limit(trim(($profile['first_name'] ?? '').' '.($profile['last_name'] ?? '')) ?: ($profile['username'] ?? 'Telegram'), 255, ''),
             'email' => null,
             'telegram_id' => $telegramId,
+            'telegram_username' => $username,
             // They can't use a password without an email; Telegram is their way in.
             'password' => Str::password(32),
         ]);
+
+        if ($user->telegram_username !== $username) {
+            $user->forceFill(['telegram_username' => $username])->save();
+        }
 
         if ($user->isDisabled()) {
             return redirect()->route('login')->with('status', __('Your account has been disabled. Please contact support.'));

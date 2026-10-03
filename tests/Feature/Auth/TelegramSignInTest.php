@@ -4,6 +4,8 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class TelegramSignInTest extends TestCase
@@ -49,6 +51,7 @@ class TelegramSignInTest extends TestCase
 
         $user = User::query()->where('telegram_id', 987654321)->firstOrFail();
         $this->assertSame('Dara Sok', $user->name);
+        $this->assertSame('darasok', $user->telegram_username);
         $this->assertNull($user->email);
         $this->assertAuthenticatedAs($user);
     }
@@ -106,6 +109,26 @@ class TelegramSignInTest extends TestCase
 
         $this->assertSame('Dara', $user->refresh()->name);
         $this->assertNull($user->email);
+    }
+
+    public function test_an_admin_can_message_a_telegram_user_through_the_bot()
+    {
+        Http::fake(['api.telegram.org/*' => Http::response(['ok' => true])]);
+        $user = User::factory()->create(['telegram_id' => 987654321]);
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        $this->actingAs($admin)
+            ->post(route('admin.users.telegram', $user), ['message' => 'Your plan is active!'])
+            ->assertSessionHasNoErrors();
+
+        Http::assertSent(fn (Request $request) => $request->url() === 'https://api.telegram.org/bot'.self::TOKEN.'/sendMessage'
+            && $request['chat_id'] === 987654321
+            && $request['text'] === 'Your plan is active!');
+
+        $this->actingAs(User::factory()->create())
+            ->post(route('admin.users.telegram', $user), ['message' => 'Hi'])
+            ->assertForbidden();
+        Http::assertSentCount(1);
     }
 
     public function test_it_is_off_until_a_bot_is_configured()

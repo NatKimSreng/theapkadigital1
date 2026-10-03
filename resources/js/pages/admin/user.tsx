@@ -1,5 +1,6 @@
 import { Head, router, usePage } from '@inertiajs/react';
-import { ShieldCheck } from 'lucide-react';
+import { Send, ShieldCheck } from 'lucide-react';
+import { useState } from 'react';
 import UserController from '@/actions/App/Http/Controllers/Admin/UserController';
 import { AdminInviteLinks } from '@/components/admin-invite-links';
 import type { InviteLink } from '@/components/admin-invite-links';
@@ -23,6 +24,20 @@ export default function AdminUser({ user, events, orders, packages }: Props) {
     const { auth } = usePage().props;
     const isSelf = auth.user.id === user.id;
     const freeId = packages.find((pkg) => pkg.is_default)?.id;
+    const [message, setMessage] = useState('');
+    const [sending, setSending] = useState(false);
+
+    const sendTelegram = () =>
+        router.post(
+            UserController.telegram.url(user.id),
+            { message },
+            {
+                preserveScroll: true,
+                onStart: () => setSending(true),
+                onFinish: () => setSending(false),
+                onSuccess: () => setMessage(''),
+            },
+        );
 
     const update = (data: Record<string, boolean>) =>
         router.patch(UserController.update.url(user.id), data, {
@@ -93,6 +108,51 @@ export default function AdminUser({ user, events, orders, packages }: Props) {
                         </span>
                     )}
                 </div>
+
+                {user.telegram_id && (
+                    <section className="mb-8 rounded-2xl border bg-background p-4">
+                        <h2 className="mb-1 flex items-center gap-2 text-lg font-semibold">
+                            <Send className="size-5 text-sky-600" />
+                            Telegram
+                        </h2>
+                        {user.telegram_username ? (
+                            <a
+                                href={`https://t.me/${user.telegram_username}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-sm font-medium text-sky-700 hover:underline dark:text-sky-400"
+                            >
+                                @{user.telegram_username} ·{' '}
+                                {t('admin.telegram_open_chat')}
+                            </a>
+                        ) : (
+                            <p className="text-sm text-muted-foreground">
+                                {t('admin.telegram_no_username')}
+                            </p>
+                        )}
+                        <textarea
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            rows={3}
+                            maxLength={2000}
+                            placeholder={t('admin.telegram_message')}
+                            className="mt-3 w-full rounded-xl border border-input bg-background p-3 text-sm"
+                        />
+                        <div className="mt-2 flex flex-wrap items-center gap-3">
+                            <Button
+                                className="rounded-full"
+                                disabled={sending || message.trim() === ''}
+                                onClick={sendTelegram}
+                            >
+                                <Send className="size-4" />
+                                {t('admin.telegram_send')}
+                            </Button>
+                            <span className="text-xs text-muted-foreground">
+                                {t('admin.telegram_hint')}
+                            </span>
+                        </div>
+                    </section>
+                )}
 
                 <section>
                     <h2 className="mb-3 text-lg font-semibold">

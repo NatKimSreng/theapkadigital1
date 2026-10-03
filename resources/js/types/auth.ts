@@ -3,6 +3,7 @@ export type User = {
     name: string;
     email: string | null;
     telegram_id?: number | null;
+    telegram_username?: string | null;
     avatar?: string;
     email_verified_at: string | null;
     two_factor_enabled?: boolean;
