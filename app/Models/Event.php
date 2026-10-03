@@ -146,7 +146,7 @@ class Event extends Model
     /**
      * Each invitation's public link, for the admin to open or copy.
      *
-     * @return Attribute<list<array{id: int, template: string, active: bool, url: string}>, never>
+     * @return Attribute<array<int, array{id: int, template: string, active: bool, url: string}>, never>
      */
     protected function inviteLinks(): Attribute
     {
@@ -205,8 +205,9 @@ class Event extends Model
                     ->get()
                     ->map(fn ($row) => [
                         'category' => $row->category,
-                        'estimated' => (float) $row->estimated,
-                        'actual' => (float) $row->actual,
+                        // Sums from the query, not columns of Expense.
+                        'estimated' => (float) $row->getAttribute('estimated'),
+                        'actual' => (float) $row->getAttribute('actual'),
                     ])
                     ->values(),
             ],

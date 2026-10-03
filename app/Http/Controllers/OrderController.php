@@ -13,6 +13,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class OrderController extends Controller
 {
@@ -68,7 +69,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function store(Request $request, Package $package): RedirectResponse
+    public function store(Request $request, Package $package): RedirectResponse|SymfonyResponse
     {
         abort_unless($this->purchasable($package), 404);
 
