@@ -1,6 +1,8 @@
 import { Head, router, usePage } from '@inertiajs/react';
 import { ShieldCheck } from 'lucide-react';
 import UserController from '@/actions/App/Http/Controllers/Admin/UserController';
+import { AdminInviteLinks } from '@/components/admin-invite-links';
+import type { InviteLink } from '@/components/admin-invite-links';
 import { StatusBadge } from '@/components/status-badge';
 import { Button } from '@/components/ui/button';
 import { AdminPage } from '@/layouts/admin-layout';
@@ -11,7 +13,7 @@ import type { Order, Package, PlannerEvent, User } from '@/types';
 
 type Props = {
     user: User & { events_count: number; orders_count: number };
-    events: PlannerEvent[];
+    events: (PlannerEvent & { invite_links: InviteLink[] })[];
     orders: Order[];
     packages: Pick<Package, 'id' | 'name' | 'is_default'>[];
 };
@@ -148,6 +150,9 @@ export default function AdminUser({ user, events, orders, packages }: Props) {
                                             ))}
                                         </select>
                                     </label>
+                                    <AdminInviteLinks
+                                        links={event.invite_links}
+                                    />
                                 </li>
                             ))}
                         </ul>

@@ -2,6 +2,8 @@ import { Form, Head, Link, router } from '@inertiajs/react';
 import { CalendarDays, Heart, MailOpen, Search, Users } from 'lucide-react';
 import EventController from '@/actions/App/Http/Controllers/Admin/EventController';
 import UserController from '@/actions/App/Http/Controllers/Admin/UserController';
+import { AdminInviteLinks } from '@/components/admin-invite-links';
+import type { InviteLink } from '@/components/admin-invite-links';
 import { selectClassName } from '@/components/event/fields';
 import { Pagination } from '@/components/pagination';
 import { Input } from '@/components/ui/input';
@@ -22,6 +24,7 @@ type AdminEvent = {
     guests_count: number;
     rsvps_count: number;
     invitations_count: number;
+    invite_links: InviteLink[];
     user: { id: number; name: string; email: string };
     package: { id: number; name: string; name_km: string | null } | null;
 };
@@ -149,6 +152,7 @@ export default function AdminEvents({
                                     <MailOpen className="size-4" />
                                     {formatNumber(event.rsvps_count)}
                                 </span>
+                                <AdminInviteLinks links={event.invite_links} />
                             </li>
                         ))}
                     </ul>

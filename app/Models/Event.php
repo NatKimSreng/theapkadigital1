@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Closure;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -126,6 +128,37 @@ class Event extends Model
     public function invitations(): HasMany
     {
         return $this->hasMany(Invitation::class);
+    }
+
+    /**
+     * Loads just what invite_links needs, the active invitation first.
+     *
+     * @return array<string, Closure>
+     */
+    public static function withInviteLinks(): array
+    {
+        return ['invitations' => fn ($query) => $query
+            ->select(['id', 'event_id', 'template', 'is_active', 'public_id'])
+            ->orderByDesc('is_active')
+            ->oldest('id')];
+    }
+
+    /**
+     * Each invitation's public link, for the admin to open or copy.
+     *
+     * @return Attribute<list<array{id: int, template: string, active: bool, url: string}>, never>
+     */
+    protected function inviteLinks(): Attribute
+    {
+        return Attribute::get(fn (): array => $this->invitations
+            ->map(fn (Invitation $invitation): array => [
+                'id' => $invitation->id,
+                'template' => $invitation->template,
+                'active' => $invitation->is_active,
+                'url' => route('invitations.share', $invitation->public_id),
+            ])
+            ->values()
+            ->all());
     }
 
     /**

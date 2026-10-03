@@ -160,6 +160,29 @@ class SeoTest extends TestCase
             ->assertSessionHasErrors('ga_id');
     }
 
+    public function test_admin_sees_each_events_invite_links()
+    {
+        $owner = User::factory()->create();
+        $event = $owner->events()->create(['name' => 'Dara wedding', 'exchange_rate' => 4000]);
+        $spare = $event->invitations()->create(['template' => 'paper-frame']);
+        $active = $event->invitations()->create(['template' => 'naga-gold', 'is_active' => true]);
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        $this->actingAs($admin)
+            ->get(route('admin.events.index'))
+            ->assertInertia(fn ($page) => $page
+                ->where('events.data.0.invite_links.0.url', route('invitations.share', $active->public_id))
+                ->where('events.data.0.invite_links.0.active', true)
+                ->where('events.data.0.invite_links.1.url', route('invitations.share', $spare->public_id))
+                ->missing('events.data.0.invitations'));
+
+        $this->actingAs($admin)
+            ->get(route('admin.users.show', $owner))
+            ->assertInertia(fn ($page) => $page
+                ->where('events.0.invite_links.0.template', 'naga-gold')
+                ->where('events.0.invite_links.0.url', route('invitations.share', $active->public_id)));
+    }
+
     public function test_admin_events_page_lists_every_event()
     {
         $owner = User::factory()->create(['name' => 'Dara']);

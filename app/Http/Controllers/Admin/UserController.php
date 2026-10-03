@@ -35,7 +35,12 @@ class UserController extends Controller
     {
         return Inertia::render('admin/user', [
             'user' => $user->loadCount(['events', 'orders']),
-            'events' => $user->events()->withCount('guests')->latest()->get(),
+            'events' => $user->events()
+                ->with(Event::withInviteLinks())
+                ->withCount('guests')
+                ->latest()
+                ->get()
+                ->each(fn (Event $event) => $event->append('invite_links')->makeHidden('invitations')),
             'orders' => $user->orders()->with(['package:id,name', 'event:id,name'])->latest()->get(),
             'packages' => Package::query()->ordered()->get(['id', 'name', 'is_default']),
         ]);

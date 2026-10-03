@@ -27,11 +27,12 @@ class EventController extends Controller
                         ->orWhere('email', 'like', "%{$search}%"))))
                 ->when($package === 'free', fn ($query) => $query->whereNull('package_id'))
                 ->when(is_numeric($package), fn ($query) => $query->where('package_id', (int) $package))
-                ->with(['user:id,name,email', 'package:id,name,name_km'])
+                ->with(['user:id,name,email', 'package:id,name,name_km', ...Event::withInviteLinks()])
                 ->withCount(['guests', 'rsvps', 'invitations'])
                 ->latest()
                 ->paginate(20)
-                ->withQueryString(),
+                ->withQueryString()
+                ->through(fn (Event $event) => $event->append('invite_links')->makeHidden('invitations')),
             'search' => $search,
             'package' => is_string($package) ? $package : '',
             'packages' => Package::query()->ordered()->where('is_default', false)->get(['id', 'name', 'name_km']),
