@@ -1,5 +1,5 @@
 import { Form, Head, usePage } from '@inertiajs/react';
-import { CircleCheck } from 'lucide-react';
+import { CircleCheck, Send } from 'lucide-react';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/delete-user';
 import InputError from '@/components/input-error';
@@ -84,10 +84,25 @@ export default function Profile() {
                     description={t('settings.telegram_desc')}
                 >
                     {auth.user.telegram_id ? (
-                        <p className="flex items-center gap-2 text-sm font-medium text-emerald-700 dark:text-emerald-400">
-                            <CircleCheck className="size-5" />
-                            {t('settings.telegram_connected')}
-                        </p>
+                        <div className="space-y-3">
+                            <p className="flex items-center gap-2 text-sm font-medium text-emerald-700 dark:text-emerald-400">
+                                <CircleCheck className="size-5" />
+                                {t('settings.telegram_connected')}
+                            </p>
+                            {/* Starting the bot lets it message them. */}
+                            <p className="text-sm text-muted-foreground">
+                                {t('settings.telegram_messages')}
+                            </p>
+                            <a
+                                href={`https://t.me/${telegramBot}?start=updates`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 rounded-full bg-sky-500 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-sky-600"
+                            >
+                                <Send className="size-4" />
+                                {t('settings.telegram_open_bot')}
+                            </a>
+                        </div>
                     ) : (
                         <div className="w-fit">
                             <TelegramLogin bot={telegramBot} />

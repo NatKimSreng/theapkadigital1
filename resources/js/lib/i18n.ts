@@ -319,7 +319,7 @@ const en = {
     'toast.saved': 'Saved',
     'toast.telegram_sent': 'Message sent on Telegram',
     'toast.telegram_not_sent':
-        'Telegram did not deliver it. They may not have allowed messages from the bot, or blocked it.',
+        'Telegram did not deliver it (:reason). They need to allow messages from your bot first: log in with Telegram again, or tap Start in your bot.',
     'toast.telegram_unavailable':
         'This user has no Telegram, or the Telegram bot is not set up.',
     'admin.telegram_open_chat': 'Open chat',
@@ -871,6 +871,9 @@ const en = {
     'auth.or': 'or',
     'settings.telegram_desc': 'Connect your Telegram to log in with it.',
     'settings.telegram_connected': 'Connected. You can log in with Telegram.',
+    'settings.telegram_messages':
+        'Get updates from us on Telegram: open our bot and tap Start.',
+    'settings.telegram_open_bot': 'Open our bot',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -1186,7 +1189,7 @@ const km: Record<TranslationKey, string> = {
     'toast.saved': 'បានរក្សាទុក',
     'toast.telegram_sent': 'បានផ្ញើសារតាម Telegram',
     'toast.telegram_not_sent':
-        'Telegram មិនបានផ្ញើទេ។ ប្រហែលពួកគេមិនបានអនុញ្ញាតឲ្យ bot ផ្ញើសារ ឬបានបិទ bot។',
+        'Telegram មិនបានផ្ញើទេ (:reason)។ ពួកគេត្រូវអនុញ្ញាតឲ្យ bot ផ្ញើសារជាមុនសិន៖ ចូលគណនីតាម Telegram ម្តងទៀត ឬចុច Start ក្នុង bot។',
     'toast.telegram_unavailable':
         'អ្នកប្រើនេះមិនមាន Telegram ឬ bot Telegram មិនទាន់បានរៀបចំ។',
     'admin.telegram_open_chat': 'បើកការជជែក',
@@ -1695,6 +1698,9 @@ const km: Record<TranslationKey, string> = {
     'auth.or': 'ឬ',
     'settings.telegram_desc': 'តភ្ជាប់ Telegram របស់អ្នក ដើម្បីចូលគណនីតាម Telegram។',
     'settings.telegram_connected': 'បានតភ្ជាប់។ អ្នកអាចចូលគណនីតាម Telegram បាន។',
+    'settings.telegram_messages':
+        'ទទួលព័ត៌មានពីយើងតាម Telegram៖ បើក bot របស់យើង ហើយចុច Start។',
+    'settings.telegram_open_bot': 'បើក bot របស់យើង',
 };
 
 export type Locale = 'km' | 'en';

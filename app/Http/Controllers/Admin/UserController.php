@@ -99,8 +99,9 @@ class UserController extends Controller
             ]);
 
         if (! $response->successful()) {
-            Log::warning('Telegram message failed', ['user' => $user->id, 'error' => $response->json('description')]);
-            Inertia::flash('toast', ['type' => 'error', 'message' => 'toast.telegram_not_sent']);
+            $reason = (string) $response->json('description', 'HTTP '.$response->status());
+            Log::warning('Telegram message failed', ['user' => $user->id, 'error' => $reason]);
+            Inertia::flash('toast', ['type' => 'error', 'message' => 'toast.telegram_not_sent', 'params' => ['reason' => $reason]]);
 
             return back();
         }
