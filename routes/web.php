@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Auth\TelegramController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ExpenseController;
@@ -24,6 +25,10 @@ Route::middleware('guest')->group(function () {
     Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.redirect');
     Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 });
+// Open to signed-in users too, who use it to connect Telegram to their account.
+Route::get('auth/telegram/callback', [TelegramController::class, 'callback'])
+    ->middleware('throttle:20,1')
+    ->name('telegram.callback');
 Route::get('blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');

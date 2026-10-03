@@ -855,6 +855,8 @@ const en = {
     'pricing.free_template_limit': ':max free templates',
     'auth.google': 'Continue with Google',
     'auth.or': 'or',
+    'settings.telegram_desc': 'Connect your Telegram to log in with it.',
+    'settings.telegram_connected': 'Connected. You can log in with Telegram.',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -1664,6 +1666,8 @@ const km: Record<TranslationKey, string> = {
     'pricing.free_template_limit': 'គំរូឥតគិតថ្លៃ :max',
     'auth.google': 'បន្តជាមួយ Google',
     'auth.or': 'ឬ',
+    'settings.telegram_desc': 'តភ្ជាប់ Telegram របស់អ្នក ដើម្បីចូលគណនីតាម Telegram។',
+    'settings.telegram_connected': 'បានតភ្ជាប់។ អ្នកអាចចូលគណនីតាម Telegram បាន។',
 };
 
 export type Locale = 'km' | 'en';

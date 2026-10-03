@@ -20,6 +20,8 @@ declare module '@inertiajs/core' {
             adminPending: number | null;
             telegram: string | null;
             googleSignIn: boolean;
+            /** The Telegram login bot's username, when Telegram sign-in is on. */
+            telegramBot: string | null;
             [key: string]: unknown;
         };
     }

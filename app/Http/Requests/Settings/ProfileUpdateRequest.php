@@ -17,6 +17,7 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return $this->profileRules($this->user()->id);
+        // Accounts made with Telegram have no email, and may keep it that way.
+        return $this->profileRules($this->user()->id, $this->user()->email !== null);
     }
 }
