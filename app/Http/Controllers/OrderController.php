@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Package;
 use App\Models\Setting;
 use App\Support\Seo;
+use App\Support\TelegramNotifier;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -97,6 +98,23 @@ class OrderController extends Controller
             'amount' => $package->price,
             'receipt_path' => $request->file('receipt')->store('receipts', 'local'),
         ]);
+
+        TelegramNotifier::send(implode("\n", array_filter([
+            __('New order #:id: :package, $:price', [
+                'id' => $order->id,
+                'package' => $package->name,
+                'price' => rtrim(rtrim(number_format($package->price, 2), '0'), '.'),
+            ]),
+            __('Event: :event', ['event' => $event->name]),
+            __('Customer: :customer', ['customer' => implode(' · ', array_filter([
+                $user->name,
+                $user->email,
+                $user->telegram_username ? '@'.$user->telegram_username : null,
+            ]))]),
+            __('Payment: :method', ['method' => strtoupper($order->payment_method)]).($order->reference ? ' · '.$order->reference : ''),
+            $order->note ? __('Note: :note', ['note' => $order->note]) : null,
+            route('admin.orders.index'),
+        ])), $order->receipt_path);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'toast.order_sent']);
 

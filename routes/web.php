@@ -77,6 +77,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('posts', Admin\PostController::class)->except(['show']);
     Route::get('settings', [Admin\SettingController::class, 'edit'])->name('settings.edit');
     Route::post('settings', [Admin\SettingController::class, 'update'])->name('settings.update');
+    Route::get('settings/telegram-chats', [Admin\SettingController::class, 'telegramChats'])->name('settings.telegram-chats');
+    Route::post('settings/telegram-test', [Admin\SettingController::class, 'telegramTest'])->name('settings.telegram-test');
 });
 
 Route::get('i/{invitation:public_id}', [InvitationController::class, 'share'])->name('invitations.share');

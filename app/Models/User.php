@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\CarbonInterface;
+use App\Support\TelegramNotifier;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -39,6 +40,19 @@ class User extends Authenticatable implements PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+
+    protected static function booted(): void
+    {
+        // Tell the admins' Telegram group about every new sign-up.
+        static::created(function (User $user) {
+            TelegramNotifier::send(implode("\n", array_filter([
+                __('New sign-up: :name', ['name' => $user->name]),
+                $user->email,
+                $user->telegram_username ? '@'.$user->telegram_username : ($user->telegram_id ? 'Telegram' : null),
+                $user->google_id ? 'Google' : null,
+            ])));
+        });
+    }
 
     /**
      * @return HasMany<Event, $this>

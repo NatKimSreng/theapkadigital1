@@ -28,7 +28,7 @@ class Setting extends Model
 
     public const KEYS = [
         'seo_title', 'seo_description', 'og_image', 'google_verification', 'ga_id',
-        'facebook_url', 'support_telegram',
+        'facebook_url', 'support_telegram', 'telegram_chat_id',
         'payment_account_name', 'payment_aba_number', 'payment_bank_details', 'payment_khqr_image',
     ];
 

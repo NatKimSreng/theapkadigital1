@@ -1,9 +1,10 @@
-import { Form, Head } from '@inertiajs/react';
-import { ExternalLink, Trash2, Upload } from 'lucide-react';
+import { Form, Head, router, usePage } from '@inertiajs/react';
+import { ExternalLink, Search, Send, Trash2, Upload } from 'lucide-react';
 import { useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import SettingController from '@/actions/App/Http/Controllers/Admin/SettingController';
 import { Field, TextField } from '@/components/event/fields';
+import { Input } from '@/components/ui/input';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -18,6 +19,7 @@ type Settings = {
     ga_id: string | null;
     facebook_url: string | null;
     support_telegram: string | null;
+    telegram_chat_id: string | null;
     payment_account_name: string | null;
     payment_aba_number: string | null;
     payment_bank_details: string | null;
@@ -135,6 +137,141 @@ function ImageSetting({
             {removed && <input type="hidden" name="remove[]" value={name} />}
             <p className="text-xs text-muted-foreground">{hint}</p>
             <InputError message={error} />
+        </div>
+    );
+}
+
+/**
+ * Which Telegram group gets new orders and sign-ups: found from the chats
+ * the bot has seen, then checked with a test message.
+ */
+function TelegramGroupField({
+    defaultValue,
+    error,
+}: {
+    defaultValue: string;
+    error?: string;
+}) {
+    const { t } = useTranslation();
+    const { telegramBot } = usePage().props;
+    const [value, setValue] = useState(defaultValue);
+    const [chats, setChats] = useState<{ id: string; title: string }[] | null>(
+        null,
+    );
+    const [looking, setLooking] = useState(false);
+
+    if (!telegramBot) {
+        return (
+            <p className="text-sm text-muted-foreground">
+                {t('settings_admin.telegram_needs_bot')}
+            </p>
+        );
+    }
+
+    const findGroups = async () => {
+        setLooking(true);
+
+        try {
+            const response = await fetch(
+                SettingController.telegramChats.url(),
+                {
+                    headers: { Accept: 'application/json' },
+                    credentials: 'same-origin',
+                },
+            );
+            const json = (await response.json()) as {
+                chats: { id: string; title: string }[];
+            };
+            setChats(json.chats);
+        } catch {
+            setChats([]);
+        } finally {
+            setLooking(false);
+        }
+    };
+
+    return (
+        <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+                {t('settings_admin.telegram_steps', { bot: `@${telegramBot}` })}
+            </p>
+            <Field
+                label={t('settings_admin.telegram_group')}
+                htmlFor="telegram_chat_id"
+            >
+                <Input
+                    id="telegram_chat_id"
+                    name="telegram_chat_id"
+                    value={value}
+                    onChange={(event) => setValue(event.target.value)}
+                    placeholder="-1001234567890"
+                />
+                <InputError message={error} />
+            </Field>
+            <div className="flex flex-wrap gap-2">
+                <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-full"
+                    disabled={looking}
+                    onClick={findGroups}
+                >
+                    {looking ? <Spinner /> : <Search className="size-4" />}
+                    {t('settings_admin.telegram_find')}
+                </Button>
+                <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-full"
+                    disabled={!defaultValue}
+                    title={
+                        defaultValue
+                            ? undefined
+                            : t('settings_admin.telegram_save_first')
+                    }
+                    onClick={() =>
+                        router.post(
+                            SettingController.telegramTest.url(),
+                            {},
+                            { preserveScroll: true },
+                        )
+                    }
+                >
+                    <Send className="size-4" />
+                    {t('settings_admin.telegram_test')}
+                </Button>
+            </div>
+            {chats !== null &&
+                (chats.length === 0 ? (
+                    <p className="text-sm text-destructive">
+                        {t('settings_admin.telegram_none_found')}
+                    </p>
+                ) : (
+                    <ul className="space-y-1.5">
+                        {chats.map((chat) => (
+                            <li key={chat.id}>
+                                <button
+                                    type="button"
+                                    onClick={() => setValue(chat.id)}
+                                    className="flex w-full items-center justify-between gap-3 rounded-xl border px-3 py-2 text-left text-sm hover:bg-accent"
+                                >
+                                    <span className="font-medium">
+                                        {chat.title}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground">
+                                        {value === chat.id
+                                            ? t(
+                                                  'settings_admin.telegram_chosen',
+                                              )
+                                            : t(
+                                                  'settings_admin.telegram_choose',
+                                              )}
+                                    </span>
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                ))}
         </div>
     );
 }
@@ -320,6 +457,18 @@ export default function AdminSettings({
                                     }
                                     placeholder="@theapka"
                                     error={errors.support_telegram}
+                                />
+                            </Section>
+
+                            <Section
+                                title={t('settings_admin.telegram_title')}
+                                description={t('settings_admin.telegram_desc')}
+                            >
+                                <TelegramGroupField
+                                    defaultValue={
+                                        settings.telegram_chat_id ?? ''
+                                    }
+                                    error={errors.telegram_chat_id}
                                 />
                             </Section>
                         </div>

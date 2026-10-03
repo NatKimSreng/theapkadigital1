@@ -761,6 +761,24 @@ const en = {
     'settings_admin.payment_desc': 'Shown to customers on the checkout page.',
     'settings_admin.khqr_hint': 'Your KHQR code image, shown at checkout.',
     'settings_admin.social': 'Social & support',
+    'settings_admin.telegram_title': 'Telegram notifications',
+    'settings_admin.telegram_desc':
+        'Your bot posts every new order (with its receipt) and every new sign-up to your Telegram group.',
+    'settings_admin.telegram_needs_bot':
+        'Set TELEGRAM_BOT_TOKEN and TELEGRAM_BOT_USERNAME on the server first.',
+    'settings_admin.telegram_steps':
+        '1. Add :bot to your group. 2. Send any message in the group. 3. Tap "Find my group", pick it, then Save. 4. Send a test.',
+    'settings_admin.telegram_group': 'Group chat ID',
+    'settings_admin.telegram_find': 'Find my group',
+    'settings_admin.telegram_test': 'Send test message',
+    'settings_admin.telegram_save_first': 'Save the group first',
+    'settings_admin.telegram_none_found':
+        'No group found yet. Add the bot to your group, send a message there, then try again.',
+    'settings_admin.telegram_choose': 'Use this group',
+    'settings_admin.telegram_chosen': 'Selected · tap Save',
+    'toast.telegram_test_sent': 'Test sent. Check your Telegram group.',
+    'toast.telegram_test_failed':
+        'Could not send to that group. Is the bot still in it? Save the right group and try again.',
     'design.languages': 'Languages on the invitation',
     'design.languages_hint':
         'Show both, or only one language if you don’t need the other.',
@@ -1598,6 +1616,24 @@ const km: Record<TranslationKey, string> = {
     'settings_admin.payment_desc': 'បង្ហាញដល់អតិថិជននៅទំព័រទូទាត់។',
     'settings_admin.khqr_hint': 'រូបភាព KHQR របស់អ្នក ដែលបង្ហាញនៅទំព័រទូទាត់។',
     'settings_admin.social': 'បណ្តាញសង្គម និងជំនួយ',
+    'settings_admin.telegram_title': 'ការជូនដំណឹងតាម Telegram',
+    'settings_admin.telegram_desc':
+        'bot របស់អ្នកនឹងផ្ញើរាល់ការបញ្ជាទិញថ្មី (ជាមួយបង្កាន់ដៃ) និងអ្នកចុះឈ្មោះថ្មី ទៅក្រុម Telegram របស់អ្នក។',
+    'settings_admin.telegram_needs_bot':
+        'សូមកំណត់ TELEGRAM_BOT_TOKEN និង TELEGRAM_BOT_USERNAME លើ server ជាមុនសិន។',
+    'settings_admin.telegram_steps':
+        '១. បន្ថែម :bot ចូលក្រុមរបស់អ្នក។ ២. ផ្ញើសារណាមួយក្នុងក្រុម។ ៣. ចុច "ស្វែងរកក្រុម" ជ្រើសរើស រួចរក្សាទុក។ ៤. ផ្ញើសារសាកល្បង។',
+    'settings_admin.telegram_group': 'លេខ ID ក្រុម',
+    'settings_admin.telegram_find': 'ស្វែងរកក្រុម',
+    'settings_admin.telegram_test': 'ផ្ញើសារសាកល្បង',
+    'settings_admin.telegram_save_first': 'សូមរក្សាទុកក្រុមជាមុនសិន',
+    'settings_admin.telegram_none_found':
+        'មិនទាន់រកឃើញក្រុម។ បន្ថែម bot ចូលក្រុម ផ្ញើសារមួយក្នុងក្រុម រួចព្យាយាមម្តងទៀត។',
+    'settings_admin.telegram_choose': 'ប្រើក្រុមនេះ',
+    'settings_admin.telegram_chosen': 'បានជ្រើស · ចុចរក្សាទុក',
+    'toast.telegram_test_sent': 'បានផ្ញើសារសាកល្បង។ សូមពិនិត្យក្រុម Telegram។',
+    'toast.telegram_test_failed':
+        'មិនអាចផ្ញើទៅក្រុមនោះបានទេ។ តើ bot នៅក្នុងក្រុមទេ? រក្សាទុកក្រុមត្រឹមត្រូវ ហើយព្យាយាមម្តងទៀត។',
     'design.languages': 'ភាសានៅលើធៀប',
     'design.languages_hint': 'បង្ហាញទាំងពីរ ឬតែមួយភាសា ប្រសិនបើមិនត្រូវការភាសាមួយទៀត។',
     'design.languages_both': 'ខ្មែរ និង អង់គ្លេស',
