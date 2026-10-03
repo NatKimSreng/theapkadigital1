@@ -287,6 +287,12 @@ export default function Checkout({
                                         >
                                             {t('checkout.submit')}
                                         </Button>
+                                        {payment.telegram && (
+                                            <p className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
+                                                <MessageCircle className="size-3.5" />
+                                                {t('checkout.then_telegram')}
+                                            </p>
+                                        )}
                                     </div>
                                 </>
                             )}

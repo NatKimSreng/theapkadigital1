@@ -129,6 +129,7 @@ class PackageTest extends TestCase
     public function test_customer_can_order_a_package_with_a_receipt()
     {
         Storage::fake('local');
+        config(['theapka.payment.telegram' => null]);
         $user = User::factory()->create();
         $event = $this->eventFor($user);
         $package = $this->premium();
@@ -148,6 +149,28 @@ class PackageTest extends TestCase
         $this->assertSame(19.0, $order->amount);
         Storage::disk('local')->assertExists($order->receipt_path);
         $this->assertNull($event->fresh()->package_id);
+    }
+
+    public function test_after_ordering_the_customer_is_sent_to_our_telegram()
+    {
+        Storage::fake('local');
+        config(['theapka.payment.telegram' => '@theapka_shop']);
+        $user = User::factory()->create(['name' => 'Dara']);
+        $event = $this->eventFor($user);
+
+        $response = $this->actingAs($user)
+            ->post(route('checkout.store', $this->premium()), [
+                'event_id' => $event->id,
+                'payment_method' => 'aba',
+                'receipt' => UploadedFile::fake()->image('receipt.jpg'),
+            ]);
+
+        $order = Order::firstOrFail();
+        $location = (string) $response->headers->get('Location');
+        $this->assertStringStartsWith('https://t.me/theapka_shop?text=', $location);
+        $text = rawurldecode(substr($location, strpos($location, '=') + 1));
+        $this->assertStringContainsString("#{$order->id}", $text);
+        $this->assertStringContainsString('Dara', $text);
     }
 
     public function test_customers_cannot_order_for_someone_elses_event()

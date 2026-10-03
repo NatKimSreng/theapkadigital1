@@ -90,7 +90,7 @@ class OrderController extends Controller
             return back();
         }
 
-        $user->orders()->create([
+        $order = $user->orders()->create([
             ...Arr::except($validated, 'receipt'),
             'package_id' => $package->id,
             'amount' => $package->price,
@@ -99,7 +99,35 @@ class OrderController extends Controller
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'toast.order_sent']);
 
-        return to_route('orders.index');
+        // Send the buyer to our Telegram with the order ready to send, so
+        // we can confirm the payment with them there.
+        $handle = $this->telegramHandle();
+
+        if ($handle === null) {
+            return to_route('orders.index');
+        }
+
+        $text = __("Hello! I just placed order #:id for the :package plan ($:price) for my event \":event\".\nName: :name (:contact)\nPlease check my payment receipt. Thank you!", [
+            'id' => $order->id,
+            'package' => app()->getLocale() === 'km' && $package->name_km ? $package->name_km : $package->name,
+            'price' => rtrim(rtrim(number_format($package->price, 2), '0'), '.'),
+            'event' => $event->name,
+            'name' => $user->name,
+            'contact' => $user->email ?? 'Telegram',
+        ]);
+
+        return Inertia::location('https://t.me/'.$handle.'?text='.rawurlencode($text));
+    }
+
+    /**
+     * Our Telegram username from Admin > Site settings, if it is one.
+     */
+    private function telegramHandle(): ?string
+    {
+        $value = (string) $this->paymentDetails()['telegram'];
+        $handle = ltrim((string) preg_replace('#^(https?://)?(t\.me|telegram\.me)/#i', '', trim($value)), '@');
+
+        return preg_match('/^[A-Za-z0-9_]{4,32}$/', $handle) ? $handle : null;
     }
 
     /**

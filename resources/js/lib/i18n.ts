@@ -431,6 +431,8 @@ const en = {
     'checkout.note': 'Message (optional)',
     'checkout.submit': 'Send for approval',
     'checkout.help': 'Need help? Message us on Telegram',
+    'checkout.then_telegram':
+        'After you send, our Telegram opens with your order ready. Tap Send so we can confirm it quickly.',
     'checkout.summary': 'Order summary',
     'method.khqr': 'KHQR',
     'method.bank': 'Bank transfer',
@@ -1273,6 +1275,8 @@ const km: Record<TranslationKey, string> = {
     'checkout.note': 'សារ (ស្រេចចិត្ត)',
     'checkout.submit': 'ផ្ញើដើម្បីអនុម័ត',
     'checkout.help': 'ត្រូវការជំនួយ? ផ្ញើសារមកយើងតាម Telegram',
+    'checkout.then_telegram':
+        'ក្រោយផ្ញើ Telegram របស់យើងនឹងបើក ដោយមានព័ត៌មានការបញ្ជាទិញរួចជាស្រេច។ សូមចុច Send ដើម្បីឲ្យយើងបញ្ជាក់បានលឿន។',
     'checkout.summary': 'សង្ខេបការបញ្ជាទិញ',
     'method.khqr': 'KHQR',
     'method.bank': 'ផ្ទេរតាមធនាគារ',

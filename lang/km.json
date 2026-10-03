@@ -27,5 +27,10 @@
     "Browse Theapka's digital wedding and event invitation designs — each with photos, countdown, agenda, map, gallery, gift QR and RSVP.": "មើលម៉ូដធៀបការឌីជីថលរបស់ Theapka សម្រាប់មង្គលការ និងកម្មវិធីផ្សេងៗ — មានរូបថត ការរាប់ថយក្រោយ កម្មវិធី ផែនទី វិចិត្រសាល QR ចំណងដៃ និងការឆ្លើយតប។",
     ":name — invitation template": ":name — គំរូធៀបការ",
     "See the :name design with sample photos, countdown, agenda, map, gallery and RSVP, then make it yours on Theapka.": "មើលម៉ូដ :name ជាមួយរូបថតគំរូ ការរាប់ថយក្រោយ កម្មវិធី ផែនទី វិចិត្រសាល និងការឆ្លើយតប ហើយបង្កើតជារបស់អ្នកនៅលើ Theapka។",
-    "Google sign-in did not work. Please try again.": "ការចូលតាម Google មិនបានសម្រេច។ សូមព្យាយាមម្តងទៀត។"
+    "Google sign-in did not work. Please try again.": "ការចូលតាម Google មិនបានសម្រេច។ សូមព្យាយាមម្តងទៀត។",
+    "Hello! I just placed order #:id for the :package plan ($:price) for my event \":event\".\nName: :name (:contact)\nPlease check my payment receipt. Thank you!": "សួស្តី! ខ្ញុំទើបបញ្ជាទិញលេខ #:id កញ្ចប់ :package ($:price) សម្រាប់កម្មវិធី \":event\"។\nឈ្មោះ៖ :name (:contact)\nសូមពិនិត្យបង្កាន់ដៃបង់ប្រាក់របស់ខ្ញុំ។ សូមអរគុណ!",
+    "Telegram sign-in did not work. Please try again.": "ការចូលតាម Telegram មិនបានសម្រេច។ សូមព្យាយាមម្តងទៀត។",
+    "Telegram did not confirm it was you. Please try again.": "Telegram មិនបានបញ្ជាក់ថាជាអ្នកទេ។ សូមព្យាយាមម្តងទៀត។",
+    "This Telegram account is already connected to another account.": "គណនី Telegram នេះបានតភ្ជាប់ជាមួយគណនីផ្សេងរួចហើយ។",
+    "Telegram connected.": "បានតភ្ជាប់ Telegram។"
 }
