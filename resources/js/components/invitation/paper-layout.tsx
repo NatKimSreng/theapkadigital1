@@ -250,7 +250,7 @@ export function PaperLayout({
                                 className="mx-auto w-full max-w-72 rounded-lg"
                             />
                         ) : (
-                            data.mapPlace && (
+                            (data.mapPlace || data.mapLinked) && (
                                 <PlaceMap data={data} place={data.mapPlace} />
                             )
                         )}

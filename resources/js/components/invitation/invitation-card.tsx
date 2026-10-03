@@ -518,7 +518,7 @@ function ClassicLayout({
                                     className="w-full rounded-2xl shadow-sm"
                                 />
                             ) : (
-                                data.mapPlace && (
+                                (data.mapPlace || data.mapLinked) && (
                                     <PlaceMap
                                         data={data}
                                         place={data.mapPlace}

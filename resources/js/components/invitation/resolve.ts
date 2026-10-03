@@ -220,6 +220,7 @@ export function resolveInvitation(
         opening: settings.opening ?? theme.opening,
         effect: settings.effect ?? theme.effect,
         mapPlace: settings.map_place ?? null,
+        mapLinked: !!settings.map_url,
         mapQr: settings.map_qr ?? null,
         mapHref:
             settings.map_url ||
