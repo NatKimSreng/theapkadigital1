@@ -23,6 +23,7 @@ import type { ReactNode } from 'react';
 import { toast } from 'sonner';
 import InvitationController from '@/actions/App/Http/Controllers/InvitationController';
 import { ConfirmDelete } from '@/components/event/confirm-delete';
+import { SongPicker, songUrl } from '@/components/invitation/song-picker';
 import { EventShell } from '@/components/event/event-shell';
 import { selectClassName } from '@/components/event/fields';
 import {
@@ -50,6 +51,7 @@ import type {
     InvitationSettings,
     InvitationTextKey,
     PlannerEvent,
+    Song,
 } from '@/types';
 import { INVITATION_MEDIA, MAX_GALLERY } from '@/types/event';
 
@@ -70,6 +72,7 @@ type Props = {
     selectedId: number | null;
     guests: GuestOption[];
     uploadLimits: UploadLimits;
+    songs: Song[];
 };
 
 export default function Invitations({
@@ -78,6 +81,7 @@ export default function Invitations({
     selectedId,
     guests,
     uploadLimits,
+    songs,
 }: Props) {
     const { t } = useTranslation();
     const invitation = invitations.find((item) => item.id === selectedId);
@@ -170,6 +174,7 @@ export default function Invitations({
                         template={template}
                         guests={guests}
                         uploadLimits={uploadLimits}
+                        songs={songs}
                     />
                 </>
             ) : (
@@ -244,6 +249,7 @@ type EditorProps = {
     template: TemplateDefinition;
     guests: GuestOption[];
     uploadLimits: UploadLimits;
+    songs: Song[];
 };
 
 function megabytes(bytes: number): string {
@@ -256,6 +262,7 @@ function Editor({
     template,
     guests,
     uploadLimits,
+    songs,
 }: EditorProps) {
     const { t } = useTranslation();
     const [settings, setSettings] = useState<InvitationSettings>(
@@ -310,6 +317,7 @@ function Editor({
             ...existingGallery.map((photo) => photo.url),
             ...galleryFileUrls,
         ],
+        song: songUrl(songs, settings.song),
     };
     const galleryCount = existingGallery.length + galleryFiles.length;
 
@@ -649,6 +657,12 @@ function Editor({
                         <p className="text-xs text-muted-foreground">
                             {t('design.music_hint')}
                         </p>
+                        <SongPicker
+                            songs={songs}
+                            value={settings.song}
+                            onChange={(value) => set('song', value)}
+                            hasOwn={!!previewMedia.music}
+                        />
                     </Panel>
 
                     <Panel title={t('design.appearance')} dot="bg-slate-500">

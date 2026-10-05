@@ -66,8 +66,11 @@ export function PaperLayout({
                 fontFamily: english ? SERIF_FONT : BODY_FONT,
             }}
         >
-            {media.music && !compact && (
-                <MusicButton src={media.music} autoStart={autoStartMusic} />
+            {(media.music || media.song) && !compact && (
+                <MusicButton
+                    src={(media.music || media.song)!}
+                    autoStart={autoStartMusic}
+                />
             )}
 
             <section className="relative flex min-h-[680px] flex-col items-center px-12 pt-24 pb-20 text-center">

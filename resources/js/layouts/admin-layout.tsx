@@ -4,6 +4,7 @@ import {
     CalendarHeart,
     ChartLine,
     LayoutDashboard,
+    Music,
     Newspaper,
     Package as PackageIcon,
     Receipt,
@@ -60,6 +61,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             href: admin.events.index.url(),
             icon: CalendarHeart,
         },
+        { label: 'admin.music', href: admin.songs.index.url(), icon: Music },
         { label: 'admin.blog', href: admin.posts.index.url(), icon: Newspaper },
         {
             label: 'admin.site_settings',

@@ -249,8 +249,11 @@ function ClassicLayout({
                 fontFamily: BODY_FONT,
             }}
         >
-            {media.music && !compact && (
-                <MusicButton src={media.music} autoStart={autoStartMusic} />
+            {(media.music || media.song) && !compact && (
+                <MusicButton
+                    src={(media.music || media.song)!}
+                    autoStart={autoStartMusic}
+                />
             )}
 
             {CustomCover ? (

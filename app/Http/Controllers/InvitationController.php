@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Guest;
 use App\Models\Invitation;
+use App\Models\Song;
 use App\Support\MapLink;
 use App\Support\Seo;
 use Illuminate\Http\RedirectResponse;
@@ -65,6 +66,7 @@ class InvitationController extends Controller
             'invitations' => $invitations,
             'selectedId' => $selected?->id,
             'guests' => $event->guests()->orderBy('name')->get(['id', 'name', 'invite_code']),
+            'songs' => Song::query()->orderByDesc('is_default')->orderBy('title')->get(['id', 'title', 'artist', 'path', 'is_default']),
             'uploadLimits' => $this->uploadLimits(),
         ]);
     }
@@ -148,6 +150,12 @@ class InvitationController extends Controller
             'settings.show_countdown' => ['nullable', 'boolean'],
             'settings.opening' => ['nullable', Rule::in(['doors', 'envelope', 'curtain', 'fade', 'seal', 'card', 'fold', 'glow'])],
             'settings.effect' => ['nullable', Rule::in(['none', 'petals', 'sparkles', 'hearts'])],
+            // A library song's ID, or "none" for no music.
+            'settings.song' => ['nullable', function (string $attribute, mixed $value, \Closure $fail) {
+                if ($value !== 'none' && ! (is_numeric($value) && Song::query()->whereKey((int) $value)->exists())) {
+                    $fail(__('Choose a song from the list.'));
+                }
+            }],
             'settings.gift' => ['nullable', 'array'],
         ];
 

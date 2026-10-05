@@ -65,6 +65,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('orders', [Admin\OrderController::class, 'index'])->name('orders.index');
     Route::get('orders/{order}/receipt', [Admin\OrderController::class, 'receipt'])->name('orders.receipt');
     Route::patch('orders/{order}', [Admin\OrderController::class, 'update'])->name('orders.update');
+    Route::resource('songs', Admin\SongController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('packages', Admin\PackageController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('users', Admin\UserController::class)->only(['index', 'show', 'update']);
     Route::post('users/{user}/telegram', [Admin\UserController::class, 'telegram'])->name('users.telegram');

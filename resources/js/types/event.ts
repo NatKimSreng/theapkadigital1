@@ -194,6 +194,8 @@ export type InvitationSettings = {
     secondary_color?: string | null;
     gold_text?: boolean;
     map_url?: string | null;
+    /** A music-library song's ID, or 'none' for no music. */
+    song?: number | 'none' | null;
     map_place?: MapPlace | null;
     /** The map link as a QR code: `size` modules a side, row by row. */
     map_qr?: { size: number; bits: string } | null;
@@ -232,6 +234,17 @@ export type InvitationMediaKey = (typeof INVITATION_MEDIA)[number];
 
 export type InvitationMedia = Record<InvitationMediaKey, string | null> & {
     gallery: string[];
+    /** The music library's song, played when no music was uploaded. */
+    song?: string | null;
+};
+
+/** A song in the site's music library. */
+export type Song = {
+    id: number;
+    title: string;
+    artist: string | null;
+    url: string;
+    is_default: boolean;
 };
 
 export type Invitation = {
