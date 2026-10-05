@@ -122,7 +122,8 @@ class SongTest extends TestCase
         $naga = $event->invitations()->create(['template' => 'naga-gold']);
         $prasat = $event->invitations()->create(['template' => 'golden-prasat']);
         $paper = $event->invitations()->create(['template' => 'paper-frame']);
-        $picked = $event->invitations()->create(['template' => 'naga-gold', 'settings' => ['song' => $default->id]]);
+        $picked = $this->eventFor(User::factory()->create())->invitations()
+            ->create(['template' => 'naga-gold', 'settings' => ['song' => $default->id]]);
 
         $this->assertSame($roneat->url, $naga->media['song']);
         $this->assertSame($angkor->url, $prasat->media['song']);
