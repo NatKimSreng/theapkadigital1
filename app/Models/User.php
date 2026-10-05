@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Carbon\CarbonInterface;
 use App\Support\TelegramNotifier;
+use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
