@@ -317,7 +317,7 @@ function Editor({
             ...existingGallery.map((photo) => photo.url),
             ...galleryFileUrls,
         ],
-        song: songUrl(songs, settings.song),
+        song: songUrl(songs, settings.song, template.key),
     };
     const galleryCount = existingGallery.length + galleryFiles.length;
 
@@ -661,6 +661,7 @@ function Editor({
                             songs={songs}
                             value={settings.song}
                             onChange={(value) => set('song', value)}
+                            template={template.key}
                             hasOwn={!!previewMedia.music}
                         />
                     </Panel>

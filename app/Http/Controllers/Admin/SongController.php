@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Invitation;
 use App\Models\Song;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -54,11 +56,29 @@ class SongController extends Controller
             'title' => ['sometimes', 'required', 'string', 'max:120'],
             'artist' => ['sometimes', 'nullable', 'string', 'max:120'],
             'is_default' => ['sometimes', 'boolean'],
+            // The templates this song is the theme song of.
+            'templates' => ['sometimes', 'array'],
+            'templates.*' => ['string', Rule::in(Invitation::TEMPLATES)],
         ]);
+
+        if (isset($validated['templates'])) {
+            $validated['templates'] = array_values(array_unique($validated['templates']));
+        }
 
         DB::transaction(function () use ($song, $validated) {
             if ($validated['is_default'] ?? false) {
                 Song::query()->whereKeyNot($song->id)->update(['is_default' => false]);
+            }
+
+            // A template has one theme song, so taking one moves it here.
+            if ($taken = $validated['templates'] ?? []) {
+                Song::query()->whereKeyNot($song->id)->get()->each(function (Song $other) use ($taken) {
+                    $left = array_values(array_diff($other->templates ?? [], $taken));
+
+                    if ($left !== ($other->templates ?? [])) {
+                        $other->update(['templates' => $left]);
+                    }
+                });
             }
 
             $song->update($validated);

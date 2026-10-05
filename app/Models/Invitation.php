@@ -94,8 +94,9 @@ class Invitation extends Model
     /**
      * Public URLs of uploaded files, with the gallery as an ordered list.
      *
-     * `song` is the music library's song for this invitation, which plays
-     * when the couple uploaded no music of their own.
+     * `song` is the music library's song for this invitation (the couple's
+     * pick or the template's theme song), which plays when the couple
+     * uploaded no music of their own.
      *
      * @return Attribute<array{cover: string|null, background: string|null, frame: string|null, music: string|null, map: string|null, khqr_usd: string|null, khqr_khr: string|null, gallery: list<string>, song: string|null}, never>
      */
@@ -114,7 +115,7 @@ class Invitation extends Model
                 'khqr_usd' => $url('khqr_usd'),
                 'khqr_khr' => $url('khqr_khr'),
                 'gallery' => array_map(fn (string $path) => $disk->url($path), $this->galleryPaths()),
-                'song' => Song::urlFor($this->settings['song'] ?? null),
+                'song' => Song::urlFor($this->settings['song'] ?? null, $this->template),
             ];
         });
     }

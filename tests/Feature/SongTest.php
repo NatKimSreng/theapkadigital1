@@ -95,4 +95,39 @@ class SongTest extends TestCase
             ])
             ->assertSessionHasErrors('settings.song');
     }
+
+    public function test_each_template_plays_its_theme_song()
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $default = $this->upload($admin, 'Piano');
+        $roneat = $this->upload($admin, 'Roneat');
+        $angkor = $this->upload($admin, 'Angkor Dawn');
+
+        $this->actingAs($admin)
+            ->patch(route('admin.songs.update', $roneat), ['templates' => ['naga-gold', 'golden-prasat']])
+            ->assertSessionHasNoErrors();
+
+        // A template has one theme song, so taking one moves it.
+        $this->actingAs($admin)
+            ->patch(route('admin.songs.update', $angkor), ['templates' => ['golden-prasat']])
+            ->assertSessionHasNoErrors();
+        $this->assertSame(['naga-gold'], $roneat->refresh()->templates);
+        $this->assertSame(['golden-prasat'], $angkor->refresh()->templates);
+
+        $this->actingAs($admin)
+            ->patch(route('admin.songs.update', $angkor), ['templates' => ['no-such-template']])
+            ->assertSessionHasErrors('templates.0');
+
+        $event = $this->eventFor(User::factory()->create());
+        $naga = $event->invitations()->create(['template' => 'naga-gold']);
+        $prasat = $event->invitations()->create(['template' => 'golden-prasat']);
+        $paper = $event->invitations()->create(['template' => 'paper-frame']);
+        $picked = $event->invitations()->create(['template' => 'naga-gold', 'settings' => ['song' => $default->id]]);
+
+        $this->assertSame($roneat->url, $naga->media['song']);
+        $this->assertSame($angkor->url, $prasat->media['song']);
+        $this->assertSame($default->url, $paper->media['song']);
+        // The couple's own pick wins over the theme song.
+        $this->assertSame($default->url, $picked->media['song']);
+    }
 }

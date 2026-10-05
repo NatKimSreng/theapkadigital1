@@ -66,7 +66,7 @@ class InvitationController extends Controller
             'invitations' => $invitations,
             'selectedId' => $selected?->id,
             'guests' => $event->guests()->orderBy('name')->get(['id', 'name', 'invite_code']),
-            'songs' => Song::query()->orderByDesc('is_default')->orderBy('title')->get(['id', 'title', 'artist', 'path', 'is_default']),
+            'songs' => Song::query()->orderByDesc('is_default')->orderBy('title')->get(['id', 'title', 'artist', 'path', 'is_default', 'templates']),
             'uploadLimits' => $this->uploadLimits(),
         ]);
     }

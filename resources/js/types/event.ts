@@ -245,6 +245,8 @@ export type Song = {
     artist: string | null;
     url: string;
     is_default: boolean;
+    /** The templates this is the theme song of. */
+    templates: string[] | null;
 };
 
 export type Invitation = {

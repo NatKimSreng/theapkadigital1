@@ -6,15 +6,35 @@ import type { Song } from '@/types';
 
 type Choice = number | 'none' | null | undefined;
 
+/** True when a song is the theme song of a template. */
+function isThemeSong(song: Song, template: string): boolean {
+    return song.templates?.includes(template) ?? false;
+}
+
+/**
+ * The song that plays when a couple picks none: their template's theme
+ * song, or else the default (as Song::urlFor on the server).
+ */
+function automaticSong(songs: Song[], template: string): Song | undefined {
+    return (
+        songs.find((song) => isThemeSong(song, template)) ??
+        songs.find((song) => song.is_default)
+    );
+}
+
 /** The song an invitation plays from the library for a choice. */
-export function songUrl(songs: Song[], choice: Choice): string | null {
+export function songUrl(
+    songs: Song[],
+    choice: Choice,
+    template: string,
+): string | null {
     if (choice === 'none') {
         return null;
     }
 
     const song =
         songs.find((item) => item.id === choice) ??
-        songs.find((item) => item.is_default);
+        automaticSong(songs, template);
 
     return song?.url ?? null;
 }
@@ -28,18 +48,26 @@ export function SongPicker({
     value,
     onChange,
     hasOwn,
+    template,
 }: {
     songs: Song[];
     value: Choice;
     onChange: (value: number | 'none' | null) => void;
     hasOwn: boolean;
+    template: string;
 }) {
     const { t } = useTranslation();
     const audio = useRef<HTMLAudioElement>(null);
     const [playing, setPlaying] = useState<number | null>(null);
+    const automatic = automaticSong(songs, template);
     const chosen = (song: Song) =>
         value === song.id ||
-        ((value === null || value === undefined) && song.is_default);
+        ((value === null || value === undefined) && song === automatic);
+    // The theme song first, so couples see what suits their design.
+    const ordered = [...songs].sort(
+        (a, b) =>
+            Number(isThemeSong(b, template)) - Number(isThemeSong(a, template)),
+    );
 
     const preview = (song: Song) => {
         const player = audio.current;
@@ -70,7 +98,7 @@ export function SongPicker({
             )}
             <audio ref={audio} onEnded={() => setPlaying(null)} />
             <ul className={cn('space-y-1.5', hasOwn && 'opacity-60')}>
-                {songs.map((song) => (
+                {ordered.map((song) => (
                     <li
                         key={song.id}
                         className={cn(
@@ -95,7 +123,7 @@ export function SongPicker({
                         <button
                             type="button"
                             onClick={() =>
-                                onChange(song.is_default ? null : song.id)
+                                onChange(song === automatic ? null : song.id)
                             }
                             className="flex min-w-0 flex-1 items-center gap-2 text-left"
                         >
@@ -109,10 +137,16 @@ export function SongPicker({
                                     </span>
                                 )}
                             </span>
-                            {song.is_default && (
-                                <span className="shrink-0 rounded-full bg-muted px-2 text-[11px] text-muted-foreground">
-                                    {t('design.music_default')}
+                            {isThemeSong(song, template) ? (
+                                <span className="shrink-0 rounded-full bg-amber-100 px-2 text-[11px] text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                                    {t('design.music_theme')}
                                 </span>
+                            ) : (
+                                song.is_default && (
+                                    <span className="shrink-0 rounded-full bg-muted px-2 text-[11px] text-muted-foreground">
+                                        {t('design.music_default')}
+                                    </span>
+                                )
                             )}
                             {chosen(song) && (
                                 <Check className="size-5 shrink-0 text-blue-600" />
